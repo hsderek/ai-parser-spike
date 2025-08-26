@@ -1,0 +1,51 @@
+{
+  "project_name": "AI Parser Spike",
+  "python_version": "3.11",
+  "package_manager": "uv",
+  "virtual_env_path": "./.venv",
+  "dependencies": {
+    "core": [
+      "anthropic",
+      "httpx",
+      "pydantic",
+      "python-dotenv"
+    ],
+    "dev": [
+      "pytest",
+      "pytest-asyncio",
+      "pytest-cov",
+      "pylint",
+      "mypy",
+      "black",
+      "ruff"
+    ]
+  },
+  "scripts": {
+    "test": "uv run pytest",
+    "lint": "uv run pylint *.py",
+    "type_check": "uv run mypy .",
+    "format": "uv run black .",
+    "ruff": "uv run ruff check ."
+  },
+  "environment_variables": {
+    "ANTHROPIC_API_KEY": "required",
+    "VECTOR_CONFIG_PATH": "./vector.toml",
+    "LOG_LEVEL": "INFO"
+  },
+  "project_structure": {
+    "src": "Source code",
+    "tests": "Test files",
+    "docs": "Documentation",
+    "examples": "Example configurations and scripts"
+  },
+  "vector_vrl": {
+    "vector_version": "0.34.0",
+    "vrl_playground": "https://playground.vrl.dev/",
+    "config_format": "TOML"
+  },
+  "notes": {
+    "purpose": "Agile spike to prove concept for vector.dev/VRL and Anthropic LLM integration",
+    "approach": "Rough and ready implementation, no boilerplate",
+    "lessons_learned": "Documented in VECTOR-VRL.md"
+  }
+}

@@ -1,0 +1,305 @@
+# Early exit optimization - skip processing if no message field
+if !exists(.message) && !exists(.msg) && !exists(.log) {
+    # Skip expensive processing for events without core message fields
+    .parser_skipped = true
+}
+#---
+# Filename: generated_parser.vrl
+# Purpose: AI-generated VRL parser for structured log data
+# Description: Optimized VRL transforms for extracting high-value fields
+#              Generated using CPU-efficient string operations per VECTOR-VRL guidelines
+# Version: 1.0.0
+# Changelog: |
+#   ## [1.0.0] - 2025-08-26
+#   - Initial AI-generated parser
+# Copyright: © 2025 HyperSec Pty Ltd
+# Licence: "HyperSec EULA © 2025"
+# Flow: >
+#   input -> field_extraction -> type_conversion -> cleanup -> output
+#---
+
+# Extract method as string
+if exists(.method) {
+    .method = string!(.method)
+}
+# Extract cache_provider as string
+if exists(.cache_provider) {
+    .cache_provider = string!(.cache_provider)
+}
+# Extract server as string
+if exists(.server) {
+    .server = string!(.server)
+}
+# Extract payment_method as string
+if exists(.payment_method) {
+    .payment_method = string!(.payment_method)
+}
+# Extract backup_size_gb as float with error handling
+if exists(.backup_size_gb) {
+    .backup_size_gb, .backup_size_gb_err = to_float(.backup_size_gb)
+    if .backup_size_gb_err != null {
+        del(.backup_size_gb_err)
+        .backup_size_gb = 0.0
+    }
+}
+# Extract service as string
+if exists(.service) {
+    .service = string!(.service)
+}
+# Extract user_id as integer with error handling
+if exists(.user_id) {
+    .user_id, .user_id_err = to_int(.user_id)
+    if .user_id_err != null {
+        del(.user_id_err)
+        .user_id = 0
+    }
+}
+# Extract hit_ratio as float with error handling
+if exists(.hit_ratio) {
+    .hit_ratio, .hit_ratio_err = to_float(.hit_ratio)
+    if .hit_ratio_err != null {
+        del(.hit_ratio_err)
+        .hit_ratio = 0.0
+    }
+}
+# Extract message field - high value string field
+if exists(.message) {
+    .message = string!(.message)
+}
+# Extract certificate_expiry as timestamp with fallback parsing
+if exists(.certificate_expiry) {
+    .certificate_expiry, .certificate_expiry_err = parse_timestamp(string!(.certificate_expiry), format: "%Y-%m-%dT%H:%M:%S%.3fZ")
+    if .certificate_expiry_err != null {
+        .certificate_expiry, .certificate_expiry_err = parse_timestamp(string!(.certificate_expiry), format: "%Y-%m-%d %H:%M:%S")
+        if .certificate_expiry_err != null {
+            del(.certificate_expiry_err)
+            .certificate_expiry = now()
+        }
+    }
+}
+# Extract session_id as string
+if exists(.session_id) {
+    .session_id = string!(.session_id)
+}
+# Extract available_memory_gb as float with error handling
+if exists(.available_memory_gb) {
+    .available_memory_gb, .available_memory_gb_err = to_float(.available_memory_gb)
+    if .available_memory_gb_err != null {
+        del(.available_memory_gb_err)
+        .available_memory_gb = 0.0
+    }
+}
+# Extract status_code as integer with error handling
+if exists(.status_code) {
+    .status_code, .status_code_err = to_int(.status_code)
+    if .status_code_err != null {
+        del(.status_code_err)
+        .status_code = 0
+    }
+}
+# Extract total_memory_gb as float with error handling
+if exists(.total_memory_gb) {
+    .total_memory_gb, .total_memory_gb_err = to_float(.total_memory_gb)
+    if .total_memory_gb_err != null {
+        del(.total_memory_gb_err)
+        .total_memory_gb = 0.0
+    }
+}
+# Extract process_id as integer with error handling
+if exists(.process_id) {
+    .process_id, .process_id_err = to_int(.process_id)
+    if .process_id_err != null {
+        del(.process_id_err)
+        .process_id = 0
+    }
+}
+# Extract timestamp as timestamp with fallback parsing
+if exists(.timestamp) {
+    .timestamp, .timestamp_err = parse_timestamp(string!(.timestamp), format: "%Y-%m-%dT%H:%M:%S%.3fZ")
+    if .timestamp_err != null {
+        .timestamp, .timestamp_err = parse_timestamp(string!(.timestamp), format: "%Y-%m-%d %H:%M:%S")
+        if .timestamp_err != null {
+            del(.timestamp_err)
+            .timestamp = now()
+        }
+    }
+}
+# Extract backup_duration_minutes as integer with error handling
+if exists(.backup_duration_minutes) {
+    .backup_duration_minutes, .backup_duration_minutes_err = to_int(.backup_duration_minutes)
+    if .backup_duration_minutes_err != null {
+        del(.backup_duration_minutes_err)
+        .backup_duration_minutes = 0
+    }
+}
+# Extract cache_ttl_seconds as integer with error handling
+if exists(.cache_ttl_seconds) {
+    .cache_ttl_seconds, .cache_ttl_seconds_err = to_int(.cache_ttl_seconds)
+    if .cache_ttl_seconds_err != null {
+        del(.cache_ttl_seconds_err)
+        .cache_ttl_seconds = 0
+    }
+}
+# Extract user_agent as string
+if exists(.user_agent) {
+    .user_agent = string!(.user_agent)
+}
+# Extract rate_limit as integer with error handling
+if exists(.rate_limit) {
+    .rate_limit, .rate_limit_err = to_int(.rate_limit)
+    if .rate_limit_err != null {
+        del(.rate_limit_err)
+        .rate_limit = 0
+    }
+}
+# Extract window_minutes as integer with error handling
+if exists(.window_minutes) {
+    .window_minutes, .window_minutes_err = to_int(.window_minutes)
+    if .window_minutes_err != null {
+        del(.window_minutes_err)
+        .window_minutes = 0
+    }
+}
+# Extract cache_key as string
+if exists(.cache_key) {
+    .cache_key = string!(.cache_key)
+}
+# Extract transaction_id as string
+if exists(.transaction_id) {
+    .transaction_id = string!(.transaction_id)
+}
+# Extract database as string
+if exists(.database) {
+    .database = string!(.database)
+}
+# Extract error_code as string
+if exists(.error_code) {
+    .error_code = string!(.error_code)
+}
+# Extract session_duration_minutes as integer with error handling
+if exists(.session_duration_minutes) {
+    .session_duration_minutes, .session_duration_minutes_err = to_int(.session_duration_minutes)
+    if .session_duration_minutes_err != null {
+        del(.session_duration_minutes_err)
+        .session_duration_minutes = 0
+    }
+}
+# Extract retry_attempt as integer with error handling
+if exists(.retry_attempt) {
+    .retry_attempt, .retry_attempt_err = to_int(.retry_attempt)
+    if .retry_attempt_err != null {
+        del(.retry_attempt_err)
+        .retry_attempt = 0
+    }
+}
+# Extract current_requests as integer with error handling
+if exists(.current_requests) {
+    .current_requests, .current_requests_err = to_int(.current_requests)
+    if .current_requests_err != null {
+        del(.current_requests_err)
+        .current_requests = 0
+    }
+}
+# Extract logout_reason as string
+if exists(.logout_reason) {
+    .logout_reason = string!(.logout_reason)
+}
+# Extract retry_scheduled as boolean with string handling
+if exists(.retry_scheduled) {
+    if is_boolean(.retry_scheduled) {
+        .retry_scheduled = bool!(.retry_scheduled)
+    } else {
+        .retry_scheduled_str = downcase(string!(.retry_scheduled))
+        .retry_scheduled = contains(.retry_scheduled_str, "true") || contains(.retry_scheduled_str, "yes") || .retry_scheduled_str == "1"
+        del(.retry_scheduled_str)
+    }
+}
+# Extract request_id as string
+if exists(.request_id) {
+    .request_id = string!(.request_id)
+}
+# Extract amount as float with error handling
+if exists(.amount) {
+    .amount, .amount_err = to_float(.amount)
+    if .amount_err != null {
+        del(.amount_err)
+        .amount = 0.0
+    }
+}
+# Extract backup_id as string
+if exists(.backup_id) {
+    .backup_id = string!(.backup_id)
+}
+# Extract memory_usage_percent as float with error handling
+if exists(.memory_usage_percent) {
+    .memory_usage_percent, .memory_usage_percent_err = to_float(.memory_usage_percent)
+    if .memory_usage_percent_err != null {
+        del(.memory_usage_percent_err)
+        .memory_usage_percent = 0.0
+    }
+}
+# Extract storage_location as string
+if exists(.storage_location) {
+    .storage_location = string!(.storage_location)
+}
+# Extract level as string
+if exists(.level) {
+    .level = string!(.level)
+}
+# Extract connection_pool as string
+if exists(.connection_pool) {
+    .connection_pool = string!(.connection_pool)
+}
+# Extract merchant_id as string
+if exists(.merchant_id) {
+    .merchant_id = string!(.merchant_id)
+}
+# Extract endpoint as string
+if exists(.endpoint) {
+    .endpoint = string!(.endpoint)
+}
+# Extract action as string
+if exists(.action) {
+    .action = string!(.action)
+}
+# Extract ip_address as IP address using fast string validation
+if exists(.ip_address) {
+    .ip_address_raw = string!(.ip_address)
+    # Fast IP validation using string operations (not regex)
+    if contains(.ip_address_raw, ".") && length(.ip_address_raw) >= 7 && length(.ip_address_raw) <= 15 {
+        .ip_address = .ip_address_raw
+    }
+    del(.ip_address_raw)
+}
+# Extract hostname as string
+if exists(.hostname) {
+    .hostname = string!(.hostname)
+}
+# Extract currency as string
+if exists(.currency) {
+    .currency = string!(.currency)
+}
+# Extract backup_type as string
+if exists(.backup_type) {
+    .backup_type = string!(.backup_type)
+}
+# Extract response_time_ms as integer with error handling
+if exists(.response_time_ms) {
+    .response_time_ms, .response_time_ms_err = to_int(.response_time_ms)
+    if .response_time_ms_err != null {
+        del(.response_time_ms_err)
+        .response_time_ms = 0
+    }
+}
+
+# Cleanup temporary fields and optimize memory usage
+# Remove any remaining error fields
+del(..*_err)
+
+# Performance optimization: fields processed = 45
+# Estimated CPU cost: 25 low + 20 medium + 0 high cost operations
+
+# Memory optimization - remove large temporary fields early
+if exists(.raw_data) && length(.raw_data) > 1000 {
+    del(.raw_data)
+}

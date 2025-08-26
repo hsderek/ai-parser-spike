@@ -1,0 +1,25 @@
+# Text files
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+
+# Binary files
+*.ndjson binary
+*.gz binary
+*.zip binary
+*.tar binary
+
+# Git attributes
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+# Documentation
+*.md linguist-documentation
+
+# Generated files
+uv.lock linguist-generated

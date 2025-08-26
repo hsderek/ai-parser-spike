@@ -1,0 +1,164 @@
+2025-08-26T19:34:03.056898Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-26T19:34:03.057035Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250826_193403.log
+2025-08-26T19:34:03.057120Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/cisco-asa-large.ndjson
+2025-08-26T19:34:03.057173Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-26T19:34:03.057221Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-26T19:34:03.057266Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-26T19:34:03.067616Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-26T19:34:03.071912Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-26T19:34:03.072095Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-26T19:34:03.578286Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.51s
+2025-08-26T19:34:03.578530Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-26T19:34:03.578729Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-26T19:34:03.578787Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-26T19:34:03.578831Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 8161 chars of project overrides
+2025-08-26T19:34:03.579171Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-26T19:34:03.579294Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-26T19:34:04.241558Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-26T19:34:04.241694Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: mock, Max iterations: 5
+2025-08-26T19:34:04.241757Z WARNING  llm_iterative_session:__init__:109 - Using MOCK provider - no real LLM API calls
+2025-08-26T19:34:04.241806Z INFO     llm_iterative_session:__init__:115 - 🤖 Iterative LLM Session initialized
+2025-08-26T19:34:04.241849Z INFO     llm_iterative_session:__init__:116 -    Provider: mock
+2025-08-26T19:34:04.241906Z INFO     llm_iterative_session:__init__:117 -    Model: mock-model
+2025-08-26T19:34:04.241943Z INFO     llm_iterative_session:__init__:118 -    Session: llm_session_20250826_193404
+2025-08-26T19:34:04.241979Z INFO     llm_iterative_session:__init__:122 - 📊 Model Capabilities:
+2025-08-26T19:34:04.242022Z INFO     llm_iterative_session:__init__:123 -    Context Window: 100,000 tokens
+2025-08-26T19:34:04.242071Z INFO     llm_iterative_session:__init__:124 -    Max Input: 100,000 tokens
+2025-08-26T19:34:04.242113Z INFO     llm_iterative_session:__init__:125 -    Max Output: 4,096 tokens
+2025-08-26T19:34:04.242153Z INFO     llm_iterative_session:generate_initial_vrl:652 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-26T19:34:04.242511Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250826_193404/iter1_user.txt
+2025-08-26T19:34:04.242561Z INFO     llm_iterative_session:_call_llm:860 - 📤 Calling mock API
+2025-08-26T19:34:04.242612Z DEBUG    llm_iterative_session:_call_llm:861 -    Prompt length: 26611 chars
+2025-08-26T19:34:04.242647Z INFO     llm_iterative_session:_call_llm:876 - 📥 Response received in 0.0s (238 chars)
+2025-08-26T19:34:04.242777Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250826_193404/iter1_assistant.txt
+2025-08-26T19:34:04.242825Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 1
+2025-08-26T19:34:04.242893Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:04.243222Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-26T19:34:04.243275Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:04.243322Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-26T19:34:04.243360Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:04.243484Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-26T19:34:04.243540Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+💡 PROVIDING STRING OPERATIONS EXAMPLES:
+2025-08-26T19:34:04.243581Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:04.243693Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Saved working examples to .tmp/string_ops_examples_iter1.vrl
+2025-08-26T19:34:04.243745Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+Key patterns for this data:
+2025-08-26T19:34:04.243782Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - - Use contains() and split() instead of parse_regex()
+2025-08-26T19:34:04.243816Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - - Extract fields FIRST, normalize AFTER
+2025-08-26T19:34:04.243849Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - - String operations are 350-400 events/CPU%
+2025-08-26T19:34:04.243904Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - - Regex is only 3-10 events/CPU% (50-100x slower)
+2025-08-26T19:34:04.243947Z INFO     llm_iterative_session:iterate_with_feedback:686 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-26T19:34:04.244079Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250826_193404/iter2_user.txt
+2025-08-26T19:34:04.244121Z DEBUG    llm_iterative_session:_call_llm:857 - Adding 5s delay between API calls to avoid rate limits
+2025-08-26T19:34:09.244271Z INFO     llm_iterative_session:_call_llm:860 - 📤 Calling mock API
+2025-08-26T19:34:09.244489Z DEBUG    llm_iterative_session:_call_llm:861 -    Prompt length: 327 chars
+2025-08-26T19:34:09.244552Z INFO     llm_iterative_session:_call_llm:876 - 📥 Response received in 0.0s (298 chars)
+2025-08-26T19:34:09.244899Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250826_193404/iter2_assistant.txt
+2025-08-26T19:34:09.244960Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 2
+2025-08-26T19:34:09.245025Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:09.245245Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-26T19:34:09.245380Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:09.245446Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-26T19:34:09.245493Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:09.246693Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v2
+2025-08-26T19:34:09.246793Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: source
+2025-08-26T19:34:09.246907Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-26T19:34:09.246975Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:09.256232Z ERROR    vrl_testing_loop_clean:validate_with_vector:360 - ✗ Vector validate failed: error: unexpected argument '--config' found
+
+  tip: a similar argument exists: '--config-dir'
+
+Usage: vector validate --config-dir <config-dir> [PATHS]...
+
+For more information, try '--help'.
+
+2025-08-26T19:34:09.256383Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 2 failed Vector validation
+2025-08-26T19:34:09.256463Z INFO     llm_iterative_session:iterate_with_feedback:686 - 🔄 Iterating VRL generation (iteration 3)
+2025-08-26T19:34:09.256679Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250826_193404/iter3_user.txt
+2025-08-26T19:34:09.256737Z DEBUG    llm_iterative_session:_call_llm:857 - Adding 5s delay between API calls to avoid rate limits
+2025-08-26T19:34:14.256904Z INFO     llm_iterative_session:_call_llm:860 - 📤 Calling mock API
+2025-08-26T19:34:14.257131Z DEBUG    llm_iterative_session:_call_llm:861 -    Prompt length: 505 chars
+2025-08-26T19:34:14.257194Z INFO     llm_iterative_session:_call_llm:876 - 📥 Response received in 0.0s (298 chars)
+2025-08-26T19:34:14.257473Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250826_193404/iter3_assistant.txt
+2025-08-26T19:34:14.257528Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 3
+2025-08-26T19:34:14.257575Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:14.257616Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 3)
+2025-08-26T19:34:14.257652Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:14.257697Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-26T19:34:14.257742Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:14.258489Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v3
+2025-08-26T19:34:14.258584Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: source
+2025-08-26T19:34:14.258688Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-26T19:34:14.258753Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:14.266035Z ERROR    vrl_testing_loop_clean:validate_with_vector:360 - ✗ Vector validate failed: error: unexpected argument '--config' found
+
+  tip: a similar argument exists: '--config-dir'
+
+Usage: vector validate --config-dir <config-dir> [PATHS]...
+
+For more information, try '--help'.
+
+2025-08-26T19:34:14.266220Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 3 failed Vector validation
+2025-08-26T19:34:14.266281Z INFO     llm_iterative_session:iterate_with_feedback:686 - 🔄 Iterating VRL generation (iteration 4)
+2025-08-26T19:34:14.266497Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250826_193404/iter4_user.txt
+2025-08-26T19:34:14.266545Z DEBUG    llm_iterative_session:_call_llm:857 - Adding 5s delay between API calls to avoid rate limits
+2025-08-26T19:34:19.266677Z INFO     llm_iterative_session:_call_llm:860 - 📤 Calling mock API
+2025-08-26T19:34:19.267414Z DEBUG    llm_iterative_session:_call_llm:861 -    Prompt length: 505 chars
+2025-08-26T19:34:19.267477Z INFO     llm_iterative_session:_call_llm:876 - 📥 Response received in 0.0s (298 chars)
+2025-08-26T19:34:19.268604Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250826_193404/iter4_assistant.txt
+2025-08-26T19:34:19.268668Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 4
+2025-08-26T19:34:19.268725Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:19.268766Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 4)
+2025-08-26T19:34:19.268806Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:19.268848Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-26T19:34:19.268905Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:19.269400Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v4
+2025-08-26T19:34:19.269470Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: source
+2025-08-26T19:34:19.269522Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-26T19:34:19.269560Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:19.281701Z ERROR    vrl_testing_loop_clean:validate_with_vector:360 - ✗ Vector validate failed: error: unexpected argument '--config' found
+
+  tip: a similar argument exists: '--config-dir'
+
+Usage: vector validate --config-dir <config-dir> [PATHS]...
+
+For more information, try '--help'.
+
+2025-08-26T19:34:19.282095Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 4 failed Vector validation
+2025-08-26T19:34:19.282279Z INFO     llm_iterative_session:iterate_with_feedback:686 - 🔄 Iterating VRL generation (iteration 5)
+2025-08-26T19:34:19.282760Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250826_193404/iter5_user.txt
+2025-08-26T19:34:19.282885Z DEBUG    llm_iterative_session:_call_llm:857 - Adding 5s delay between API calls to avoid rate limits
+2025-08-26T19:34:24.283102Z INFO     llm_iterative_session:_call_llm:860 - 📤 Calling mock API
+2025-08-26T19:34:24.284897Z DEBUG    llm_iterative_session:_call_llm:861 -    Prompt length: 505 chars
+2025-08-26T19:34:24.285147Z INFO     llm_iterative_session:_call_llm:876 - 📥 Response received in 0.0s (298 chars)
+2025-08-26T19:34:24.285710Z DEBUG    llm_iterative_session:_save_conversation:1083 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250826_193404/iter5_assistant.txt
+2025-08-26T19:34:24.285779Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 5
+2025-08-26T19:34:24.285836Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:24.285897Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 5)
+2025-08-26T19:34:24.285942Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-26T19:34:24.285992Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-26T19:34:24.286033Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:24.286610Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v5
+2025-08-26T19:34:24.286685Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: source
+2025-08-26T19:34:24.286745Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-26T19:34:24.286787Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-26T19:34:24.297666Z ERROR    vrl_testing_loop_clean:validate_with_vector:360 - ✗ Vector validate failed: error: unexpected argument '--config' found
+
+  tip: a similar argument exists: '--config-dir'
+
+Usage: vector validate --config-dir <config-dir> [PATHS]...
+
+For more information, try '--help'.
+
+2025-08-26T19:34:24.297976Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 5 failed Vector validation
+2025-08-26T19:34:24.298167Z WARNING  vrl_testing_loop_clean:run_automated_llm_generation:1260 - Failed to generate valid VRL after 5 iterations

@@ -1,0 +1,320 @@
+# SYSLOG SOURCES RESEARCH 2025
+# Comprehensive list of syslog-generating devices and systems
+# Updated with current SIEM support (Splunk, Elastic, Sentinel, Rapid7) and modern formats
+
+## NETWORK INFRASTRUCTURE DEVICES
+
+### FIREWALLS & SECURITY APPLIANCES
+- Cisco ASA (Adaptive Security Appliance)
+- Cisco Secure Firewall Threat Defense (FPTD/FTD)
+- Palo Alto Networks PA Series (PAN-OS)
+- Fortinet FortiGate (FortiOS 6.2+, 7.0+)
+- Juniper SRX Series (Junos OS)
+- SonicWall TZ/NSA Series
+- pfSense (CE/Plus)
+- OPNsense
+- Check Point Security Gateways
+- WatchGuard Firebox
+- Barracuda CloudGen Firewall
+- Sophos XG Firewall
+
+### ROUTERS & SWITCHES
+- Cisco IOS/IOS-XE/IOS-XR
+- Cisco Nexus (NX-OS)
+- Cisco Catalyst 9000 Series
+- Juniper EX/QFX Series (Junos OS)
+- Juniper MX Series (Junos OS)
+- Aruba CX Series (AOS-CX)
+- HPE Comware 7 (FlexNetwork)
+- Extreme Networks EXOS
+- Brocade/Ruckus ICX Series
+- Ubiquiti UniFi (UDM/UXG/USG)
+- MikroTik RouterOS
+- Huawei VRP (Versatile Routing Platform)
+
+### WIRELESS CONTROLLERS & ACCESS POINTS
+- Cisco Wireless LAN Controller (WLC)
+- Cisco Catalyst 9800 Series
+- Aruba Mobility Controllers
+- Ubiquiti UniFi Controller
+- Ruckus SmartZone Controllers
+- Mist AI (Juniper)
+- Meraki Cloud Controllers
+- Extreme Networks Wing Controllers
+
+## SERVER & INFRASTRUCTURE SYSTEMS
+
+### VIRTUALIZATION PLATFORMS
+- VMware vSphere/ESXi
+- VMware NSX-T
+- Proxmox VE (shown in sample)
+- Microsoft Hyper-V
+- Citrix Hypervisor (XenServer)
+- KVM/QEMU
+- Red Hat Virtualization (oVirt)
+
+### STORAGE SYSTEMS
+- Dell EMC Unity/PowerMax/Isilon
+- NetApp ONTAP
+- HPE 3PAR/Primera
+- Pure Storage FlashArray
+- Nutanix AOS
+- IBM Spectrum Virtualize
+- Synology DSM
+- QNAP QTS
+
+### LOAD BALANCERS
+- F5 BIG-IP (TMOS)
+- Citrix ADC (NetScaler)
+- HAProxy
+- NGINX Plus
+- AWS Application Load Balancer
+- Azure Load Balancer
+- Kemp LoadMaster
+
+## CLOUD & CONTAINER PLATFORMS
+
+### CLOUD SERVICES
+- AWS CloudTrail/VPC Flow Logs
+- Azure Activity Logs/NSG Flow Logs
+- Google Cloud Audit Logs
+- Oracle Cloud Infrastructure Logs
+
+### CONTAINER PLATFORMS
+- Kubernetes (kubelet, kube-proxy, kube-apiserver)
+- Docker Engine
+- Red Hat OpenShift
+- Rancher
+- Amazon EKS/ECS
+- Azure AKS
+- Google GKE
+
+## SECURITY & MONITORING SYSTEMS
+
+### INTRUSION DETECTION/PREVENTION
+- Snort
+- Suricata
+- Zeek (formerly Bro)
+- OSSEC/Wazuh
+- Tripwire
+- AIDE (Advanced Intrusion Detection Environment)
+
+### AUTHENTICATION SYSTEMS
+- Microsoft Active Directory Domain Controllers
+- FreeRADIUS
+- Cisco ISE (Identity Services Engine)
+- Aruba ClearPass
+- RSA SecurID Authentication Manager
+- Okta (cloud logs)
+- Auth0 (cloud logs)
+
+### VPN CONCENTRATORS
+- Cisco AnyConnect SSL VPN
+- Palo Alto GlobalProtect
+- FortiClient/FortiGate SSL VPN
+- OpenVPN
+- SonicWall SSL VPN
+- Pulse Secure (Ivanti Connect Secure)
+
+## APPLICATIONS & SERVICES
+
+### WEB SERVERS
+- Apache HTTP Server
+- NGINX
+- Microsoft IIS
+- Tomcat
+- Jetty
+- Node.js applications
+
+### DATABASE SYSTEMS
+- MySQL/MariaDB
+- PostgreSQL
+- Microsoft SQL Server
+- Oracle Database
+- MongoDB
+- Redis
+
+### EMAIL SYSTEMS
+- Microsoft Exchange Server
+- Postfix
+- Sendmail
+- Exim
+- Zimbra Collaboration
+
+## OPERATING SYSTEMS
+
+### LINUX DISTRIBUTIONS
+- CentOS/RHEL (rsyslog/systemd-journald)
+- Ubuntu (rsyslog/systemd-journald)
+- Debian (rsyslog/systemd-journald)
+- SUSE/openSUSE
+- Amazon Linux
+- Alpine Linux
+
+### UNIX SYSTEMS
+- AIX
+- Solaris
+- FreeBSD
+- OpenBSD
+- NetBSD
+- HP-UX
+
+### WINDOWS SYSTEMS
+- Windows Event Log (via syslog forwarders)
+- Windows Server roles (DNS, DHCP, etc.)
+
+## TELECOMMUNICATIONS & RADIO
+
+### COMMUNICATIONS EQUIPMENT
+- Motorola TETRA systems
+- Harris/L3 P25 radio systems
+- Cisco Prime Infrastructure
+- Ericsson Radio Access Networks
+- Nokia/Alcatel-Lucent equipment
+- Huawei base stations
+- Cambium Networks point-to-point radio
+
+### SATELLITE COMMUNICATIONS
+- Inmarsat terminals
+- Iridium satellite modems
+- VSAT terminals
+- Hughes Jupiter systems
+
+## IOT & INDUSTRIAL SYSTEMS
+
+### INDUSTRIAL CONTROL SYSTEMS
+- Schneider Electric Modicon PLCs
+- Allen-Bradley ControlLogix
+- Siemens SIMATIC controllers
+- GE PACSystems
+- Honeywell Experion
+- Yokogawa CENTUM
+
+### BUILDING MANAGEMENT
+- Johnson Controls Metasys
+- Schneider Electric EcoStruxure
+- Honeywell Building Management
+- Siemens Desigo CC
+
+### NETWORK ATTACHED STORAGE (NAS)
+- Synology DiskStation Manager (DSM)
+- QNAP Turbo NAS (QTS)
+- Western Digital My Cloud
+- Drobo Dashboard
+
+## SPECIALIZED SECURITY DEVICES
+
+### NETWORK ACCESS CONTROL
+- Cisco ISE
+- Aruba ClearPass
+- ForeScout CounterACT
+- Bradford Networks Campus Manager
+
+### DDoS PROTECTION
+- Radware DefensePro
+- Arbor Networks Pravail
+- F5 Silverline DDoS Protection
+- Cloudflare DDoS Protection
+
+### WEB APPLICATION FIREWALLS
+- F5 ASM/Advanced WAF
+- Imperva SecureSphere
+- Barracuda Web Application Firewall
+- AWS WAF
+- Azure Web Application Firewall
+
+## FORMAT STANDARDS SUPPORTED (2025)
+
+### RFC COMPLIANCE
+- RFC 3164 (BSD Syslog Protocol) - Legacy support
+- RFC 5424 (The Syslog Protocol) - Current standard
+- RFC 3339 (Date and Time on Internet: Timestamps) - Timestamp format
+
+### STRUCTURED FORMATS
+- CEF (Common Event Format) - ArcSight standard
+- LEEF (Log Event Extended Format) - IBM/QRadar standard
+- JSON structured logging
+- Key-value pair formats
+- CSV (Comma Separated Values)
+
+### TRANSPORT PROTOCOLS
+- UDP (Port 514) - Traditional
+- TCP (Port 514) - Reliable delivery
+- TLS (Port 6514) - Encrypted transport
+- RELP (Reliable Event Logging Protocol) - rsyslog extension
+
+## SIEM PLATFORM SUPPORT NOTES
+
+### SPLUNK UNIVERSAL FORWARDER SOURCES
+- Most devices listed support direct syslog to Splunk
+- Over 1,500+ pre-built technology add-ons available
+- Custom log parsing via props.conf and transforms.conf
+
+### ELASTIC BEATS/AGENT SOURCES
+- Filebeat, Metricbeat, Packetbeat, Auditbeat modules
+- 950+ integrations with log sources and cloud providers
+- Elastic Common Schema (ECS) field mapping
+
+### MICROSOFT SENTINEL CONNECTORS
+- 130+ pre-built data connectors
+- Custom log ingestion via REST API
+- Azure Monitor Agent (AMA) for Windows/Linux
+
+### RAPID7 INSIGHTIDR SOURCES
+- Universal Event Collector support
+- 900+ log source integrations
+- Cloud-native ingestion capabilities
+
+## PRIORITY DEVICES FOR PARSING TESTING
+
+### HIGH PRIORITY (Common in enterprise environments)
+1. Cisco ASA/FTD Firewalls
+2. Palo Alto PA Series
+3. Fortinet FortiGate
+4. pfSense
+5. Cisco IOS devices
+6. Microsoft Windows Event Logs
+7. Linux rsyslog (RHEL/Ubuntu)
+8. VMware vSphere
+9. F5 BIG-IP
+10. Juniper SRX/EX Series
+
+### MEDIUM PRIORITY (Specialized environments)
+1. Aruba wireless controllers
+2. Ubiquiti UniFi systems
+3. Kubernetes cluster logs
+4. AWS CloudTrail
+5. Azure Activity Logs
+6. Proxmox virtualization
+7. NetApp storage arrays
+8. Cisco ISE
+9. SonicWall firewalls
+10. Suricata IDS
+
+### COMMUNICATIONS/RADIO PRIORITY (Syslog-only devices)
+1. Motorola TETRA dispatch systems
+2. Harris P25 radio controllers
+3. Cisco Prime Infrastructure
+4. Point-to-point microwave radios
+5. VSAT satellite terminals
+6. Base station controllers
+7. Repeater controllers
+8. Emergency services CAD systems
+9. Aviation ATC systems
+10. Maritime AIS transponders
+
+## CURRENT TRENDS (2025)
+
+### EMERGING FORMATS
+- Cloud-native structured logging (JSON-first)
+- OpenTelemetry integration
+- Metrics + logs correlation
+- Zero-trust network logging
+
+### DEPRECATED/LEGACY
+- RFC 3164 format (still supported but discouraged)
+- Plain UDP transport (security concerns)
+- Non-timestamped log formats
+- Proprietary vendor formats without RFC compliance
+
+This comprehensive list represents current syslog sources as of 2025, with emphasis on devices commonly supported by major SIEM platforms and those that primarily rely on syslog for external log delivery (especially communications and radio equipment).

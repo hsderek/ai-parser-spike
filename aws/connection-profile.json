@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(touch:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(cd:*)",
+      "Bash(tree:*)",
+      "Bash(yamllint:*)",
+      "Bash(python:*)",
+      "Bash(pyttest:*)",
+      "Bash(npm:*)",
+      "Bash(pip:*)",
+      "Bash(uv:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(kubectl apply:*)",
+      "Bash(kubectl delete:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./config/credentials.json)",
+      "Read(./build)"
+    ]
+  },
+  "awsAuthRefresh": "aws sso login --profile hs-test",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "AWS_PROFILE": "hs-test",
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "AWS_REGION": "us-west-2",
+    "ANTHROPIC_MODEL": "us.anthropic.claude-sonnet-4-20250514-v1:0"
+  }
+}

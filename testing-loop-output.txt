@@ -1,0 +1,482 @@
+============================================================
+VRL PARSER TESTING AND OPTIMIZATION LOOP
+============================================================
+
+1. GENERATING INITIAL VRL CANDIDATE
+----------------------------------------
+
+2. TESTING WITH PyVRL (Fast Iteration)
+----------------------------------------
+✓ PyVRL validation passed for initial_regex
+  New fields: ios_facility, syslog_severity, facility_num, ios_mnemonic, severity_num, syslog_facility, hostname_normalized, timestamp_normalized, syslog_mnemonic, ios_severity, _parser_metadata
+
+3. VALIDATING WITH VECTOR CLI
+----------------------------------------
+✗ Vector validation failed: error: unrecognized subcommand '/tmp/tmpffeiva99.yaml'
+
+Usage: vector [OPTIONS] [COMMAND]
+
+For more information, try '--help'.
+
+
+4. MEASURING BASELINE PERFORMANCE
+----------------------------------------
+
+Measuring performance for initial_regex...
+  Events/sec: 1997, CPU: 0.0%, Mem: 0MB, Events/CPU%: 19975, P99: 50.1ms, Errors: 0
+
+5. GENERATING OPTIMIZED ALTERNATIVES
+----------------------------------------
+
+Generating string operations alternative...
+✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+   ┌─ :51:25
+   │
+51 │             if contains(ios_part, ":") {
+   │                         ^^^^^^^^
+   │                         │
+   │                         this expression resolves to one of string or null
+   │                         but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     ios_part = string!(ios_part)
+   =     contains(ios_part, ":")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     ios_part = to_string(ios_part) ?? "default"
+   =     contains(ios_part, ":")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 1: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E701]: call to undefined variable
+   ┌─ :50:25
+   │
+50 │             if contains(ios_part, ":") {
+   │                         ^^^^^^^^
+   │                         │
+   │                         undefined variable
+   │                         did you mean "parts"?
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 2: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E701]: call to undefined variable
+   ┌─ :50:25
+   │
+50 │             if contains(ios_part, ":") {
+   │                         ^^^^^^^^
+   │                         │
+   │                         undefined variable
+   │                         did you mean "parts"?
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 3: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E701]: call to undefined variable
+   ┌─ :50:25
+   │
+50 │             if contains(ios_part, ":") {
+   │                         ^^^^^^^^
+   │                         │
+   │                         undefined variable
+   │                         did you mean "parts"?
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 4: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E701]: call to undefined variable
+   ┌─ :50:25
+   │
+50 │             if contains(ios_part, ":") {
+   │                         ^^^^^^^^
+   │                         │
+   │                         undefined variable
+   │                         did you mean "parts"?
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+
+Generating hybrid alternative...
+✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :22:43
+   │
+22 │         .severity_label = severity_labels[severity_num]
+   │                                           ^^^^^^^^^^^^
+   │                                           │
+   │                                           unexpected syntax token: "Identifier"
+   │                                           expected one of: "integer literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :23:5
+   │
+23 │     } else {
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :25:5
+   │
+25 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :26:1
+   │
+26 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :48:27
+   │
+48 │             ios_portion = split(msg_parts[1], " ")[0]
+   │             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │             │             │
+   │             │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │             │             update the expression to be infallible by adding a `!`: `split!(msg_parts[1], " ")[0]`
+   │             │             `msg_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │             or change this to an infallible assignment:
+   │             ios_portion, err = split(msg_parts[1], " ")[0]
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 1: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :22:43
+   │
+22 │         .severity_label = severity_labels[severity_num]
+   │                                           ^^^^^^^^^^^^
+   │                                           │
+   │                                           unexpected syntax token: "Identifier"
+   │                                           expected one of: "integer literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :23:5
+   │
+23 │     } else {
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :25:5
+   │
+25 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :26:1
+   │
+26 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :48:27
+   │
+48 │             ios_portion = split(msg_parts[1], " ")[0]
+   │             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │             │             │
+   │             │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │             │             update the expression to be infallible by adding a `!`: `split!(msg_parts[1], " ")[0]`
+   │             │             `msg_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │             or change this to an infallible assignment:
+   │             ios_portion, err = split(msg_parts[1], " ")[0]
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 2: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :22:43
+   │
+22 │         .severity_label = severity_labels[severity_num]
+   │                                           ^^^^^^^^^^^^
+   │                                           │
+   │                                           unexpected syntax token: "Identifier"
+   │                                           expected one of: "integer literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :23:5
+   │
+23 │     } else {
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :25:5
+   │
+25 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :26:1
+   │
+26 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :48:27
+   │
+48 │             ios_portion = split(msg_parts[1], " ")[0]
+   │             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │             │             │
+   │             │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │             │             update the expression to be infallible by adding a `!`: `split!(msg_parts[1], " ")[0]`
+   │             │             `msg_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │             or change this to an infallible assignment:
+   │             ios_portion, err = split(msg_parts[1], " ")[0]
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 3: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :22:43
+   │
+22 │         .severity_label = severity_labels[severity_num]
+   │                                           ^^^^^^^^^^^^
+   │                                           │
+   │                                           unexpected syntax token: "Identifier"
+   │                                           expected one of: "integer literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :23:5
+   │
+23 │     } else {
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :25:5
+   │
+25 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :26:1
+   │
+26 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :48:27
+   │
+48 │             ios_portion = split(msg_parts[1], " ")[0]
+   │             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │             │             │
+   │             │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │             │             update the expression to be infallible by adding a `!`: `split!(msg_parts[1], " ")[0]`
+   │             │             `msg_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │             or change this to an infallible assignment:
+   │             ios_portion, err = split(msg_parts[1], " ")[0]
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+  Iteration 4: Attempting auto-fix...
+✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :22:43
+   │
+22 │         .severity_label = severity_labels[severity_num]
+   │                                           ^^^^^^^^^^^^
+   │                                           │
+   │                                           unexpected syntax token: "Identifier"
+   │                                           expected one of: "integer literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :23:5
+   │
+23 │     } else {
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :25:5
+   │
+25 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :26:1
+   │
+26 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :48:27
+   │
+48 │             ios_portion = split(msg_parts[1], " ")[0]
+   │             ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │             │             │
+   │             │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │             │             update the expression to be infallible by adding a `!`: `split!(msg_parts[1], " ")[0]`
+   │             │             `msg_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │             or change this to an infallible assignment:
+   │             ios_portion, err = split(msg_parts[1], " ")[0]
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+
+6. A-B TESTING - COMPARING ALL CANDIDATES
+
+============================================================
+PERFORMANCE COMPARISON
+============================================================
+
+initial_regex (regex):
+  Description: Initial regex-based parser from JSON analysis
+  Events/CPU%: 19975
+  Events/sec: 1997
+  CPU: 0.0%
+  Memory: 0MB
+  P99 Latency: 50.1ms
+
+============================================================
+WINNER: initial_regex
+Best Events/CPU%: 19975
+============================================================
+
+7. SAVING RESULTS
+----------------------------------------
+
+Saved optimized VRL to samples-parsed/cisco-ios-optimized.vrl
+Saved performance results to samples-parsed/cisco-ios-performance.json
+
+============================================================
+TESTING LOOP COMPLETE
+============================================================

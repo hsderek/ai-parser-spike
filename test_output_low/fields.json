@@ -1,0 +1,613 @@
+{
+  "status": "success",
+  "message": "Successfully generated VRL parser with 45 fields",
+  "data": {
+    "vrl_code": "# Early exit optimization - skip processing if no message field\nif !exists(.message) && !exists(.msg) && !exists(.log) {\n    # Skip expensive processing for events without core message fields\n    .parser_skipped = true\n}\n#---\n# Filename: generated_parser.vrl\n# Purpose: AI-generated VRL parser for structured log data\n# Description: Optimized VRL transforms for extracting high-value fields\n#              Generated using CPU-efficient string operations per VECTOR-VRL guidelines\n# Version: 1.0.0\n# Changelog: |\n#   ## [1.0.0] - 2025-08-26\n#   - Initial AI-generated parser\n# Copyright: \u00a9 2025 HyperSec Pty Ltd\n# Licence: \"HyperSec EULA \u00a9 2025\"\n# Flow: >\n#   input -> field_extraction -> type_conversion -> cleanup -> output\n#---\n\n# Extract total_memory_gb as float with error handling\nif exists(.total_memory_gb) {\n    .total_memory_gb, .total_memory_gb_err = to_float(.total_memory_gb)\n    if .total_memory_gb_err != null {\n        del(.total_memory_gb_err)\n        .total_memory_gb = 0.0\n    }\n}\n# Extract request_id as string\nif exists(.request_id) {\n    .request_id = string!(.request_id)\n}\n# Extract merchant_id as string\nif exists(.merchant_id) {\n    .merchant_id = string!(.merchant_id)\n}\n# Extract backup_id as string\nif exists(.backup_id) {\n    .backup_id = string!(.backup_id)\n}\n# Extract payment_method as string\nif exists(.payment_method) {\n    .payment_method = string!(.payment_method)\n}\n# Extract user_id as integer with error handling\nif exists(.user_id) {\n    .user_id, .user_id_err = to_int(.user_id)\n    if .user_id_err != null {\n        del(.user_id_err)\n        .user_id = 0\n    }\n}\n# Extract transaction_id as string\nif exists(.transaction_id) {\n    .transaction_id = string!(.transaction_id)\n}\n# Extract status_code as integer with error handling\nif exists(.status_code) {\n    .status_code, .status_code_err = to_int(.status_code)\n    if .status_code_err != null {\n        del(.status_code_err)\n        .status_code = 0\n    }\n}\n# Extract available_memory_gb as float with error handling\nif exists(.available_memory_gb) {\n    .available_memory_gb, .available_memory_gb_err = to_float(.available_memory_gb)\n    if .available_memory_gb_err != null {\n        del(.available_memory_gb_err)\n        .available_memory_gb = 0.0\n    }\n}\n# Extract method as string\nif exists(.method) {\n    .method = string!(.method)\n}\n# Extract backup_duration_minutes as integer with error handling\nif exists(.backup_duration_minutes) {\n    .backup_duration_minutes, .backup_duration_minutes_err = to_int(.backup_duration_minutes)\n    if .backup_duration_minutes_err != null {\n        del(.backup_duration_minutes_err)\n        .backup_duration_minutes = 0\n    }\n}\n# Extract message field - high value string field\nif exists(.message) {\n    .message = string!(.message)\n}\n# Extract session_id as string\nif exists(.session_id) {\n    .session_id = string!(.session_id)\n}\n# Extract response_time_ms as integer with error handling\nif exists(.response_time_ms) {\n    .response_time_ms, .response_time_ms_err = to_int(.response_time_ms)\n    if .response_time_ms_err != null {\n        del(.response_time_ms_err)\n        .response_time_ms = 0\n    }\n}\n# Extract level as string\nif exists(.level) {\n    .level = string!(.level)\n}\n# Extract rate_limit as integer with error handling\nif exists(.rate_limit) {\n    .rate_limit, .rate_limit_err = to_int(.rate_limit)\n    if .rate_limit_err != null {\n        del(.rate_limit_err)\n        .rate_limit = 0\n    }\n}\n# Extract amount as float with error handling\nif exists(.amount) {\n    .amount, .amount_err = to_float(.amount)\n    if .amount_err != null {\n        del(.amount_err)\n        .amount = 0.0\n    }\n}\n# Extract session_duration_minutes as integer with error handling\nif exists(.session_duration_minutes) {\n    .session_duration_minutes, .session_duration_minutes_err = to_int(.session_duration_minutes)\n    if .session_duration_minutes_err != null {\n        del(.session_duration_minutes_err)\n        .session_duration_minutes = 0\n    }\n}\n# Extract backup_type as string\nif exists(.backup_type) {\n    .backup_type = string!(.backup_type)\n}\n# Extract service as string\nif exists(.service) {\n    .service = string!(.service)\n}\n# Extract hostname as string\nif exists(.hostname) {\n    .hostname = string!(.hostname)\n}\n# Extract cache_provider as string\nif exists(.cache_provider) {\n    .cache_provider = string!(.cache_provider)\n}\n# Extract cache_ttl_seconds as integer with error handling\nif exists(.cache_ttl_seconds) {\n    .cache_ttl_seconds, .cache_ttl_seconds_err = to_int(.cache_ttl_seconds)\n    if .cache_ttl_seconds_err != null {\n        del(.cache_ttl_seconds_err)\n        .cache_ttl_seconds = 0\n    }\n}\n# Extract ip_address as IP address using fast string validation\nif exists(.ip_address) {\n    .ip_address_raw = string!(.ip_address)\n    # Fast IP validation using string operations (not regex)\n    if contains(.ip_address_raw, \".\") && length(.ip_address_raw) >= 7 && length(.ip_address_raw) <= 15 {\n        .ip_address = .ip_address_raw\n    }\n    del(.ip_address_raw)\n}\n# Extract user_agent as string\nif exists(.user_agent) {\n    .user_agent = string!(.user_agent)\n}\n# Extract currency as string\nif exists(.currency) {\n    .currency = string!(.currency)\n}\n# Extract storage_location as string\nif exists(.storage_location) {\n    .storage_location = string!(.storage_location)\n}\n# Extract backup_size_gb as float with error handling\nif exists(.backup_size_gb) {\n    .backup_size_gb, .backup_size_gb_err = to_float(.backup_size_gb)\n    if .backup_size_gb_err != null {\n        del(.backup_size_gb_err)\n        .backup_size_gb = 0.0\n    }\n}\n# Extract hit_ratio as float with error handling\nif exists(.hit_ratio) {\n    .hit_ratio, .hit_ratio_err = to_float(.hit_ratio)\n    if .hit_ratio_err != null {\n        del(.hit_ratio_err)\n        .hit_ratio = 0.0\n    }\n}\n# Extract current_requests as integer with error handling\nif exists(.current_requests) {\n    .current_requests, .current_requests_err = to_int(.current_requests)\n    if .current_requests_err != null {\n        del(.current_requests_err)\n        .current_requests = 0\n    }\n}\n# Extract window_minutes as integer with error handling\nif exists(.window_minutes) {\n    .window_minutes, .window_minutes_err = to_int(.window_minutes)\n    if .window_minutes_err != null {\n        del(.window_minutes_err)\n        .window_minutes = 0\n    }\n}\n# Extract retry_scheduled as boolean with string handling\nif exists(.retry_scheduled) {\n    if is_boolean(.retry_scheduled) {\n        .retry_scheduled = bool!(.retry_scheduled)\n    } else {\n        .retry_scheduled_str = downcase(string!(.retry_scheduled))\n        .retry_scheduled = contains(.retry_scheduled_str, \"true\") || contains(.retry_scheduled_str, \"yes\") || .retry_scheduled_str == \"1\"\n        del(.retry_scheduled_str)\n    }\n}\n# Extract process_id as integer with error handling\nif exists(.process_id) {\n    .process_id, .process_id_err = to_int(.process_id)\n    if .process_id_err != null {\n        del(.process_id_err)\n        .process_id = 0\n    }\n}\n# Extract database as string\nif exists(.database) {\n    .database = string!(.database)\n}\n# Extract server as string\nif exists(.server) {\n    .server = string!(.server)\n}\n# Extract error_code as string\nif exists(.error_code) {\n    .error_code = string!(.error_code)\n}\n# Extract endpoint as string\nif exists(.endpoint) {\n    .endpoint = string!(.endpoint)\n}\n# Extract memory_usage_percent as float with error handling\nif exists(.memory_usage_percent) {\n    .memory_usage_percent, .memory_usage_percent_err = to_float(.memory_usage_percent)\n    if .memory_usage_percent_err != null {\n        del(.memory_usage_percent_err)\n        .memory_usage_percent = 0.0\n    }\n}\n# Extract logout_reason as string\nif exists(.logout_reason) {\n    .logout_reason = string!(.logout_reason)\n}\n# Extract action as string\nif exists(.action) {\n    .action = string!(.action)\n}\n# Extract connection_pool as string\nif exists(.connection_pool) {\n    .connection_pool = string!(.connection_pool)\n}\n# Extract cache_key as string\nif exists(.cache_key) {\n    .cache_key = string!(.cache_key)\n}\n# Extract retry_attempt as integer with error handling\nif exists(.retry_attempt) {\n    .retry_attempt, .retry_attempt_err = to_int(.retry_attempt)\n    if .retry_attempt_err != null {\n        del(.retry_attempt_err)\n        .retry_attempt = 0\n    }\n}\n# Extract certificate_expiry as timestamp with fallback parsing\nif exists(.certificate_expiry) {\n    .certificate_expiry, .certificate_expiry_err = parse_timestamp(string!(.certificate_expiry), format: \"%Y-%m-%dT%H:%M:%S%.3fZ\")\n    if .certificate_expiry_err != null {\n        .certificate_expiry, .certificate_expiry_err = parse_timestamp(string!(.certificate_expiry), format: \"%Y-%m-%d %H:%M:%S\")\n        if .certificate_expiry_err != null {\n            del(.certificate_expiry_err)\n            .certificate_expiry = now()\n        }\n    }\n}\n# Extract timestamp as timestamp with fallback parsing\nif exists(.timestamp) {\n    .timestamp, .timestamp_err = parse_timestamp(string!(.timestamp), format: \"%Y-%m-%dT%H:%M:%S%.3fZ\")\n    if .timestamp_err != null {\n        .timestamp, .timestamp_err = parse_timestamp(string!(.timestamp), format: \"%Y-%m-%d %H:%M:%S\")\n        if .timestamp_err != null {\n            del(.timestamp_err)\n            .timestamp = now()\n        }\n    }\n}\n\n# Cleanup temporary fields and optimize memory usage\n# Remove any remaining error fields\ndel(..*_err)\n\n# Performance optimization: fields processed = 45\n# Estimated CPU cost: 25 low + 20 medium + 0 high cost operations\n\n# Memory optimization - remove large temporary fields early\nif exists(.raw_data) && length(.raw_data) > 1000 {\n    del(.raw_data)\n}\n",
+    "fields": [
+      {
+        "name": "total_memory_gb",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "16.0"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "request_id",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "req_xyz789"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "merchant_id",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "merch_789"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "backup_id",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "backup_202408260900"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "payment_method",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "credit_card"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "user_id",
+        "type": "int64",
+        "description": "High-value int64 field appearing in 5 samples",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "12345",
+          "67890",
+          "12345",
+          "54321",
+          "12345"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "transaction_id",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "txn_def456"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "status_code",
+        "type": "int64",
+        "description": "High-value int64 field appearing in 2 samples",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "200",
+          "200"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "available_memory_gb",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "2.1"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "method",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "GET"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "backup_duration_minutes",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "23"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "description": "High-value string field appearing in 10 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "User authentication successful for user john.doe@example.com",
+          "Database connection timeout after 30 seconds",
+          "Memory usage above 85% threshold",
+          "API request processed successfully",
+          "Cache hit for user profile data"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "session_id",
+        "type": "string",
+        "description": "string field with 2 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "sess_abc123",
+          "sess_abc123"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "response_time_ms",
+        "type": "int64",
+        "description": "High-value int64 field appearing in 3 samples",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "45",
+          "30000",
+          "120"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "level",
+        "type": "string",
+        "description": "High-value string field appearing in 10 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "INFO",
+          "ERROR",
+          "WARN",
+          "INFO",
+          "DEBUG"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "rate_limit",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "100"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "amount",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "299.99"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "session_duration_minutes",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "45"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "backup_type",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "incremental"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "service",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "payment_gateway"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "hostname",
+        "type": "string",
+        "description": "High-value string field appearing in 2 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "web-server-01",
+          "api.external-service.com"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "cache_provider",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "redis"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "cache_ttl_seconds",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "3600"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "ip_address",
+        "type": "ipv4",
+        "description": "High-value ipv4 field appearing in 4 samples",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "192.168.1.100",
+          "10.0.1.50",
+          "203.0.113.45",
+          "192.168.1.100"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "user_agent",
+        "type": "string",
+        "description": "High-value string field appearing in 1 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "currency",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "USD"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "storage_location",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "s3://backups/daily/"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "backup_size_gb",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "45.7"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "hit_ratio",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "0.94"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "current_requests",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "156"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "window_minutes",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "15"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "retry_scheduled",
+        "type": "boolean",
+        "description": "boolean field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "True"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "process_id",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "1234"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "database",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "user_profiles"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "server",
+        "type": "string",
+        "description": "High-value string field appearing in 1 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "db-01.internal"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "error_code",
+        "type": "string",
+        "description": "High-value string field appearing in 3 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "DB_TIMEOUT",
+          "INSUFFICIENT_FUNDS",
+          "CERT_EXPIRED"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "endpoint",
+        "type": "string",
+        "description": "string field with 2 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "/api/v1/users",
+          "/api/v1/search"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "memory_usage_percent",
+        "type": "float64",
+        "description": "float64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "87.3"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "logout_reason",
+        "type": "string",
+        "description": "High-value string field appearing in 1 samples",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "user_initiated"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      },
+      {
+        "name": "action",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "throttled"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "connection_pool",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "main"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "cache_key",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "user:profile:12345"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "retry_attempt",
+        "type": "int64",
+        "description": "int64 field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "3"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "certificate_expiry",
+        "type": "datetime",
+        "description": "datetime field with 1 occurrences",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "2024-08-20T23:59:59Z"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "timestamp",
+        "type": "datetime",
+        "description": "High-value datetime field appearing in 10 samples",
+        "cpu_cost": "medium",
+        "confidence": 1.0,
+        "sample_values": [
+          "2024-08-26T10:00:01.123Z",
+          "2024-08-26T10:00:02.456Z",
+          "2024-08-26T10:00:03.789Z",
+          "2024-08-26T10:00:04.012Z",
+          "2024-08-26T10:00:05.345Z"
+        ],
+        "parser_type": "string",
+        "is_high_value": true
+      }
+    ],
+    "data_source": {
+      "name": "Application Server Logs",
+      "confidence": 0.95,
+      "description": "This appears to be structured application logging data due to the presence of standard logging fields (timestamp, level, message) combined with web application context (user_id, session_id, response_time_ms). The data includes authentication events, performance metrics, and error tracking. The structured JSON format and inclusion of various application-specific fields strongly suggests a modern application logging system.",
+      "common_fields": [
+        "timestamp",
+        "level",
+        "message",
+        "user_id",
+        "session_id",
+        "ip_address",
+        "user_agent",
+        "status_code",
+        "response_time_ms",
+        "error_code",
+        "hostname",
+        "endpoint"
+      ],
+      "known_parsers": [
+        "logstash",
+        "fluentd",
+        "winston",
+        "log4j",
+        "python-logging",
+        "bunyan",
+        "elastic-filebeat",
+        "vector"
+      ]
+    },
+    "performance_metrics": {},
+    "summary": {
+      "total_fields": 45,
+      "high_value_fields": 12,
+      "low_cpu_cost_fields": 25,
+      "medium_cpu_cost_fields": 20,
+      "high_cpu_cost_fields": 0
+    }
+  }
+}
