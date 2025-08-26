@@ -337,7 +337,7 @@ class VRLTestingLoop:
         }
         
         # Write config as YAML
-        config_path = '.tmp/vector_validate.yaml'
+        config_path = Path('.tmp/vector_validate.yaml')
         with open(config_path, 'w') as f:
             import yaml
             yaml.dump(config, f)
