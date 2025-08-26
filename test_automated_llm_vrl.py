@@ -43,8 +43,8 @@ def main():
         print("   - export GOOGLE_API_KEY=your-key")
         provider = "mock"
     
-    # Select sample file
-    sample_file = "samples/cisco-asa-large.ndjson"
+    # Select sample file - use smaller one for faster testing
+    sample_file = "samples/cisco-asa.ndjson"
     
     if not os.path.exists(sample_file):
         print(f"❌ Sample file not found: {sample_file}")

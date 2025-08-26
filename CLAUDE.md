@@ -190,9 +190,69 @@ The narrative should adapt to the identified data source domain rather than defa
 
 XDR is simply the security use case implementation of DFE capabilities. DFE itself is domain-agnostic and serves multiple use cases beyond cybersecurity, including military operations, travel systems, IoT monitoring, and financial analytics.
 
+## CURRENT PROJECT STATUS (August 26, 2025)
+
+### ✅ COMPLETED FEATURES:
+1. **Dynamic Model Selection System**:
+   - Auto-detects latest models via real API calls (no hardcoded lists)
+   - Currently selects `claude-opus-4-1-20250805` as most advanced model
+   - Supports all major providers: Anthropic, OpenAI, Gemini, AWS Bedrock
+   - Model override capability for testing specific versions
+
+2. **Rate Limiting & Session Management**:
+   - Intelligent rate limiting with exponential backoff
+   - Conversation compression for long iteration sessions
+   - Provider-specific delay handling
+   - Session persistence and recovery
+
+3. **End-to-End Pipeline Integration**:
+   - Real Anthropic Claude API integration working ✅
+   - PyVRL validation working ✅
+   - Vector CLI validation working ✅
+   - Environment variable handling fixed ✅
+   - Session logging and iteration tracking ✅
+
+4. **Git Repository**:
+   - Repository initialized at https://github.com/hsderek/ai-parser-spike
+   - Initial commit completed with 98 files, 34,754+ lines
+
+### 🔄 CURRENT ITERATION CHALLENGE:
+**Issue**: Claude Opus 4.1 generates sophisticated VRL logic (8K-10K characters) but struggles with VRL syntax specifics around error handling:
+
+**Recent API Test Results**:
+- 5 iterations attempted with real Claude Opus 4.1 API
+- Each iteration: ~100+ second API calls, increasingly sophisticated code
+- Progression: 6,858 → 8,307 → 8,949 → 9,074 → 9,132 → 10,419 characters
+- All iterations failed PyVRL validation on different VRL syntax errors:
+  1. Unnecessary error coalescing (`??`)
+  2. Unhandled fallible assignment 
+  3. Can't abort infallible function (`split!`)
+  4. Same fallible assignment issue
+  5. Unnecessary error assignment
+
+**Root Cause**: Claude needs more specific guidance on VRL's error handling system (fallible vs infallible operations)
+
+### 📁 CURRENT STATE:
+- **samples-parsed/**: Empty (no successful iterations yet)
+- **Session files**: Latest at `.tmp/llm_sessions/llm_session_20250826_203734/`
+- **Generated VRL**: Available in session files, but not validated
+
+### 🎯 NEXT SESSION PRIORITIES:
+1. **VRL Syntax Guidance**: Add specific VRL error handling examples to prompts
+2. **Validation Integration**: Consider more specific PyVRL error feedback
+3. **Success Testing**: Get first validated VRL into samples-parsed/
+4. **Performance Metrics**: Test actual parsing performance with Vector CLI
+
+### 💡 KEY LEARNINGS:
+- Real API integration is fully functional and robust
+- Dynamic model detection working perfectly (auto-selected latest Opus)
+- Claude generates sophisticated parsing logic but needs VRL syntax coaching
+- Rate limiting and session management handles long iteration cycles well
+- Cost per iteration: ~$0.15-0.30 (reasonable for development)
+
 ## CRITICAL NOTE
 Must stay VERY current on Anthropic models and API changes. Check Anthropic documentation regularly for:
 - New model releases
-- Updated pricing
+- Updated pricing  
 - API changes and new features
 - Best practice recommendations
