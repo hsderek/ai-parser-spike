@@ -1,0 +1,184 @@
+# VRL Parser Unified Configuration
+# All settings for the VRL parser module
+
+# Module metadata
+module:
+  name: vrl_parser
+  version: 0.1.0
+  description: AI-powered Vector Remap Language generator
+
+# Default settings
+defaults:
+  platform: anthropic
+  capability: reasoning
+  max_iterations: 10
+  validation_enabled: true
+  streaming: true
+
+# Platform identification patterns
+platform_patterns:
+  anthropic:
+    - claude
+  openai:
+    - gpt
+    - "o[0-9]"  # Matches o1, o2, o3, etc.
+  google:
+    - gemini
+  deepseek:
+    - deepseek
+
+# Family matching rules
+family_rules:
+  exact_match:
+    - gpt-5-nano
+    - gpt-5-mini
+    - gpt-4.1-mini
+    - o3-mini
+    - o4-mini
+    - gemini-2.5-flash-lite
+    - gemini-2.5-flash
+    - gemini-2.5-pro
+  
+  no_variant_match:
+    gpt-5: ["gpt-5-mini", "gpt-5-nano"]
+    gpt-4.1: ["gpt-4.1-mini"]
+    o3: ["o3-mini"]
+    o4: ["o4-mini"]
+    gemini-2.5-pro: ["gemini-2.5-pro-exp", "gemini-2.5-pro-preview"]
+    gemini-2.5-flash: ["gemini-2.5-flash-lite", "gemini-2.5-flash-exp"]
+
+# Model capability mappings
+platforms:
+  anthropic:
+    capabilities:
+      reasoning:
+        families:
+          - opus      # Best reasoning/analysis
+          - sonnet    # Fallback
+      balanced:
+        families:
+          - sonnet    # Best balance
+          - opus      # Higher capability
+          - haiku     # Cost efficiency
+      efficient:
+        families:
+          - haiku     # Fastest
+          - sonnet    # Fallback
+
+  openai:
+    capabilities:
+      reasoning:
+        families:
+          - gpt-5     # Best coding quality
+          - o3        # Frontier reasoning
+          - gpt-4.1   # Long-context (1M tokens)
+          - gpt-4     # Stable fallback
+      balanced:
+        families:
+          - gpt-4.1   # Coding diffs/patches
+          - gpt-4     # Balanced
+          - gpt-5-mini  # Good throughput
+      efficient:
+        families:
+          - gpt-5-mini  # Fast throughput
+          - gpt-5-nano  # Maximum throughput
+          - gpt-4.1-mini  # Speed-optimized
+          - o4-mini   # Cost-efficient
+          - gpt-3.5   # Legacy
+
+  google:
+    capabilities:
+      reasoning:
+        families:
+          - gemini-2.5-pro   # Thinking model, 1M tokens
+          - gemini-pro       # Fallback
+      balanced:
+        families:
+          - gemini-2.5-flash   # Workhorse model
+          - gemini-flash       # Alternative
+      efficient:
+        families:
+          - gemini-2.5-flash-lite  # Fastest
+          - gemini-flash           # Alternative
+          - gemini-nano            # Legacy
+
+  deepseek:
+    capabilities:
+      reasoning:
+        families:
+          - deepseek-v3    # Latest
+          - deepseek-r1    # Reasoning
+      balanced:
+        families:
+          - deepseek-v3    # Good balance
+          - deepseek-v2    # Previous
+      efficient:
+        families:
+          - deepseek-v2    # Efficient
+          - deepseek-coder # Code-specific
+
+# Use case mappings
+use_cases:
+  vrl_generation:
+    capability: reasoning
+    max_tokens: 8000
+  quick_validation:
+    capability: efficient
+    max_tokens: 2000
+  production:
+    capability: balanced
+    max_tokens: 4000
+
+# VRL generation settings
+vrl_generation:
+  # Iteration settings
+  max_iterations: 10
+  iteration_delay: 2  # seconds between iterations
+  
+  # Validation settings
+  validation:
+    pyvrl_enabled: true
+    vector_cli_enabled: true
+    timeout: 30  # seconds
+  
+  # Error fixing
+  error_fixing:
+    enabled: true
+    max_fix_attempts: 3
+    known_error_codes:
+      - E103  # Unhandled fallible
+      - E105  # Undefined function
+      - E110  # Fallible predicate
+      - E203  # Syntax error
+      - E620  # Infallible abort
+      - E651  # Unnecessary coalescing
+  
+  # Token optimization
+  optimization:
+    enable_pre_tokenizer: true
+    sample_reduction_ratio: 0.3
+    max_sample_size: 50000
+    smart_sampling: true
+
+# Logging configuration
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: logs/vrl_parser.log
+  console: true
+
+# Paths configuration
+paths:
+  samples: samples/
+  output: samples-parsed/
+  logs: logs/
+  sessions: .tmp/llm_sessions/
+  deprecated: deprecated/
+
+# API settings (use environment variables)
+api:
+  # Keys should be set via environment variables:
+  # ANTHROPIC_API_KEY, OPENAI_API_KEY, etc.
+  timeout: 120
+  max_retries: 3
+  retry_delay: 5

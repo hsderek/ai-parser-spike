@@ -1,37 +1,141 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "ai-parser-spike"
+name = "vrl-parser"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-powered Vector Remap Language (VRL) parser generator for HyperSec DFE"
+authors = [
+    {name = "HyperSec DFE Team", email = "dev@hypersec.com"}
+]
 readme = "README.md"
+license = {text = "Proprietary"}
 requires-python = ">=3.11"
-dependencies = [
-    "anthropic>=0.64.0",
-    "click>=8.2.1",
-    "faker>=37.5.3",
-    "httpx>=0.28.1",
-    "loguru>=0.7.0",
-    "pydantic>=2.11.7",
-    "psutil>=7.0.0",
-    "python-dotenv>=1.1.1",
-    "pyvrl>=0.0.2",
-    "pyyaml>=6.0.2",
-    "rich>=14.1.0",
-    "typer>=0.16.1",
-    "requests>=2.32.5",
-    "openai>=1.101.0",
-    "google-generativeai>=0.8.5",
-    "toml>=0.10.2",
-    "tiktoken>=0.11.0",
-    "litellm>=1.76.0",
+keywords = ["vrl", "vector", "log-parsing", "ai", "llm", "hypersec", "dfe"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
 ]
 
-[dependency-groups]
+dependencies = [
+    "litellm>=1.40.0",
+    "loguru>=0.7.0",
+    "pyyaml>=6.0",
+    "pyvrl>=0.0.1",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
 dev = [
-    "black>=25.1.0",
-    "mypy>=1.17.1",
-    "pylint>=3.3.8",
-    "pytest>=8.4.1",
-    "pytest-asyncio>=1.1.0",
-    "pytest-cov>=6.2.1",
-    "ruff>=0.12.10",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+]
+
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+vrl-generate = "scripts.generate_vrl:main"
+vrl-test = "scripts.test_vrl:main"
+
+[project.urls]
+Homepage = "https://github.com/hsderek/ai-parser-spike"
+Repository = "https://github.com/hsderek/ai-parser-spike"
+Issues = "https://github.com/hsderek/ai-parser-spike/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vrl_parser*", "scripts*"]
+exclude = ["deprecated*", "tests*", "samples*", "logs*", ".tmp*"]
+
+[tool.setuptools.package-data]
+vrl_parser = ["config/*.yaml"]
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | deprecated
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long
+    "B008",  # do not perform function calls in argument defaults
+]
+exclude = [
+    ".venv",
+    "deprecated",
+    "build",
+    "dist",
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = [
+    "deprecated/",
+    "tests/",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = "-ra -q --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["vrl_parser"]
+omit = [
+    "*/tests/*",
+    "*/deprecated/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
