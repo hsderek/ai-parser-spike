@@ -25,6 +25,12 @@ from loguru import logger
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 
+# Import model-specific VRL fixer
+try:
+    from model_specific_vrl_fixer import apply_model_specific_fixes
+except ImportError:
+    logger.warning("⚠️ Model-specific VRL fixer not available")
+
 try:
     import pyvrl
 except ImportError:
@@ -194,7 +200,7 @@ class VRLTestingLoop:
         self.candidates.append(candidate)
         return candidate
     
-    def test_with_pyvrl(self, candidate: VRLCandidate) -> bool:
+    def test_with_pyvrl(self, candidate: VRLCandidate, model_info: dict = None) -> bool:
         """Fast iteration testing with PyVRL"""
         # EXPLICIT REGEX REJECTION per VECTOR-VRL.md with loop prevention
         # Only check for actual VRL regex functions being used
@@ -279,37 +285,70 @@ class VRLTestingLoop:
             
             return False
         
-        try:
-            # Create PyVRL transform
-            transform = pyvrl.Transform(candidate.vrl_code)
-            
-            # Test with first sample - simulate Vector file source format
-            test_event = {
-                'message': json.dumps(self.samples[0]),
-                'file': str(self.sample_file),
-                'host': 'test-host',
-                'source_type': 'file',
-                'timestamp': '2023-01-01T00:00:00Z'
-            }
-            result = transform.remap(test_event)
-            
-            # Check for new fields added (exclude Vector metadata fields)
-            vector_fields = {'message', 'file', 'host', 'source_type', 'timestamp'}
-            original_fields = set(self.samples[0].keys())
-            result_fields = set(result.keys())
-            new_fields = result_fields - original_fields - vector_fields
-            candidate.extracted_fields = list(new_fields)
-            
-            candidate.validated_pyvrl = True
-            logger.success(f"✓ PyVRL validation passed for {candidate.name}")
-            logger.info(f"  New fields: {', '.join(new_fields)}")
-            return True
-            
-        except Exception as e:
-            error_msg = f"PyVRL validation failed: {str(e)}"
-            candidate.errors.append(error_msg)
-            logger.error(f"✗ {error_msg}")
-            return False
+        # Try PyVRL validation first
+        max_fix_attempts = 2  # Prevent infinite loops
+        for attempt in range(max_fix_attempts):
+            try:
+                # Create PyVRL transform
+                transform = pyvrl.Transform(candidate.vrl_code)
+                
+                # Test with first sample - simulate Vector file source format
+                test_event = {
+                    'message': json.dumps(self.samples[0]),
+                    'file': str(self.sample_file),
+                    'host': 'test-host',
+                    'source_type': 'file',
+                    'timestamp': '2023-01-01T00:00:00Z'
+                }
+                result = transform.remap(test_event)
+                
+                # Check for new fields added (exclude Vector metadata fields)
+                vector_fields = {'message', 'file', 'host', 'source_type', 'timestamp'}
+                original_fields = set(self.samples[0].keys())
+                result_fields = set(result.keys())
+                new_fields = result_fields - original_fields - vector_fields
+                candidate.extracted_fields = list(new_fields)
+                
+                candidate.validated_pyvrl = True
+                logger.success(f"✓ PyVRL validation passed for {candidate.name} (attempt {attempt + 1})")
+                logger.info(f"  New fields: {', '.join(new_fields)}")
+                return True
+                
+            except Exception as e:
+                error_msg = str(e)
+                logger.error(f"✗ PyVRL validation failed (attempt {attempt + 1}): {error_msg}")
+                
+                # Try to apply error-code-based fixes if this is not the last attempt
+                if attempt < max_fix_attempts - 1 and model_info and 'apply_model_specific_fixes' in globals():
+                    try:
+                        logger.info("🔧 Attempting to fix VRL errors automatically...")
+                        error_list = [error_msg]  # Convert exception to list for fixer
+                        
+                        fixed_vrl, was_fixed, fix_metadata = apply_model_specific_fixes(
+                            candidate.vrl_code, 
+                            error_list,
+                            model_info
+                        )
+                        
+                        if was_fixed and fixed_vrl != candidate.vrl_code:
+                            logger.info(f"🎯 Applied {len(fix_metadata.get('fixes_applied', []))} automatic fixes")
+                            for fix in fix_metadata.get('fixes_applied', []):
+                                logger.info(f"   - {fix}")
+                            candidate.vrl_code = fixed_vrl
+                            candidate.errors.append(f"Auto-fixed: {', '.join(fix_metadata.get('fixes_applied', []))}")
+                            continue  # Retry validation with fixed code
+                        else:
+                            logger.warning("⚠️ No applicable fixes found for the errors")
+                            
+                    except Exception as fix_error:
+                        logger.warning(f"⚠️ Automatic error fixing failed: {fix_error}")
+                
+                # If we reach here, either it's the last attempt or fixing failed
+                candidate.errors.append(f"PyVRL validation failed: {error_msg}")
+                return False
+        
+        # Should never reach here, but just in case
+        return False
     
     def validate_with_vector(self, candidate: VRLCandidate) -> bool:
         """Quick validation with Vector CLI validate command"""
@@ -1110,7 +1149,7 @@ class VRLTestingLoop:
         """Legacy method - use logger.info() directly"""
         logger.info(message)
     
-    def run_with_llm_generated_vrl(self, llm_vrl_code: str, iteration: int = 1):
+    def run_with_llm_generated_vrl(self, llm_vrl_code: str, iteration: int = 1, model_info: dict = None):
         """Run testing loop with LLM-generated VRL code"""
         self._log_with_timestamp("="*60)
         self._log_with_timestamp(f"TESTING LLM-GENERATED VRL (Iteration {iteration})")
@@ -1129,7 +1168,7 @@ class VRLTestingLoop:
         # Test with PyVRL first (fastest check)
         self._log_with_timestamp("\n1. TESTING WITH PyVRL")
         self._log_with_timestamp("-"*40)
-        if not self.test_with_pyvrl(llm_candidate):
+        if not self.test_with_pyvrl(llm_candidate, model_info):
             self._log_with_timestamp(f"❌ LLM VRL iteration {iteration} failed PyVRL validation")
             
             # Generate helpful examples
@@ -1178,7 +1217,7 @@ class VRLTestingLoop:
 
 
     def run_automated_llm_generation(self, provider: str = "anthropic", 
-                                    max_iterations: int = 5,
+                                    max_iterations: int = 10,  # High budget - local fixes are FREE!
                                     model_override: str = None) -> bool:
         """
         Fully automated VRL generation using external LLM API
@@ -1196,21 +1235,80 @@ class VRLTestingLoop:
         Returns:
             True if successful VRL was generated
         """
-        from llm_iterative_session import IterativeLLMSession
+        from litellm_client import LiteLLMVRLGenerator
         
         logger.info("🤖 Starting automated LLM VRL generation")
         logger.info(f"Provider: {provider}, Max iterations: {max_iterations}")
         if model_override:
             logger.info(f"Model override: {model_override}")
         
-        # Initialize LLM session
-        llm_session = IterativeLLMSession(provider=provider, model=model_override)
+        # Optimize samples using pre-tokenizer
+        from pre_tokenizer import PreTokenizer
+        from pre_tokenizer.enhanced_optimizer import EnhancedOptimizer
         
-        # Generate initial VRL
-        vrl_code, success = llm_session.generate_initial_vrl(
-            sample_data=self.samples[:20],  # Use first 20 samples
-            external_configs=self.external_configs
+        logger.info("🔧 Optimizing samples with pre-tokenizer...")
+        
+        # Use enhanced optimizer for smart selection and caching
+        optimizer = EnhancedOptimizer()
+        
+        # Check for cached VRL patterns first
+        primary_pattern = optimizer.detect_log_pattern(self.samples[0]) if self.samples else 'unknown'
+        cached_vrl = optimizer.get_cached_vrl(primary_pattern)
+        
+        if cached_vrl:
+            logger.info(f"📦 Found cached VRL for pattern: {primary_pattern}")
+            # Test cached VRL first
+            test_success = self.run_with_llm_generated_vrl(cached_vrl, 0, {'provider': provider, 'model': 'cached'})
+            if test_success:
+                logger.success("✅ Cached VRL works! Skipping LLM generation.")
+                self.save_results()
+                return True
+            else:
+                logger.warning("Cached VRL failed validation, proceeding with LLM generation")
+        
+        # Smart sample selection
+        optimized_samples = optimizer.smart_sample_selection(
+            self.samples,
+            max_per_pattern=3,  # 3 examples per pattern
+            max_total=50  # Maximum 50 samples total
         )
+        
+        # Token optimization
+        tokenizer = PreTokenizer(max_tokens=30000)  # Conservative limit for prompts
+        token_result = tokenizer.prepare_for_llm(optimized_samples)
+        
+        logger.info(f"📊 Sample optimization: {len(self.samples)} → {token_result['count']} samples")
+        logger.info(f"📊 Token usage: {token_result['optimization_stats']['total_tokens']:,} tokens")
+        logger.info(f"📊 Pattern coverage: {token_result['optimization_stats']['pattern_coverage']}")
+        
+        # Initialize LiteLLM VRL generator - no hardcoding, auto-model selection!
+        model_preference = "opus" if "opus" in str(model_override).lower() else "sonnet"
+        llm_generator = LiteLLMVRLGenerator(provider=provider, model_preference=model_preference)
+        
+        logger.info(f"🚀 Using LiteLLM with dynamic model selection (preference: {model_preference})")
+        logger.info("💰 Cost tracking: Built into LiteLLM (automatic)")
+        
+        # Generate initial VRL with optimized samples using LiteLLM
+        try:
+            # Build system prompt from external configs
+            system_prompt = self.external_configs.get('parser_prompts', 'You are a VRL expert.')
+            context_prompt = self.external_configs.get('vector_vrl_prompt', 'Generate VRL code for these samples.')
+            
+            result = llm_generator.generate_vrl(
+                samples=token_result['samples'],  # Use optimized samples
+                system_prompt=system_prompt,
+                context_prompt=context_prompt
+            )
+            
+            vrl_code = result['vrl_code']
+            success = True
+            logger.info(f"✅ Generated initial VRL with {result['metadata']['model']}")
+            logger.info(f"💰 Cost: ${result['metadata']['cost']:.4f}, Tokens: {result['metadata']['tokens']}")
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to generate initial VRL: {e}")
+            vrl_code = None
+            success = False
         
         if not success:
             logger.error("Failed to generate initial VRL")
@@ -1220,8 +1318,52 @@ class VRLTestingLoop:
         for iteration in range(1, max_iterations + 1):
             logger.info(f"Testing iteration {iteration}")
             
+            # Get model information from LiteLLM client
+            model_info = {
+                'provider': provider,
+                'model': llm_generator.client.current_model or 'unknown'
+            }
+            
             # Test the VRL
-            test_success = self.run_with_llm_generated_vrl(vrl_code, iteration)
+            test_success = self.run_with_llm_generated_vrl(vrl_code, iteration, model_info)
+            
+            # Try MODEL-SPECIFIC local fixes after any failure
+            if not test_success and hasattr(self, 'last_test_results'):
+                from model_specific_vrl_fixer import apply_model_specific_fixes
+                
+                errors = self.last_test_results.get('errors', [])
+                
+                # Get model information for specific fixes
+                # Extract model from session if available
+                current_model = 'claude-opus-4-1'  # default
+                if hasattr(self, 'session') and self.session:
+                    current_model = getattr(self.session, 'model', current_model)
+                
+                model_info = {
+                    'provider': provider,
+                    'model': current_model
+                }
+                
+                # Always try model-specific fixes for common errors
+                logger.info(f"🔧 Attempting model-specific fixes for {model_info['provider']}...")
+                
+                fixed_vrl, was_fixed, fix_metadata = apply_model_specific_fixes(
+                    vrl_code, errors, model_info
+                )
+                
+                if was_fixed:
+                    logger.info(f"🎯 Applied {len(fix_metadata.get('fixes_applied', []))} model-specific fixes (FREE)")
+                    
+                    # Test the fixed VRL  
+                    test_success = self.run_with_llm_generated_vrl(fixed_vrl, iteration, model_info)
+                    
+                    if test_success:
+                        logger.success(f"✅ Model-specific fixes worked! Saved ${fix_metadata.get('cost_saved', 0.50):.2f}")
+                        vrl_code = fixed_vrl
+                    else:
+                        logger.info("Model fixes helped but didn't resolve everything...")
+                        # Still use the partially fixed code for next iteration
+                        vrl_code = fixed_vrl
             
             if test_success:
                 logger.success(f"✅ Valid VRL generated on iteration {iteration}!")
@@ -1229,8 +1371,16 @@ class VRLTestingLoop:
                 # Save successful VRL
                 self.save_results()
                 
+                # Cache successful VRL for future use
+                optimizer.cache_successful_vrl(primary_pattern, vrl_code, token_result['samples'])
+                logger.info(f"💾 Cached successful VRL for pattern: {primary_pattern}")
+                
+                # Log cost summary from LiteLLM
+                total_cost = llm_generator.get_total_cost()
+                logger.info(f"💰 Total session cost: ${total_cost:.4f}")
+                
                 # Log session summary
-                summary = llm_session.get_session_summary()
+                summary = llm_generator.get_session_summary()
                 logger.info(f"Session summary: {json.dumps(summary, indent=2)}")
                 
                 return True
@@ -1248,17 +1398,72 @@ class VRLTestingLoop:
                 
                 # Iterate with feedback
                 if iteration < max_iterations:
-                    vrl_code, success = llm_session.iterate_with_feedback(
-                        test_results=test_results,
-                        max_iterations=max_iterations
-                    )
+                    # Collect ALL errors comprehensively
+                    from error_batch_collector import ErrorBatchCollector, create_comprehensive_error_feedback
+                    
+                    collector = ErrorBatchCollector()
+                    all_errors = collector.collect_all_errors(vrl_code, self.samples[:10])
+                    
+                    # Add comprehensive error feedback
+                    if all_errors['total_count'] > 0:
+                        test_results['comprehensive_errors'] = create_comprehensive_error_feedback(all_errors)
+                        logger.info(f"📊 Collected {all_errors['total_count']} errors for batch fixing")
+                    
+                    # Create feedback message for LiteLLM iteration
+                    feedback_msg = self._build_feedback_message(test_results)
+                    
+                    try:
+                        result = llm_generator.iterate_with_feedback(
+                            feedback=feedback_msg,
+                            previous_vrl=vrl_code
+                        )
+                        vrl_code = result['vrl_code']
+                        success = True
+                        logger.info(f"✅ Iteration {iteration} complete - Cost: ${result['metadata']['cost']:.4f}")
+                    except Exception as e:
+                        logger.error(f"❌ Iteration {iteration} failed: {e}")
+                        success = False
                     
                     if not success:
                         logger.error(f"Failed to generate improved VRL on iteration {iteration}")
                         break
                         
         logger.warning(f"Failed to generate valid VRL after {max_iterations} iterations")
-        return False
+    
+    def _build_feedback_message(self, test_results: Dict[str, Any]) -> str:
+        """Build comprehensive feedback message for LiteLLM iteration"""
+        feedback_parts = []
+        
+        # Validation status
+        if not test_results.get('pyvrl_valid', False):
+            feedback_parts.append("❌ PyVRL validation failed")
+        if not test_results.get('vector_valid', False):
+            feedback_parts.append("❌ Vector CLI validation failed")
+        
+        # Performance issues
+        if test_results.get('events_per_cpu_percent', 0) < 50:
+            feedback_parts.append(f"⚡ Performance concern: {test_results.get('events_per_cpu_percent', 0)}% CPU efficiency")
+        
+        # Errors
+        errors = test_results.get('errors', [])
+        if errors:
+            feedback_parts.append(f"🐛 Errors found ({len(errors)} total):")
+            for error in errors[:5]:  # Show first 5 errors
+                feedback_parts.append(f"  - {error}")
+        
+        # Comprehensive errors from batch collector
+        if 'comprehensive_errors' in test_results:
+            feedback_parts.append("\n📊 Comprehensive Error Analysis:")
+            feedback_parts.append(test_results['comprehensive_errors'])
+        
+        # Field extraction status
+        extracted = test_results.get('extracted_fields', [])
+        if extracted:
+            feedback_parts.append(f"✅ Successfully extracted fields: {', '.join(extracted)}")
+        else:
+            feedback_parts.append("⚠️ No fields were extracted from the samples")
+        
+        return "\n".join(feedback_parts)
 
 if __name__ == "__main__":
     print("VRL Testing Loop - Clean Version with External LLM Integration")

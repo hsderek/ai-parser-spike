@@ -1,0 +1,191 @@
+2025-08-28T19:23:32.440418Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T19:23:32.440566Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_192332.log
+2025-08-28T19:23:32.440637Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/large/apache-real.ndjson
+2025-08-28T19:23:32.440691Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T19:23:32.440738Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T19:23:32.440784Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T19:23:33.667873Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T19:23:33.674846Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T19:23:33.675036Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T19:23:34.178135Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T19:23:34.178703Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T19:23:34.183995Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T19:23:34.190946Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T19:23:34.191176Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T19:23:34.191274Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T19:23:34.191328Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T19:23:35.613574Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T19:23:35.613765Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 3
+2025-08-28T19:23:35.624682Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 🔧 Optimizing samples with pre-tokenizer...
+2025-08-28T19:23:35.669422Z INFO     pre_tokenizer.enhanced_optimizer:smart_sample_selection:132 - Found 1 distinct patterns in 56482 samples
+2025-08-28T19:23:35.891003Z SUCCESS  pre_tokenizer.enhanced_optimizer:smart_sample_selection:172 - Selected 3 samples covering 1 patterns
+2025-08-28T19:23:35.992601Z INFO     pre_tokenizer.pre_tokenizer:__init__:41 - Initialized PreTokenizer for claude-3-opus-20240229 with 30,000 max tokens
+2025-08-28T19:23:35.992813Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:101 - Optimizing 3 samples for 30,000 tokens
+2025-08-28T19:23:35.993230Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:116 - Reduced to 3 unique samples from 3
+2025-08-28T19:23:35.993305Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:117 - Pattern distribution: {'error': 2}
+2025-08-28T19:23:35.994649Z SUCCESS  pre_tokenizer.pre_tokenizer:optimize_samples:190 - Selected 3 samples using 1,778 tokens
+2025-08-28T19:23:35.994720Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:191 - Pattern coverage: 100.0%
+2025-08-28T19:23:35.994772Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1241 - 📊 Sample optimization: 56482 → 3 samples
+2025-08-28T19:23:35.994823Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1242 - 📊 Token usage: 1,778 tokens
+2025-08-28T19:23:35.994866Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1243 - 📊 Pattern coverage: 100.0%
+2025-08-28T19:23:36.020108Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T19:23:36.020211Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T19:23:36.311876Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T19:23:36.312094Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T19:23:36.313111Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T19:23:36.661177Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T19:23:36.661706Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T19:23:36.661835Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T19:23:36.661974Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_192335
+2025-08-28T19:23:36.662125Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T19:23:36.662313Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T19:23:36.662465Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T19:23:36.662523Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T19:23:36.662725Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T19:23:36.662965Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1249 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T19:23:36.663117Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T19:23:36.667731Z INFO     prompt_optimizer:_optimize_initial_configs:82 - Compressed vector_vrl_prompt: 20935 → 18968 chars (9.4% reduction)
+2025-08-28T19:23:36.667980Z INFO     prompt_optimizer:_optimize_initial_configs:101 - Compressed parser_prompts: 10690 → 1988 chars (81.4% reduction)
+2025-08-28T19:23:36.668155Z INFO     prompt_optimizer:_optimize_initial_configs:133 - Compressed type_maps: 2877 → 2749 chars (4.4% reduction)
+2025-08-28T19:23:36.670792Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_192335/iter1_user.txt
+2025-08-28T19:23:36.670854Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T19:23:36.670906Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 31230 chars
+2025-08-28T19:24:31.153871Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 54.5s (5583 chars)
+2025-08-28T19:24:31.154448Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_192335/iter1_assistant.txt
+2025-08-28T19:24:31.154522Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 1
+2025-08-28T19:24:31.154599Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:24:31.154657Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T19:24:31.154711Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:24:31.154769Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T19:24:31.154821Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:24:31.158383Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :20:9
+   │
+20 │       return
+   │ ╭──────────^
+   │ │ ╭────────'
+21 │ │ │ }
+   │ ╰─│^ unexpected syntax token: "Newline"
+   │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :21:1
+   │
+21 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E110]: fallible predicate
+   ┌─ :34:17
+   │
+34 │     if contains(timestamp_part, "]") {
+   │                 ^^^^^^^^^^^^^^
+   │                 │
+   │                 this expression resolves to one of string or null
+   │                 but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     timestamp_part = string!(timestamp_part)
+   =     contains(timestamp_part, "]")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     timestamp_part = to_string(timestamp_part) ?? "default"
+   =     contains(timestamp_part, "]")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T19:24:31.158650Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T19:24:31.159202Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T19:24:31.159385Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T19:24:31.168816Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T19:24:31.169066Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T19:24:31.169157Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T19:24:31.169231Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T19:24:31.169538Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_192335/iter2_user.txt
+2025-08-28T19:24:31.169619Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T19:24:32.569801Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T19:24:32.570113Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T19:25:26.059784Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 53.5s (5987 chars)
+2025-08-28T19:25:26.060361Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_192335/iter2_assistant.txt
+2025-08-28T19:25:26.060473Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 2
+2025-08-28T19:25:26.060537Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:25:26.060582Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-28T19:25:26.060622Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:25:26.060673Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T19:25:26.060720Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:25:26.061853Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+   ┌─ :35:19
+   │
+35 │       if contains(timestamp_part, "]") {
+   │                   ^^^^^^^^^^^^^^
+   │                   │
+   │                   this expression resolves to one of string or null
+   │                   but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     timestamp_part = string!(timestamp_part)
+   =     contains(timestamp_part, "]")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     timestamp_part = to_string(timestamp_part) ?? "default"
+   =     contains(timestamp_part, "]")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T19:25:26.062006Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 2 failed PyVRL validation
+2025-08-28T19:25:26.062392Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T19:25:26.068294Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T19:25:26.082024Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T19:25:26.082212Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T19:25:26.082274Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T19:25:26.082327Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 3)
+2025-08-28T19:25:26.082609Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_192335/iter3_user.txt
+2025-08-28T19:25:26.082673Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.6s delay for iteration 3 to avoid rate limits
+2025-08-28T19:25:27.683111Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T19:25:27.683382Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T19:26:27.097267Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 59.4s (6147 chars)
+2025-08-28T19:26:27.097931Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_192335/iter3_assistant.txt
+2025-08-28T19:26:27.098008Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 3
+2025-08-28T19:26:27.098077Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:26:27.098134Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 3)
+2025-08-28T19:26:27.098184Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:26:27.098242Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T19:26:27.098291Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:26:27.117846Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v3
+2025-08-28T19:26:27.118295Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: 
+2025-08-28T19:26:27.118586Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-28T19:26:27.118861Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:26:27.180178Z SUCCESS  vrl_testing_loop_clean:validate_with_vector:355 - ✓ Vector validate passed
+2025-08-28T19:26:27.180496Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+3. FULL TEST WITH VECTOR CLI
+2025-08-28T19:26:27.180565Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:26:27.282726Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ✓ Vector validation passed for llm_generated_v3
+2025-08-28T19:26:27.283076Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+4. MEASURING PERFORMANCE
+2025-08-28T19:26:27.283134Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:26:27.509818Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Starting Vector process with config: .tmp/vector_test_llm_generated_v3.yaml
+2025-08-28T19:26:27.510076Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Expected output file: .tmp/vector_output_llm_generated_v3.ndjson

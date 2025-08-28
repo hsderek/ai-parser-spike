@@ -1,0 +1,161 @@
+2025-08-28T16:53:08.587453Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T16:53:08.587696Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_165308.log
+2025-08-28T16:53:08.587787Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/cisco-asa.ndjson
+2025-08-28T16:53:08.587841Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T16:53:08.587899Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T16:53:08.587967Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T16:53:08.589822Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T16:53:08.593985Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T16:53:08.594500Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T16:53:09.097335Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T16:53:09.097609Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T16:53:09.097792Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T16:53:09.097879Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T16:53:09.097961Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 8161 chars of project overrides
+2025-08-28T16:53:09.098047Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T16:53:09.098102Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T16:53:09.805659Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T16:53:09.805865Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 2
+2025-08-28T16:53:09.837577Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T16:53:09.837823Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T16:53:10.220534Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T16:53:10.220849Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T16:53:10.222360Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T16:53:10.530849Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T16:53:10.531504Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T16:53:10.531651Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T16:53:10.531796Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_165309
+2025-08-28T16:53:10.531982Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T16:53:10.533146Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T16:53:10.533271Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T16:53:10.533325Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T16:53:10.533369Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T16:53:10.533425Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T16:53:10.533484Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T16:53:10.534255Z DEBUG    llm_iterative_session:_save_conversation:1221 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_165309/iter1_user.txt
+2025-08-28T16:53:10.534378Z INFO     llm_iterative_session:_call_llm:946 - 📤 Calling anthropic API
+2025-08-28T16:53:10.534494Z DEBUG    llm_iterative_session:_call_llm:947 -    Prompt length: 38308 chars
+2025-08-28T16:53:27.185032Z DEBUG    llm_iterative_session:_call_anthropic:1092 - Model claude-opus-4-1-20250805 failed: Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': None}
+2025-08-28T16:54:34.299845Z WARNING  llm_iterative_session:_call_anthropic:1080 - Fell back from claude-opus-4-1-20250805 to claude-opus-4-20250514
+2025-08-28T16:54:34.300467Z INFO     llm_iterative_session:_call_llm:962 - 📥 Response received in 83.8s (9925 chars)
+2025-08-28T16:54:34.300908Z DEBUG    llm_iterative_session:_save_conversation:1221 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_165309/iter1_assistant.txt
+2025-08-28T16:54:34.301709Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1224 - Testing iteration 1
+2025-08-28T16:54:34.301970Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:54:34.302128Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T16:54:34.302249Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:54:34.302363Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:54:34.302416Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:54:34.305059Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+   ┌─ :36:19
+   │
+36 │       if contains(asa_content, "-") {
+   │                   ^^^^^^^^^^^
+   │                   │
+   │                   this expression resolves to one of string or null
+   │                   but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     asa_content = string!(asa_content)
+   =     contains(asa_content, "-")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     asa_content = to_string(asa_content) ?? "default"
+   =     contains(asa_content, "-")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T16:54:34.305423Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T16:54:34.305557Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T16:54:34.305907Z DEBUG    llm_iterative_session:_save_conversation:1221 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_165309/iter2_user.txt
+2025-08-28T16:54:34.305984Z DEBUG    llm_iterative_session:_call_llm:943 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T16:54:35.707017Z INFO     llm_iterative_session:_call_llm:946 - 📤 Calling anthropic API
+2025-08-28T16:54:35.707277Z DEBUG    llm_iterative_session:_call_llm:947 -    Prompt length: 829 chars
+2025-08-28T16:55:42.088348Z INFO     llm_iterative_session:_call_llm:962 - 📥 Response received in 66.4s (11443 chars)
+2025-08-28T16:55:42.089165Z DEBUG    llm_iterative_session:_save_conversation:1221 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_165309/iter2_assistant.txt
+2025-08-28T16:55:42.089266Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1224 - Testing iteration 2
+2025-08-28T16:55:42.089323Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:55:42.089364Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-28T16:55:42.089400Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:55:42.089444Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:55:42.089481Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:55:42.163531Z SUCCESS  vrl_testing_loop_clean:test_with_pyvrl:304 - ✓ PyVRL validation passed for llm_generated_v2
+2025-08-28T16:55:42.163779Z INFO     vrl_testing_loop_clean:test_with_pyvrl:305 -   New fields: parse_status
+2025-08-28T16:55:42.164055Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+2. VALIDATING WITH VECTOR CLI (vector validate)
+2025-08-28T16:55:42.164184Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:55:42.368999Z SUCCESS  vrl_testing_loop_clean:validate_with_vector:355 - ✓ Vector validate passed
+2025-08-28T16:55:42.369247Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+3. FULL TEST WITH VECTOR CLI
+2025-08-28T16:55:42.369336Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:55:42.560777Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ✓ Vector validation passed for llm_generated_v2
+2025-08-28T16:55:42.561177Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+4. MEASURING PERFORMANCE
+2025-08-28T16:55:42.561244Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:55:42.744939Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Starting Vector process with config: .tmp/vector_test_llm_generated_v2.yaml
+2025-08-28T16:55:42.745144Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Expected output file: .tmp/vector_output_llm_generated_v2.ndjson
+2025-08-28T16:55:49.050597Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Terminating Vector process...
+2025-08-28T16:55:49.091367Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Vector stdout: 
+2025-08-28T16:55:49.091623Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - Vector stderr: 2025-08-28T06:55:42.754221Z  INFO vector::app: Log level is enabled. level="info"
+2025-08-28T06:55:42.755155Z  INFO vector::app: Loading configs. paths=[".tmp/vector_test_llm_generated_v2.yaml"]
+2025-
+2025-08-28T16:55:49.115549Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Found output file with 10000 events
+2025-08-28T16:55:49.116104Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Events processed by Vector: 10000
+2025-08-28T16:55:49.116466Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -   📊 Performance Results:
+2025-08-28T16:55:49.116776Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Events input: 10,000
+2025-08-28T16:55:49.117098Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Events processed: 10,000
+2025-08-28T16:55:49.117253Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Processing time: 4.80s (minus 0.50s startup)
+2025-08-28T16:55:49.117317Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Events/second: 2082
+2025-08-28T16:55:49.117358Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     CPU usage: 0.2%
+2025-08-28T16:55:49.117394Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -     Events/CPU%: 9369
+2025-08-28T16:55:49.128195Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+✓ Saved optimized VRL to samples-parsed/cisco-asa.vrl
+2025-08-28T16:55:49.135355Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 🔄 Running Vector CLI to generate transformed output...
+2025-08-28T16:55:51.149223Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    ✓ Generated 2 transformed events
+2025-08-28T16:55:51.150045Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    ✓ REST API results: success, tier Tier S (Exceptional)
+2025-08-28T16:55:51.150169Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ✅ Complete 3-file output saved:
+2025-08-28T16:55:51.150234Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    📄 VRL: samples-parsed/cisco-asa.vrl
+2025-08-28T16:55:51.150282Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    🔄 Transformed: samples-parsed/cisco-asa.json
+2025-08-28T16:55:51.150337Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    📊 REST API: samples-parsed/cisco-asa-rest.json
+2025-08-28T16:55:51.150405Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+✅ LLM VRL iteration 2 testing complete!
+2025-08-28T16:55:51.150457Z SUCCESS  vrl_testing_loop_clean:run_automated_llm_generation:1230 - ✅ Valid VRL generated on iteration 2!
+2025-08-28T16:55:51.151291Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+✓ Saved optimized VRL to samples-parsed/cisco-asa.vrl
+2025-08-28T16:55:51.164039Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 🔄 Running Vector CLI to generate transformed output...
+2025-08-28T16:55:53.178731Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    ✓ Generated 2 transformed events
+2025-08-28T16:55:53.180041Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    ✓ REST API results: success, tier Tier S (Exceptional)
+2025-08-28T16:55:53.180215Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ✅ Complete 3-file output saved:
+2025-08-28T16:55:53.180300Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    📄 VRL: samples-parsed/cisco-asa.vrl
+2025-08-28T16:55:53.180379Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    🔄 Transformed: samples-parsed/cisco-asa.json
+2025-08-28T16:55:53.180448Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 -    📊 REST API: samples-parsed/cisco-asa-rest.json
+2025-08-28T16:55:53.180542Z INFO     llm_iterative_session:log_cost_summary:1330 - 💰 SESSION COST SUMMARY:
+2025-08-28T16:55:53.180617Z INFO     llm_iterative_session:log_cost_summary:1331 -    Estimated cost: $0.5473
+2025-08-28T16:55:53.180684Z INFO     llm_iterative_session:log_cost_summary:1332 -    Total tokens: ~15,125
+2025-08-28T16:55:53.180744Z INFO     llm_iterative_session:log_cost_summary:1333 -    Iterations: 2
+2025-08-28T16:55:53.180805Z INFO     llm_iterative_session:log_cost_summary:1334 -    Model: claude-opus-4-20250514
+2025-08-28T16:55:53.180896Z WARNING  llm_iterative_session:log_cost_summary:1338 -    ℹ️  Anthropic doesn't provide a public credits API. Check console.anthropic.com for actual balance.
+2025-08-28T16:55:53.181069Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1240 - Session summary: {
+  "session_id": "llm_session_20250828_165309",
+  "provider": "anthropic",
+  "model": "claude-opus-4-20250514",
+  "iterations": 2,
+  "conversation_length": 4,
+  "timestamp": "2025-08-28T16:55:53.181002",
+  "model_capabilities": {
+    "max_input_tokens": 200000,
+    "max_output_tokens": 4096,
+    "context_window": 200000,
+    "cost_per_input_token": 1.5e-05,
+    "cost_per_output_token": 7.5e-05,
+    "supports_system_messages": true,
+    "supports_function_calling": true
+  }
+}

@@ -29,17 +29,16 @@ class LLMClient:
         print(f"Model output limit: {self.model_limits['output_tokens']:,} tokens")
     
     def _detect_best_model(self, preference: str) -> str:
-        """Detect the best available Claude model at runtime"""
-        # Latest models as of August 2025 - Claude 4.1 series should be available
-        # Check Anthropic's console for most current model versions
+        """Detect the best available Claude model at runtime by testing actual availability"""
+        # Latest models as of August 2025 - ordered newest to oldest
+        # Opus 4.1 should be the best available model
         opus_models = [
-            "claude-4-opus-20250801",     # Latest Claude 4.1 Opus (if available)
+            "claude-opus-4-1-20250805",   # Claude Opus 4.1 (current best)
             "claude-3-5-opus-20241022",   # Claude 3.5 Opus 
             "claude-3-opus-20240229",     # Fallback to 3.0 Opus
         ]
         
         sonnet_models = [
-            "claude-4-sonnet-20250801",   # Latest Claude 4.1 Sonnet (if available)
             "claude-3-5-sonnet-20241022", # Latest Sonnet v2
             "claude-3-5-sonnet-20240620", # Original Sonnet 3.5
             "claude-3-sonnet-20240229"    # Original Sonnet 3.0
@@ -52,17 +51,44 @@ class LLMClient:
         else:  # auto - default to latest Opus for highest quality (as per user preference)
             candidates = opus_models + sonnet_models
         
-        # In production, this should test each model for availability
-        # For now, return first candidate
-        return candidates[0]
+        # Test each model for actual availability by making a minimal API call
+        for model in candidates:
+            if self._test_model_availability(model):
+                self.logger.info(f"🎯 Selected best available model: {model}")
+                return model
+        
+        # Ultimate fallback if all models fail
+        self.logger.warning("⚠️ All preferred models failed, using claude-3-sonnet-20240229")
+        return "claude-3-sonnet-20240229"
+    
+    def _test_model_availability(self, model_name: str) -> bool:
+        """Test if a model is actually available by making a minimal API call"""
+        try:
+            import anthropic
+            # Make a tiny test call to check if model exists
+            client = anthropic.Anthropic(api_key=self.api_key)
+            response = client.messages.create(
+                model=model_name,
+                max_tokens=1,
+                messages=[{"role": "user", "content": "hi"}]
+            )
+            return True
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "model" in error_msg and ("not found" in error_msg or "invalid" in error_msg):
+                self.logger.debug(f"❌ Model {model_name} not available: {e}")
+                return False
+            else:
+                # Other errors (rate limits, auth issues) don't indicate unavailability
+                self.logger.debug(f"⚠️ Model {model_name} test inconclusive: {e}")
+                return True  # Assume available if error is not model-related
     
     def _get_model_pricing(self, model_name: str) -> tuple:
         """Get pricing for the selected model (input_cost, output_cost per token)"""
-        # Updated pricing as of August 2025 - Claude 4.1 pricing TBD
+        # Updated pricing as of August 2025
         pricing = {
-            # Claude 4.1 models (estimated pricing - check Anthropic for actual rates)
-            "claude-4-opus-20250801": (18.00 / 1_000_000, 90.00 / 1_000_000),      # Estimated 4.1 Opus
-            "claude-4-sonnet-20250801": (4.00 / 1_000_000, 20.00 / 1_000_000),     # Estimated 4.1 Sonnet
+            # Claude Opus 4.1 (current best model)
+            "claude-opus-4-1-20250805": (15.00 / 1_000_000, 75.00 / 1_000_000),   # Opus 4.1 pricing
             
             # Claude 3.5 models (current known pricing)
             "claude-3-5-opus-20241022": (15.00 / 1_000_000, 75.00 / 1_000_000),
@@ -78,27 +104,44 @@ class LLMClient:
         return pricing.get(model_name, (3.00 / 1_000_000, 15.00 / 1_000_000))
     
     def _get_model_limits(self, model_name: str) -> Dict[str, int]:
-        """Get token limits for the selected model (from Anthropic docs 2025)"""
-        limits = {
-            # Claude 4.1 models
-            "claude-4-opus-20250801": {"context_tokens": 200000, "output_tokens": 32000},
-            "claude-4-sonnet-20250801": {"context_tokens": 200000, "output_tokens": 64000},
-            
-            # Claude 3.5 models  
-            "claude-3-5-opus-20241022": {"context_tokens": 200000, "output_tokens": 32000},
-            "claude-3-opus-20240229": {"context_tokens": 200000, "output_tokens": 32000},
-            
-            # Sonnet models
-            "claude-3-5-sonnet-20241022": {"context_tokens": 200000, "output_tokens": 64000},
-            "claude-3-5-sonnet-20240620": {"context_tokens": 200000, "output_tokens": 64000},
-            "claude-3-sonnet-20240229": {"context_tokens": 200000, "output_tokens": 64000},
-            
-            # Haiku models
-            "claude-3-5-haiku-20241022": {"context_tokens": 200000, "output_tokens": 8192},
-        }
+        """Get token limits for model - attempt API lookup first, fall back to heuristics"""
+        try:
+            # Try to get limits from API if available  
+            limits = self._get_limits_from_api(model_name)
+            if limits:
+                return limits
+        except Exception as e:
+            self.logger.debug(f"API limits lookup failed: {e}")
         
-        # Default to Sonnet limits if model not found
-        return limits.get(model_name, {"context_tokens": 200000, "output_tokens": 64000})
+        # Fallback: Estimate limits based on model name patterns
+        return self._estimate_limits_from_model_name(model_name)
+    
+    def _get_limits_from_api(self, model_name: str) -> Dict[str, int]:
+        """Attempt to get model limits from API (if endpoint exists)"""
+        # TODO: Implement when Anthropic provides model details API endpoint
+        # For now, return None to use fallback estimation
+        return None
+    
+    def _estimate_limits_from_model_name(self, model_name: str) -> Dict[str, int]:
+        """Estimate limits based on model name patterns (temporary until API available)"""
+        model_lower = model_name.lower()
+        
+        # Claude 4 models likely have enhanced limits
+        if "4" in model_lower:
+            if "sonnet" in model_lower:
+                return {"context_tokens": 1000000, "output_tokens": 64000}  # Sonnet 4 with 1M context
+            else:
+                return {"context_tokens": 200000, "output_tokens": 32000}   # Other Claude 4
+        
+        # Claude 3.5 models
+        elif "3-5" in model_lower or "3.5" in model_lower:
+            if "sonnet" in model_lower:
+                return {"context_tokens": 200000, "output_tokens": 64000}
+            else:
+                return {"context_tokens": 200000, "output_tokens": 32000}
+        
+        # Default conservative limits
+        return {"context_tokens": 200000, "output_tokens": 32000}
     
     def _estimate_token_count(self, text: str) -> int:
         """

@@ -1,0 +1,94 @@
+#---
+# Filename: ssh_parser.vrl
+# Purpose: Parse SSH authentication logs with high performance string operations
+# Description: Extracts SSH authentication events, user names, source IPs, and ports
+#              from syslog format using CPU-optimized string operations
+# Version: 1.0.1
+# Changelog: |
+#   ## [1.0.1] - 2025-01-01
+#   - Fixed fallible operation handling for string operations
+#   - Added proper null checks before using variables
+#   ## [1.0.0] - 2025-01-01
+#   - Initial implementation with string-based parsing
+#   - Support for authentication success, failure, and unknown user events
+# Copyright: © 2025 HyperSec Pty Ltd
+# Licence: "HyperSec EULA © 2025"
+#---
+
+# Extract fields from message
+if exists(.message) {
+  msg = string!(.message)
+  
+  # Extract timestamp
+  if contains(msg, ": ") {
+    parts = split(msg, ": ", limit: 2)
+    if length(parts) > 1 {
+      timestamp_str = parts[0]
+      .parsed_timestamp = parse_timestamp(timestamp_str, "%b %d %H:%M:%S") ?? null
+    }
+  }
+  
+  # Extract SSH details
+  if contains(msg, "sshd[") {
+    ssh_parts = split(msg, "sshd[", limit: 2)
+    if length(ssh_parts) > 1 {
+      pid_and_rest = ssh_parts[1]
+      pid_parts = split!(pid_and_rest, "]:")
+      if length(pid_parts) > 0 {
+        .ssh.pid = to_int!(pid_parts[0])
+      }
+      
+      if contains(msg, "authentication failure") {
+        .ssh.event = "authentication_failure"
+        if contains(msg, "rhost=") {
+          rhost_parts = split(msg, "rhost=", limit: 2)
+          if length(rhost_parts) > 1 {
+            ip_parts = split!(rhost_parts[1], " ")
+            if length(ip_parts) > 0 {
+              .ssh.source_ip = ip_parts[0]
+            }
+          }
+        }
+        if contains(msg, "user=") {
+          user_parts = split(msg, "user=", limit: 2)
+          if length(user_parts) > 1 {
+            .ssh.username = user_parts[1]
+          }
+        }
+      } else if contains(msg, "Accepted password for") {
+        .ssh.event = "authentication_success"
+        auth_parts = split(msg, "Accepted password for ", limit: 2)
+        if length(auth_parts) > 1 {
+          user_parts = split!(auth_parts[1], " from ", 2)
+          if length(user_parts) > 1 {
+            .ssh.username = user_parts[0]
+            ip_parts = split!(user_parts[1], " port ", 2)
+            if length(ip_parts) > 1 {
+              .ssh.source_ip = ip_parts[0]
+              port_parts = split!(ip_parts[1], " ")
+              if length(port_parts) > 0 {
+                .ssh.port = to_int!(port_parts[0])
+              }
+            }
+          }
+        }
+      } else if contains(msg, "check pass; user unknown") {
+        .ssh.event = "unknown_user"
+      }
+    }
+  }
+}
+
+# Normalize fields with proper fallible handling
+if exists(.ssh.username) {
+  .ssh.username = downcase!(.ssh.username)
+}
+if exists(.ssh.source_ip) {
+  .ssh.source_ip = downcase!(.ssh.source_ip)
+}
+if exists(.ssh.event) {
+  .ssh.event = downcase!(.ssh.event)
+}
+
+# Return the event
+.

@@ -1,0 +1,135 @@
+2025-08-28T20:16:11.099817Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T20:16:11.100136Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_201611.log
+2025-08-28T20:16:11.100209Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/large/ssh-real.ndjson
+2025-08-28T20:16:11.100264Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T20:16:11.100317Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T20:16:11.100370Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T20:16:23.839609Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T20:16:23.843770Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T20:16:23.843848Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T20:16:24.345895Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T20:16:24.346335Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T20:16:24.346633Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T20:16:24.346824Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T20:16:24.347005Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T20:16:24.347214Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T20:16:24.347363Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T20:16:24.348372Z INFO     __main__:quick_iteration_test:85 - 🎯 Starting VRL generation with all optimizations...
+2025-08-28T20:16:25.037208Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T20:16:25.037371Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 10
+2025-08-28T20:16:25.050547Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 🔧 Optimizing samples with pre-tokenizer...
+2025-08-28T20:16:25.570343Z INFO     pre_tokenizer.enhanced_optimizer:smart_sample_selection:132 - Found 1 distinct patterns in 655147 samples
+2025-08-28T20:16:32.211238Z SUCCESS  pre_tokenizer.enhanced_optimizer:smart_sample_selection:172 - Selected 3 samples covering 1 patterns
+2025-08-28T20:16:32.350953Z INFO     pre_tokenizer.pre_tokenizer:__init__:41 - Initialized PreTokenizer for claude-3-opus-20240229 with 30,000 max tokens
+2025-08-28T20:16:32.351222Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:101 - Optimizing 3 samples for 30,000 tokens
+2025-08-28T20:16:32.351715Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:116 - Reduced to 3 unique samples from 3
+2025-08-28T20:16:32.351793Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:117 - Pattern distribution: {'auth': 1}
+2025-08-28T20:16:32.353541Z SUCCESS  pre_tokenizer.pre_tokenizer:optimize_samples:190 - Selected 3 samples using 1,278 tokens
+2025-08-28T20:16:32.353625Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:191 - Pattern coverage: 100.0%
+2025-08-28T20:16:32.353682Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1241 - 📊 Sample optimization: 655147 → 3 samples
+2025-08-28T20:16:32.353734Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1242 - 📊 Token usage: 1,278 tokens
+2025-08-28T20:16:32.353776Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1243 - 📊 Pattern coverage: 100.0%
+2025-08-28T20:16:32.393641Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T20:16:32.393908Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T20:16:32.728020Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T20:16:32.728202Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T20:16:32.730163Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T20:16:33.085543Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T20:16:33.087128Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T20:16:33.087187Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T20:16:33.087234Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_201632
+2025-08-28T20:16:33.087274Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T20:16:33.087326Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T20:16:33.087365Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T20:16:33.087403Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T20:16:33.087443Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T20:16:33.087488Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1249 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T20:16:33.087538Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T20:16:33.091516Z INFO     prompt_optimizer:_optimize_initial_configs:82 - Compressed vector_vrl_prompt: 20935 → 18968 chars (9.4% reduction)
+2025-08-28T20:16:33.091676Z INFO     prompt_optimizer:_optimize_initial_configs:101 - Compressed parser_prompts: 10690 → 1988 chars (81.4% reduction)
+2025-08-28T20:16:33.091753Z INFO     prompt_optimizer:_optimize_initial_configs:133 - Compressed type_maps: 2877 → 2749 chars (4.4% reduction)
+2025-08-28T20:16:33.092274Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_201632/iter1_user.txt
+2025-08-28T20:16:33.092330Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:16:33.092379Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 29770 chars
+2025-08-28T20:17:24.402610Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 51.3s (5110 chars)
+2025-08-28T20:17:24.403053Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_201632/iter1_assistant.txt
+2025-08-28T20:17:24.403129Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 1
+2025-08-28T20:17:24.403202Z INFO     __main__:tracked_run:62 - 📍 Iteration 1 - LLM Call #1
+2025-08-28T20:17:24.403283Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:17:24.403348Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T20:17:24.403391Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:17:24.403436Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:17:24.403479Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:17:24.405371Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+   ┌─ :38:19
+   │
+38 │       if contains(user_value, " ") {
+   │                   ^^^^^^^^^^
+   │                   │
+   │                   this expression resolves to one of string or null
+   │                   but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     user_value = string!(user_value)
+   =     contains(user_value, " ")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     user_value = to_string(user_value) ?? "default"
+   =     contains(user_value, " ")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :167:15
+    │
+167 │   .ssh_user = downcase(string!(.ssh_user)) ?? .ssh_user
+    │               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- --------- this expression never resolves
+    │               │                            │
+    │               │                            remove this error coalescing operation
+    │               this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :171:22
+    │
+171 │   .ssh_source_host = downcase(string!(.ssh_source_host)) ?? .ssh_source_host
+    │                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- ---------------- this expression never resolves
+    │                      │                                   │
+    │                      │                                   remove this error coalescing operation
+    │                      this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E620]: can't abort infallible function
+    ┌─ :175:26
+    │
+175 │   .ssh_action = downcase(string!(.ssh_action)) ?? .ssh_action
+    │                          ^^^^^^- remove this abort-instruction
+    │                          │
+    │                          this function can't fail
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:17:24.405474Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T20:17:24.405854Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:17:24.405944Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:17:24.413304Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:17:24.413402Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:17:24.413467Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:17:24.413549Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T20:17:24.413772Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_201632/iter2_user.txt
+2025-08-28T20:17:24.413847Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T20:17:25.814018Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:17:25.814315Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars

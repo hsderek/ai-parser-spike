@@ -1,0 +1,134 @@
+# Model Capability Configuration
+# Maps platform → capability → model family preferences
+# NO VERSIONS - auto-detects latest available at runtime
+
+# Default selections when not specified
+defaults:
+  platform: anthropic
+  capability: reasoning
+
+# Platform identification patterns
+# How to identify which platform a model belongs to
+platform_patterns:
+  anthropic:
+    - claude
+  openai:
+    - gpt
+    - "o[0-9]"  # Matches o1, o2, o3, o4, etc.
+  google:
+    - gemini
+  deepseek:
+    - deepseek
+
+# Family matching rules
+# How to match families while avoiding false positives
+family_rules:
+  # Exact match families (must match exactly to avoid conflicts)
+  exact_match:
+    - gpt-5-nano
+    - gpt-5-mini
+    - gpt-4.1-mini
+    - o3-mini
+    - o4-mini
+    - gemini-2.5-flash-lite
+    - gemini-2.5-flash
+    - gemini-2.5-pro
+  
+  # Prefix families that shouldn't match longer variants
+  no_variant_match:
+    gpt-5: ["gpt-5-mini", "gpt-5-nano"]
+    gpt-4.1: ["gpt-4.1-mini"]
+    o3: ["o3-mini"]
+    o4: ["o4-mini"]
+    gemini-2.5-pro: ["gemini-2.5-pro-exp", "gemini-2.5-pro-preview"]
+    gemini-2.5-flash: ["gemini-2.5-flash-lite", "gemini-2.5-flash-exp"]
+
+# Platform capability mappings
+platforms:
+  anthropic:
+    capabilities:
+      reasoning:
+        families:
+          - opus      # Best reasoning/analysis capability
+          - sonnet    # Fallback if opus unavailable
+          
+      balanced:
+        families:
+          - sonnet    # Best balance of speed/capability/cost
+          - opus      # Higher capability if needed
+          - haiku     # Fallback for cost efficiency
+          
+      efficient:
+        families:
+          - haiku     # Fastest and most economical
+          - sonnet    # Fallback with more capability
+  
+  openai:
+    capabilities:
+      reasoning:
+        families:
+          - gpt-5     # Best coding quality, strongest model
+          - o3        # Frontier reasoning (legacy but useful)
+          - gpt-4.1   # Long-context workhorse (1M tokens)
+          - gpt-4     # Stable fallback
+          
+      balanced:
+        families:
+          - gpt-4.1   # Excellent for coding diffs/patches
+          - gpt-4     # Balanced choice
+          - gpt-5-mini  # Good throughput
+          
+      efficient:
+        families:
+          - gpt-5-mini  # Fast throughput 
+          - gpt-5-nano  # Maximum throughput
+          - gpt-4.1-mini  # Speed-optimized
+          - o4-mini   # Fast, cost-efficient reasoning
+          - gpt-3.5   # Legacy economical
+  
+  google:
+    capabilities:
+      reasoning:
+        families:
+          - gemini-2.5-pro   # Most powerful thinking model, 1M tokens, Deep Think mode
+          - gemini-pro       # Fallback reasoning
+          
+      balanced:
+        families:
+          - gemini-2.5-flash   # Workhorse model, good balance of quality/speed
+          - gemini-flash       # Alternative balanced option
+          
+      efficient:
+        families:
+          - gemini-2.5-flash-lite  # Fastest, most cost-efficient, 1M tokens
+          - gemini-flash           # Alternative fast option
+          - gemini-nano            # Legacy economical
+  
+  deepseek:
+    capabilities:
+      reasoning:
+        families:
+          - deepseek-v3    # Latest version
+          - deepseek-r1    # Reasoning focused
+          
+      balanced:
+        families:
+          - deepseek-v3    # Good balance
+          - deepseek-v2    # Previous stable
+          
+      efficient:
+        families:
+          - deepseek-v2    # Efficient option
+          - deepseek-coder # For code-specific tasks
+
+# Use case mappings (optional)
+# Maps specific use cases to capability preferences
+use_cases:
+  vrl_generation:
+    capability: reasoning    # Need strong code generation
+    
+  quick_validation:
+    capability: efficient    # Fast feedback loops
+    
+  production:
+    capability: balanced     # Stability and performance

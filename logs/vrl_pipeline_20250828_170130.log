@@ -1,0 +1,97 @@
+2025-08-28T17:01:30.621351Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T17:01:30.621512Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_170130.log
+2025-08-28T17:01:30.621601Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/cisco-asa.ndjson
+2025-08-28T17:01:30.621676Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T17:01:30.621744Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T17:01:30.621810Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T17:01:30.624049Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T17:01:30.638506Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T17:01:30.638881Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T17:01:31.141364Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T17:01:31.141556Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T17:01:31.141666Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T17:01:31.141722Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T17:01:31.141767Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T17:01:31.141839Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T17:01:31.141892Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T17:01:31.771543Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T17:01:31.771928Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 2
+2025-08-28T17:01:31.800799Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T17:01:31.800991Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T17:01:32.107327Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T17:01:32.107507Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T17:01:32.108362Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T17:01:32.428990Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T17:01:32.429434Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T17:01:32.429516Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T17:01:32.429574Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_170131
+2025-08-28T17:01:32.429626Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T17:01:32.429700Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T17:01:32.429764Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T17:01:32.429818Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T17:01:32.429874Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T17:01:32.429969Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T17:01:32.430051Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T17:01:32.430771Z DEBUG    llm_iterative_session:_save_conversation:1230 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_170131/iter1_user.txt
+2025-08-28T17:01:32.430850Z INFO     llm_iterative_session:_call_llm:955 - 📤 Calling anthropic API
+2025-08-28T17:01:32.431159Z DEBUG    llm_iterative_session:_call_llm:956 -    Prompt length: 41221 chars
+2025-08-28T17:01:34.264849Z DEBUG    llm_iterative_session:_call_anthropic:1101 - Model claude-opus-4-1-20250805 failed: Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}
+2025-08-28T17:02:30.819525Z WARNING  llm_iterative_session:_call_anthropic:1089 - Fell back from claude-opus-4-1-20250805 to claude-opus-4-20250514
+2025-08-28T17:02:30.819736Z INFO     llm_iterative_session:_call_llm:971 - 📥 Response received in 58.4s (9828 chars)
+2025-08-28T17:02:30.820494Z DEBUG    llm_iterative_session:_save_conversation:1230 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_170131/iter1_assistant.txt
+2025-08-28T17:02:30.820581Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1224 - Testing iteration 1
+2025-08-28T17:02:30.820708Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T17:02:30.820769Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T17:02:30.820824Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T17:02:30.820884Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T17:02:30.820958Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T17:02:30.824190Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+   ┌─ :39:15
+   │
+39 │   if contains(asa_content, ":") {
+   │               ^^^^^^^^^^^
+   │               │
+   │               this expression resolves to one of string or null
+   │               but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     asa_content = string!(asa_content)
+   =     contains(asa_content, ":")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     asa_content = to_string(asa_content) ?? "default"
+   =     contains(asa_content, ":")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T17:02:30.824295Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T17:02:30.824354Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T17:02:30.824590Z DEBUG    llm_iterative_session:_save_conversation:1230 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_170131/iter2_user.txt
+2025-08-28T17:02:30.824647Z DEBUG    llm_iterative_session:_call_llm:952 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T17:02:32.224827Z INFO     llm_iterative_session:_call_llm:955 - 📤 Calling anthropic API
+2025-08-28T17:02:32.225257Z DEBUG    llm_iterative_session:_call_llm:956 -    Prompt length: 829 chars
+2025-08-28T17:03:24.405550Z INFO     llm_iterative_session:_call_llm:971 - 📥 Response received in 52.2s (9947 chars)
+2025-08-28T17:03:24.406098Z DEBUG    llm_iterative_session:_save_conversation:1230 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_170131/iter2_assistant.txt
+2025-08-28T17:03:24.406182Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1224 - Testing iteration 2
+2025-08-28T17:03:24.406237Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T17:03:24.406280Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-28T17:03:24.406337Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T17:03:24.406384Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T17:03:24.406422Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T17:03:24.493114Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: remap failure: aborted
+2025-08-28T17:03:24.493421Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 2 failed PyVRL validation
+2025-08-28T17:03:24.493497Z WARNING  vrl_testing_loop_clean:run_automated_llm_generation:1266 - Failed to generate valid VRL after 2 iterations
+2025-08-28T17:03:24.493556Z INFO     llm_iterative_session:log_cost_summary:1339 - 💰 SESSION COST SUMMARY:
+2025-08-28T17:03:24.493611Z INFO     llm_iterative_session:log_cost_summary:1340 -    Estimated cost: $0.5284
+2025-08-28T17:03:24.493653Z INFO     llm_iterative_session:log_cost_summary:1341 -    Total tokens: ~15,455
+2025-08-28T17:03:24.493692Z INFO     llm_iterative_session:log_cost_summary:1342 -    Iterations: 2
+2025-08-28T17:03:24.493727Z INFO     llm_iterative_session:log_cost_summary:1343 -    Model: claude-opus-4-20250514
+2025-08-28T17:03:24.493775Z WARNING  llm_iterative_session:log_cost_summary:1347 -    ℹ️  Anthropic doesn't provide a public credits API. Check console.anthropic.com for actual balance.

@@ -1,0 +1,1987 @@
+2025-08-28T20:05:07.845035Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T20:05:07.845204Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_200507.log
+2025-08-28T20:05:07.845272Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/small/cisco-asa.ndjson
+2025-08-28T20:05:07.845323Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T20:05:07.845373Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T20:05:07.845420Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T20:05:07.847175Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T20:05:07.851614Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T20:05:07.851706Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T20:05:08.356869Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T20:05:08.357122Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T20:05:08.357265Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T20:05:08.357327Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T20:05:08.357373Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T20:05:08.357438Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T20:05:08.357506Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T20:05:08.993417Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T20:05:08.993588Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 6
+2025-08-28T20:05:08.993644Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1204 - Model override: claude-opus
+2025-08-28T20:05:09.002259Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 🔧 Optimizing samples with pre-tokenizer...
+2025-08-28T20:05:09.002453Z INFO     pre_tokenizer.enhanced_optimizer:smart_sample_selection:132 - Found 1 distinct patterns in 3 samples
+2025-08-28T20:05:09.002527Z SUCCESS  pre_tokenizer.enhanced_optimizer:smart_sample_selection:172 - Selected 3 samples covering 1 patterns
+2025-08-28T20:05:09.117550Z INFO     pre_tokenizer.pre_tokenizer:__init__:41 - Initialized PreTokenizer for claude-3-opus-20240229 with 30,000 max tokens
+2025-08-28T20:05:09.117780Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:101 - Optimizing 3 samples for 30,000 tokens
+2025-08-28T20:05:09.118496Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:116 - Reduced to 3 unique samples from 3
+2025-08-28T20:05:09.118644Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:117 - Pattern distribution: {'cisco-asa': 3}
+2025-08-28T20:05:09.120018Z SUCCESS  pre_tokenizer.pre_tokenizer:optimize_samples:190 - Selected 3 samples using 1,301 tokens
+2025-08-28T20:05:09.120101Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:191 - Pattern coverage: 100.0%
+2025-08-28T20:05:09.120153Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1241 - 📊 Sample optimization: 3 → 3 samples
+2025-08-28T20:05:09.120199Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1242 - 📊 Token usage: 1,301 tokens
+2025-08-28T20:05:09.120240Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1243 - 📊 Pattern coverage: 100.0%
+2025-08-28T20:05:09.147975Z INFO     llm_iterative_session:_init_anthropic:431 - Using specified Anthropic model: claude-opus
+2025-08-28T20:05:09.483118Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T20:05:09.483599Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T20:05:09.483670Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus
+2025-08-28T20:05:09.483724Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_200509
+2025-08-28T20:05:09.483791Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T20:05:09.483854Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T20:05:09.483928Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T20:05:09.483991Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T20:05:09.484056Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T20:05:09.484120Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1249 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T20:05:09.484180Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T20:05:09.486273Z INFO     prompt_optimizer:_optimize_initial_configs:82 - Compressed vector_vrl_prompt: 20935 → 18968 chars (9.4% reduction)
+2025-08-28T20:05:09.486578Z INFO     prompt_optimizer:_optimize_initial_configs:101 - Compressed parser_prompts: 10690 → 1988 chars (81.4% reduction)
+2025-08-28T20:05:09.486780Z INFO     prompt_optimizer:_optimize_initial_configs:133 - Compressed type_maps: 2877 → 2749 chars (4.4% reduction)
+2025-08-28T20:05:09.487490Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter1_user.txt
+2025-08-28T20:05:09.487567Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:05:09.487635Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 29787 chars
+2025-08-28T20:05:09.811979Z DEBUG    llm_iterative_session:_call_anthropic:1168 - Model claude-opus failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-opus'}, 'request_id': 'req_011CSZvHJzjEctuY1dVpiv1X'}
+2025-08-28T20:05:27.865590Z WARNING  llm_iterative_session:_call_anthropic:1156 - Fell back from claude-opus to claude-3-5-sonnet-20240620
+2025-08-28T20:05:27.871146Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 18.4s (3443 chars)
+2025-08-28T20:05:27.871888Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter1_assistant.txt
+2025-08-28T20:05:27.871988Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 1
+2025-08-28T20:05:27.872072Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:27.872133Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T20:05:27.872185Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:27.872261Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:05:27.872320Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:05:27.874335Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :3:9
+  │
+3 │ Filename: cisco_asa_parser.vrl
+  │         ^
+  │         │
+  │         unexpected syntax token: "Colon"
+  │         expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :4:8
+  │
+4 │ Purpose: Parse Cisco ASA syslog messages
+  │        ^
+  │        │
+  │        unexpected syntax token: "Colon"
+  │        expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :5:12
+  │
+5 │ Description: Extracts fields from Cisco ASA syslog messages, including connection details, user actions, and access control events.
+  │            ^
+  │            │
+  │            unexpected syntax token: "Colon"
+  │            expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :6:8
+  │
+6 │ Version: 1.0.0
+  │        ^
+  │        │
+  │        unexpected syntax token: "Colon"
+  │        expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :7:10
+  │
+7 │ Changelog: |
+  │          ^
+  │          │
+  │          unexpected syntax token: "Colon"
+  │          expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:3
+  │
+9 │   - Initial implementation with string-based parsing for Cisco ASA logs
+  │   ^
+  │   │
+  │   unexpected syntax token: "Operator"
+  │   expected one of: "\n", "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :10:10
+   │
+10 │ Copyright: © 2025 HyperSec Pty Ltd
+   │          ^
+   │          │
+   │          unexpected syntax token: "Colon"
+   │          expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :11:8
+   │
+11 │ Licence: "HyperSec EULA © 2025"
+   │        ^
+   │        │
+   │        unexpected syntax token: "Colon"
+   │        expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :12:4
+   │
+12 │ Env:
+   │    ^
+   │    │
+   │    unexpected syntax token: "Colon"
+   │    expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :13:12
+   │
+13 │   LOG_LEVEL: "info"
+   │            ^
+   │            │
+   │            unexpected syntax token: "Colon"
+   │            expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :14:5
+   │
+14 │ Flow: >
+   │     ^
+   │     │
+   │     unexpected syntax token: "Colon"
+   │     expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :15:9
+   │
+15 │   Parse message -> Extract ASA code -> Parse specific message types -> Normalize fields
+   │         ^^^^^^^
+   │         │
+   │         unexpected syntax token: "Identifier"
+   │         expected one of: "\n", "!=", "&&", "*", "+", ",", "-", "/", ";", "<", "<=", "=", "==", ">", ">=", "??", "|", "|", "|=", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :20:10
+   │
+20 │   .msg = string!(.logoriginal) ?? ""
+   │          ^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │          │                     │
+   │          │                     remove this error coalescing operation
+   │          this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E110]: fallible predicate
+   ┌─ :41:17
+   │
+41 │     if contains(.asa_message, "Built outbound TCP connection") {
+   │                 ^^^^^^^^^^^^
+   │                 │
+   │                 this expression resolves to any
+   │                 but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     .asa_message = string!(.asa_message)
+   =     contains(.asa_message, "Built outbound TCP connection")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     .asa_message = to_string(.asa_message) ?? "default"
+   =     contains(.asa_message, "Built outbound TCP connection")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:05:27.874468Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T20:05:27.874977Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:05:27.875187Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:05:27.883526Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:05:27.883748Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:05:27.883837Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:05:27.883908Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T20:05:27.884233Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter2_user.txt
+2025-08-28T20:05:27.884313Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T20:05:29.284482Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:05:29.284727Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T20:05:42.886491Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 13.6s (3343 chars)
+2025-08-28T20:05:42.887003Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter2_assistant.txt
+2025-08-28T20:05:42.887107Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 2
+2025-08-28T20:05:42.887166Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:42.887208Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-28T20:05:42.887247Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:42.887290Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:05:42.887337Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:05:42.891687Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+  ┌─ :3:10
+  │
+3 │   .msg = string!(.logoriginal) ?? ""
+  │          ^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+  │          │                     │
+  │          │                     remove this error coalescing operation
+  │          this expression can't fail
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :35:21
+   │
+35 │               "id": if length(split(conn_parts[0], " ")) > 5 { split(conn_parts[0], " ")[5] } ?? "",
+   │                     ^^
+   │                     │
+   │                     unexpected syntax token: "If"
+   │                     expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :36:30
+   │
+36 │               "src_interface": "inside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :37:23
+   │
+37 │               "src_ip": if length(split(inside[1], "/")) > 0 { split(inside[1], "/")[0] } ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :38:25
+   │
+38 │               "src_port": if length(split(inside[1], "/")) > 1 { split(inside[1], "/")[1] } ?? "",
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :39:30
+   │
+39 │               "dst_interface": "outside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :40:23
+   │
+40 │               "dst_ip": if length(split(outside[1], "/")) > 0 { split(outside[1], "/")[0] } ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :41:25
+   │
+41 │               "dst_port": if length(split(outside[1], "/")) > 1 { split(outside[1], "/")[1] } ?? ""
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :42:13
+   │
+42 │             }
+   │             ^
+   │             │
+   │             unexpected syntax token: "RBrace"
+   │             expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :43:11
+   │
+43 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :44:9
+   │
+44 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :45:7
+   │
+45 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :46:5
+   │
+46 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :47:3
+   │
+47 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E110]: fallible predicate
+   ┌─ :51:51
+   │
+51 │     if contains(.asa_message, "User") && contains(.asa_message, "executed the") {
+   │                                                   ^^^^^^^^^^^^
+   │                                                   │
+   │                                                   this expression resolves to any
+   │                                                   but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     .asa_message = string!(.asa_message)
+   =     contains(.asa_message, "executed the")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     .asa_message = to_string(.asa_message) ?? "default"
+   =     contains(.asa_message, "executed the")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :74:23
+   │
+74 │             "src_ip": if length(split(src_parts[1], "/")) > 0 { split(src_parts[1], "/")[0] } ?? "",
+   │                       ^^
+   │                       │
+   │                       unexpected syntax token: "If"
+   │                       expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :75:23
+   │
+75 │             "src_port": if length(split(src_parts[1], "/")) > 1 { split(src_parts[1], "/")[1] } ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :76:28
+   │
+76 │             "dst_interface": dst_parts[0],
+   │                            ^
+   │                            │
+   │                            unexpected syntax token: "Colon"
+   │                            expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :77:21
+   │
+77 │             "dst_ip": if length(split(dst_parts[1], "/")) > 0 { split(dst_parts[1], "/")[0] } ?? "",
+   │                     ^
+   │                     │
+   │                     unexpected syntax token: "Colon"
+   │                     expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :78:23
+   │
+78 │             "dst_port": if length(split(dst_parts[1], "/")) > 1 { split(dst_parts[1], "/")[1] } ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :79:19
+   │
+79 │             "rule": if length(deny_parts) > 9 { deny_parts[9] } ?? ""
+   │                   ^
+   │                   │
+   │                   unexpected syntax token: "Colon"
+   │                   expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :80:11
+   │
+80 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :81:9
+   │
+81 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :82:7
+   │
+82 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :83:5
+   │
+83 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :84:3
+   │
+84 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :85:1
+   │
+85 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:05:42.891997Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 2 failed PyVRL validation
+2025-08-28T20:05:42.892170Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:05:42.892310Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:05:42.902210Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:05:42.902434Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:05:42.902532Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:05:42.902599Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 3)
+2025-08-28T20:05:42.902910Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter3_user.txt
+2025-08-28T20:05:42.903023Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.6s delay for iteration 3 to avoid rate limits
+2025-08-28T20:05:44.503227Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:05:44.503622Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T20:05:58.819511Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 14.3s (3224 chars)
+2025-08-28T20:05:58.819992Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter3_assistant.txt
+2025-08-28T20:05:58.820091Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 3
+2025-08-28T20:05:58.820157Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:58.820202Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 3)
+2025-08-28T20:05:58.820243Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:05:58.820287Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:05:58.820330Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:05:58.821557Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E110]: fallible predicate
+  ┌─ :7:29
+  │
+7 │ if exists(.msg) && contains(.msg, "%ASA-") {
+  │                             ^^^^
+  │                             │
+  │                             this expression resolves to any
+  │                             but the parameter "value" expects the exact type string
+  │
+  = try: ensuring an appropriate type at runtime
+  =
+  =     .msg = string!(.msg)
+  =     contains(.msg, "%ASA-")
+  =
+  = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+  =
+  =     .msg = to_string(.msg) ?? "default"
+  =     contains(.msg, "%ASA-")
+  =
+  = see documentation about error handling at https://errors.vrl.dev/#handling
+  = learn more about error code 110 at https://errors.vrl.dev/110
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :36:21
+   │
+36 │               "id": if length(conn_id_parts) > 5 { conn_id_parts[5] } else { "" },
+   │                     ^^
+   │                     │
+   │                     unexpected syntax token: "If"
+   │                     expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :37:30
+   │
+37 │               "src_interface": "inside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :38:23
+   │
+38 │               "src_ip": split(inside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :39:25
+   │
+39 │               "src_port": if length(split(inside[1], "/")) > 1 { split(inside[1], "/")[1] } else { "" },
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :40:30
+   │
+40 │               "dst_interface": "outside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :41:23
+   │
+41 │               "dst_ip": split(outside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :42:25
+   │
+42 │               "dst_port": if length(split(outside[1], "/")) > 1 { split(outside[1], "/")[1] } else { "" }
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :43:13
+   │
+43 │             }
+   │             ^
+   │             │
+   │             unexpected syntax token: "RBrace"
+   │             expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :44:11
+   │
+44 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :45:9
+   │
+45 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :46:7
+   │
+46 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :47:5
+   │
+47 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :48:3
+   │
+48 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E110]: fallible predicate
+   ┌─ :52:51
+   │
+52 │     if contains(.asa_message, "User") && contains(.asa_message, "executed the") {
+   │                                                   ^^^^^^^^^^^^
+   │                                                   │
+   │                                                   this expression resolves to any
+   │                                                   but the parameter "value" expects the exact type string
+   │
+   = try: ensuring an appropriate type at runtime
+   =
+   =     .asa_message = string!(.asa_message)
+   =     contains(.asa_message, "executed the")
+   =
+   = try: coercing to an appropriate type and specifying a default value as a fallback in case coercion fails
+   =
+   =     .asa_message = to_string(.asa_message) ?? "default"
+   =     contains(.asa_message, "executed the")
+   =
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = learn more about error code 110 at https://errors.vrl.dev/110
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :76:25
+   │
+76 │             "src_port": if length(split(src_parts[1], "/")) > 1 { split(src_parts[1], "/")[1] } else { "" },
+   │                         ^^
+   │                         │
+   │                         unexpected syntax token: "If"
+   │                         expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :77:28
+   │
+77 │             "dst_interface": dst_parts[0],
+   │                            ^
+   │                            │
+   │                            unexpected syntax token: "Colon"
+   │                            expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :78:21
+   │
+78 │             "dst_ip": split(dst_parts[1], "/")[0],
+   │                     ^
+   │                     │
+   │                     unexpected syntax token: "Colon"
+   │                     expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :79:23
+   │
+79 │             "dst_port": if length(split(dst_parts[1], "/")) > 1 { split(dst_parts[1], "/")[1] } else { "" },
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :80:19
+   │
+80 │             "rule": if length(deny_parts) > 9 { deny_parts[9] } else { "" }
+   │                   ^
+   │                   │
+   │                   unexpected syntax token: "Colon"
+   │                   expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :81:11
+   │
+81 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :82:9
+   │
+82 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :83:7
+   │
+83 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :84:5
+   │
+84 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :85:3
+   │
+85 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :86:1
+   │
+86 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :90:15
+   │
+90 │   .facility = to_int(.facility)
+   │   ----------- ^^^^^^^^^^^^^^^^^ this expression is fallible because at least one argument's type cannot be verified to be valid
+   │   │
+   │   or change this to an infallible assignment:
+   │   .facility, err = to_int(.facility)
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :94:15
+   │
+94 │   .severity = to_int(.severity)
+   │   ----------- ^^^^^^^^^^^^^^^^^ this expression is fallible because at least one argument's type cannot be verified to be valid
+   │   │
+   │   or change this to an infallible assignment:
+   │   .severity, err = to_int(.severity)
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :98:16
+   │
+98 │   .timestamp = parse_timestamp(.timestamp, format: "%+")
+   │   ------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   │   │            │
+   │   │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │   │            update the expression to be infallible by adding a `!`: `parse_timestamp!(.timestamp, "%+")`
+   │   │            `.timestamp` argument type is `any` and this function expected a parameter `value` of type `string or timestamp`
+   │   or change this to an infallible assignment:
+   │   .timestamp, err = parse_timestamp(.timestamp, "%+")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:05:58.821743Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 3 failed PyVRL validation
+2025-08-28T20:05:58.821843Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:05:58.821903Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:05:58.828321Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:05:58.828432Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:05:58.828498Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:05:58.828599Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 4)
+2025-08-28T20:05:58.828864Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter4_user.txt
+2025-08-28T20:05:58.828966Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.8s delay for iteration 4 to avoid rate limits
+2025-08-28T20:06:00.629132Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:06:00.629363Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T20:06:15.491939Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 14.9s (3409 chars)
+2025-08-28T20:06:15.492494Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter4_assistant.txt
+2025-08-28T20:06:15.492641Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 4
+2025-08-28T20:06:15.492755Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:15.492839Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 4)
+2025-08-28T20:06:15.492903Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:15.492987Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:06:15.493049Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:06:15.495133Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :12:20
+   │
+12 │       code_parts = split(parts[1], ":")
+   │       ------------ ^^^^^^^^^^^^^^^^^^^^
+   │       │            │
+   │       │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │            update the expression to be infallible by adding a `!`: `split!(parts[1], ":")`
+   │       │            `parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       code_parts, err = split(parts[1], ":")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :40:21
+   │
+40 │               "id": if length(conn_id_parts) > 5 { conn_id_parts[5] } else { "" },
+   │                     ^^
+   │                     │
+   │                     unexpected syntax token: "If"
+   │                     expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :41:30
+   │
+41 │               "src_interface": "inside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :42:23
+   │
+42 │               "src_ip": split(inside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :43:25
+   │
+43 │               "src_port": if length(split(inside[1], "/")) > 1 { split(inside[1], "/")[1] } else { "" },
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :44:30
+   │
+44 │               "dst_interface": "outside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :45:23
+   │
+45 │               "dst_ip": split(outside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :46:25
+   │
+46 │               "dst_port": if length(split(outside[1], "/")) > 1 { split(outside[1], "/")[1] } else { "" }
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :47:13
+   │
+47 │             }
+   │             ^
+   │             │
+   │             unexpected syntax token: "RBrace"
+   │             expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :48:11
+   │
+48 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :49:9
+   │
+49 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :50:7
+   │
+50 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :51:5
+   │
+51 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :52:3
+   │
+52 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :82:25
+   │
+82 │             "src_port": if length(split(src_parts[1], "/")) > 1 { split(src_parts[1], "/")[1] } else { "" },
+   │                         ^^
+   │                         │
+   │                         unexpected syntax token: "If"
+   │                         expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :83:28
+   │
+83 │             "dst_interface": dst_parts[0],
+   │                            ^
+   │                            │
+   │                            unexpected syntax token: "Colon"
+   │                            expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :84:21
+   │
+84 │             "dst_ip": split(dst_parts[1], "/")[0],
+   │                     ^
+   │                     │
+   │                     unexpected syntax token: "Colon"
+   │                     expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :85:23
+   │
+85 │             "dst_port": if length(split(dst_parts[1], "/")) > 1 { split(dst_parts[1], "/")[1] } else { "" },
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :86:19
+   │
+86 │             "rule": if length(deny_parts) > 9 { deny_parts[9] } else { "" }
+   │                   ^
+   │                   │
+   │                   unexpected syntax token: "Colon"
+   │                   expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :87:11
+   │
+87 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :88:9
+   │
+88 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :89:7
+   │
+89 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :90:5
+   │
+90 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :91:3
+   │
+91 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :92:1
+   │
+92 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:06:15.495268Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 4 failed PyVRL validation
+2025-08-28T20:06:15.495371Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:06:15.495456Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:06:15.502569Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:06:15.502670Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:06:15.502774Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:06:15.502872Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 5)
+2025-08-28T20:06:15.503127Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter5_user.txt
+2025-08-28T20:06:15.503207Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 2.0s delay for iteration 5 to avoid rate limits
+2025-08-28T20:06:17.503363Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:06:17.504062Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T20:06:32.278892Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 14.8s (3409 chars)
+2025-08-28T20:06:32.279338Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter5_assistant.txt
+2025-08-28T20:06:32.279404Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 5
+2025-08-28T20:06:32.279457Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:32.279500Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 5)
+2025-08-28T20:06:32.279538Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:32.279581Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:06:32.279621Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:06:32.281900Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :12:20
+   │
+12 │       code_parts = split(parts[1], ":")
+   │       ------------ ^^^^^^^^^^^^^^^^^^^^
+   │       │            │
+   │       │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │            update the expression to be infallible by adding a `!`: `split!(parts[1], ":")`
+   │       │            `parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       code_parts, err = split(parts[1], ":")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :40:21
+   │
+40 │               "id": if length(conn_id_parts) > 5 { conn_id_parts[5] } else { "" },
+   │                     ^^
+   │                     │
+   │                     unexpected syntax token: "If"
+   │                     expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :41:30
+   │
+41 │               "src_interface": "inside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :42:23
+   │
+42 │               "src_ip": split(inside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :43:25
+   │
+43 │               "src_port": if length(split(inside[1], "/")) > 1 { split(inside[1], "/")[1] } else { "" },
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :44:30
+   │
+44 │               "dst_interface": "outside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :45:23
+   │
+45 │               "dst_ip": split(outside[1], "/")[0],
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :46:25
+   │
+46 │               "dst_port": if length(split(outside[1], "/")) > 1 { split(outside[1], "/")[1] } else { "" }
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :47:13
+   │
+47 │             }
+   │             ^
+   │             │
+   │             unexpected syntax token: "RBrace"
+   │             expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :48:11
+   │
+48 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :49:9
+   │
+49 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :50:7
+   │
+50 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :51:5
+   │
+51 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :52:3
+   │
+52 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :82:25
+   │
+82 │             "src_port": if length(split(src_parts[1], "/")) > 1 { split(src_parts[1], "/")[1] } else { "" },
+   │                         ^^
+   │                         │
+   │                         unexpected syntax token: "If"
+   │                         expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :83:28
+   │
+83 │             "dst_interface": dst_parts[0],
+   │                            ^
+   │                            │
+   │                            unexpected syntax token: "Colon"
+   │                            expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :84:21
+   │
+84 │             "dst_ip": split(dst_parts[1], "/")[0],
+   │                     ^
+   │                     │
+   │                     unexpected syntax token: "Colon"
+   │                     expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :85:23
+   │
+85 │             "dst_port": if length(split(dst_parts[1], "/")) > 1 { split(dst_parts[1], "/")[1] } else { "" },
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :86:19
+   │
+86 │             "rule": if length(deny_parts) > 9 { deny_parts[9] } else { "" }
+   │                   ^
+   │                   │
+   │                   unexpected syntax token: "Colon"
+   │                   expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :87:11
+   │
+87 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :88:9
+   │
+88 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :89:7
+   │
+89 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :90:5
+   │
+90 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :91:3
+   │
+91 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :92:1
+   │
+92 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:06:32.282370Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 5 failed PyVRL validation
+2025-08-28T20:06:32.282656Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T20:06:32.283240Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T20:06:32.293102Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T20:06:32.293443Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T20:06:32.293533Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T20:06:32.293598Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 6)
+2025-08-28T20:06:32.293858Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_200509/iter6_user.txt
+2025-08-28T20:06:32.293952Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 2.2s delay for iteration 6 to avoid rate limits
+2025-08-28T20:06:34.494125Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T20:06:34.494362Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars
+2025-08-28T20:06:49.935330Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 15.4s (3541 chars)
+2025-08-28T20:06:49.935697Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_200509/iter6_assistant.txt
+2025-08-28T20:06:49.935854Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 6
+2025-08-28T20:06:49.936094Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:49.936161Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 6)
+2025-08-28T20:06:49.936222Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T20:06:49.936303Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T20:06:49.936360Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T20:06:49.938045Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E105]: call to undefined function
+   ┌─ :16:26
+   │
+16 │           .asa_message = trim(code_parts[1])
+   │                          ^^^^
+   │                          │
+   │                          undefined function
+   │                          did you mean "ceil"?
+   │
+   = learn more about error code 105 at https://errors.vrl.dev/105
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :40:21
+   │
+40 │               "id": if length(conn_id_parts) > 5 { conn_id_parts[5] } else { "" },
+   │                     ^^
+   │                     │
+   │                     unexpected syntax token: "If"
+   │                     expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :41:30
+   │
+41 │               "src_interface": "inside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :42:23
+   │
+42 │               "src_ip": split(inside[1], "/")[0] ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :43:25
+   │
+43 │               "src_port": if length(split(inside[1], "/") ?? []) > 1 { split(inside[1], "/")[1] ?? "" } else { "" },
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :44:30
+   │
+44 │               "dst_interface": "outside",
+   │                              ^
+   │                              │
+   │                              unexpected syntax token: "Colon"
+   │                              expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :45:23
+   │
+45 │               "dst_ip": split(outside[1], "/")[0] ?? "",
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :46:25
+   │
+46 │               "dst_port": if length(split(outside[1], "/") ?? []) > 1 { split(outside[1], "/")[1] ?? "" } else { "" }
+   │                         ^
+   │                         │
+   │                         unexpected syntax token: "Colon"
+   │                         expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :47:13
+   │
+47 │             }
+   │             ^
+   │             │
+   │             unexpected syntax token: "RBrace"
+   │             expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :48:11
+   │
+48 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :49:9
+   │
+49 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :50:7
+   │
+50 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :51:5
+   │
+51 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :52:3
+   │
+52 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :82:25
+   │
+82 │             "src_port": if length(split(src_parts[1], "/") ?? []) > 1 { split(src_parts[1], "/")[1] ?? "" } else { "" },
+   │                         ^^
+   │                         │
+   │                         unexpected syntax token: "If"
+   │                         expected one of: "!", "(", "[", "false", "float literal", "function call", "identifier", "integer literal", "null", "raw string literal", "regex literal", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :83:28
+   │
+83 │             "dst_interface": dst_parts[0],
+   │                            ^
+   │                            │
+   │                            unexpected syntax token: "Colon"
+   │                            expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :84:21
+   │
+84 │             "dst_ip": split(dst_parts[1], "/")[0] ?? "",
+   │                     ^
+   │                     │
+   │                     unexpected syntax token: "Colon"
+   │                     expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :85:23
+   │
+85 │             "dst_port": if length(split(dst_parts[1], "/") ?? []) > 1 { split(dst_parts[1], "/")[1] ?? "" } else { "" },
+   │                       ^
+   │                       │
+   │                       unexpected syntax token: "Colon"
+   │                       expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :86:19
+   │
+86 │             "rule": if length(deny_parts) > 9 { deny_parts[9] } else { "" }
+   │                   ^
+   │                   │
+   │                   unexpected syntax token: "Colon"
+   │                   expected one of: "\n", "!=", "&&", "*", "+", "-", "/", ";", "<", "<=", "==", ">", ">=", "??", "|", "|", "||"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :87:11
+   │
+87 │           }
+   │           ^
+   │           │
+   │           unexpected syntax token: "RBrace"
+   │           expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :88:9
+   │
+88 │         }
+   │         ^
+   │         │
+   │         unexpected syntax token: "RBrace"
+   │         expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :89:7
+   │
+89 │       }
+   │       ^
+   │       │
+   │       unexpected syntax token: "RBrace"
+   │       expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :90:5
+   │
+90 │     }
+   │     ^
+   │     │
+   │     unexpected syntax token: "RBrace"
+   │     expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :91:3
+   │
+91 │   }
+   │   ^
+   │   │
+   │   unexpected syntax token: "RBrace"
+   │   expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :92:1
+   │
+92 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T20:06:49.938160Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 6 failed PyVRL validation
+2025-08-28T20:06:49.938226Z WARNING  vrl_testing_loop_clean:run_automated_llm_generation:1358 - Failed to generate valid VRL after 6 iterations
+2025-08-28T20:06:49.938308Z INFO     llm_iterative_session:log_cost_summary:1406 - 💰 SESSION COST SUMMARY:
+2025-08-28T20:06:49.938364Z INFO     llm_iterative_session:log_cost_summary:1407 -    Estimated cost: $0.5021
+2025-08-28T20:06:49.938445Z INFO     llm_iterative_session:log_cost_summary:1408 -    Total tokens: ~13,116
+2025-08-28T20:06:49.938518Z INFO     llm_iterative_session:log_cost_summary:1409 -    Iterations: 6
+2025-08-28T20:06:49.938566Z INFO     llm_iterative_session:log_cost_summary:1410 -    Model: claude-3-5-sonnet-20240620
+2025-08-28T20:06:49.938617Z WARNING  llm_iterative_session:log_cost_summary:1414 -    ℹ️  Anthropic doesn't provide a public credits API. Check console.anthropic.com for actual balance.

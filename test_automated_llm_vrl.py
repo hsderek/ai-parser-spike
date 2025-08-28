@@ -46,6 +46,10 @@ def main():
     # Select sample file - use smaller one for faster testing
     sample_file = "samples/cisco-asa.ndjson"
     
+    # Allow override from command line
+    if len(sys.argv) > 1 and not sys.argv[1].startswith("--"):
+        sample_file = sys.argv[1]
+    
     if not os.path.exists(sample_file):
         print(f"❌ Sample file not found: {sample_file}")
         print("   Run: python generate_large_samples.py")
@@ -78,7 +82,7 @@ def main():
     # Run the automated generation
     success = loop.run_automated_llm_generation(
         provider=provider,
-        max_iterations=5,
+        max_iterations=2,
         model_override=model_override
     )
     

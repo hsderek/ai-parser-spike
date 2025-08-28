@@ -204,9 +204,16 @@ class IterativeLLMSession:
         except Exception as e:
             logger.warning(f"Anthropic model detection failed: {e}")
         
-        # Fallback
-        logger.info("🎯 Using fallback model for Anthropic")
-        return "claude-3-opus-20240229"
+        # Fallback - delegate to LLMClient for dynamic detection
+        logger.info("🎯 Using LLMClient dynamic model detection as fallback")
+        try:
+            from .llm_client import LLMClient
+            client = LLMClient(api_key=self.api_key)
+            return client._detect_best_model('opus')  # Prefer opus for best capability
+        except Exception as fallback_error:
+            logger.error(f"❌ Even LLMClient fallback failed: {fallback_error}")
+            # Ultimate emergency fallback
+            return "claude-3-sonnet-20240229"
         
     def _get_model_capabilities(self, model_name: str, provider: str) -> ModelCapabilities:
         """Get capabilities for the specified model dynamically"""
@@ -662,7 +669,20 @@ class IterativeLLMSession:
             logger.warning(f"Bedrock model detection failed: {e}")
         
         # Fallback to known Claude model
-        return "anthropic.claude-3-opus-20240229-v1:0"
+        # Use dynamic model detection for Bedrock as well
+        try:
+            from .llm_client import LLMClient
+            client = LLMClient(api_key=self.api_key)
+            claude_model = client._detect_best_model('opus')
+            # Convert to Bedrock format
+            if 'opus-4' in claude_model.lower():
+                return "anthropic.claude-opus-4-1-20250805-v1:0"  # Estimated Bedrock format
+            elif 'sonnet-4' in claude_model.lower():
+                return "anthropic.claude-sonnet-4-20250514-v1:0"
+            else:
+                return "anthropic.claude-3-opus-20240229-v1:0"  # Emergency fallback
+        except:
+            return "anthropic.claude-3-opus-20240229-v1:0"  # Emergency fallback
         
     def generate_initial_vrl(self,
                             sample_data: List[Dict[str, Any]],
@@ -674,6 +694,8 @@ class IterativeLLMSession:
             Tuple of (vrl_code, success)
         """
         self.iteration_count = 1
+        # Store external configs for use in feedback iterations
+        self.external_configs = external_configs
         logger.info(f"🚀 Starting VRL generation session (iteration 1)")
         
         # Build initial prompt with all context
@@ -692,7 +714,7 @@ class IterativeLLMSession:
         
     def iterate_with_feedback(self,
                              test_results: Dict[str, Any],
-                             max_iterations: int = 5) -> Tuple[str, bool]:
+                             max_iterations: int = 10) -> Tuple[str, bool]:
         """
         Iterate VRL generation based on test feedback
         
@@ -724,6 +746,44 @@ class IterativeLLMSession:
         
         return vrl_code, vrl_code != ""
         
+    def _get_vrl_template(self, pattern: str) -> str:
+        """Get VRL template for common patterns"""
+        templates = {
+            'Cisco ASA': '''```vrl
+# Cisco ASA template
+if starts_with(.message, "%ASA-") {
+    parts = split(.message, " ")
+    if length(parts) > 0 {
+        asa_header = parts[0]
+        if contains(asa_header, "-") {
+            asa_parts = split(asa_header, "-")
+            if length(asa_parts) >= 3 {
+                .cisco_severity = asa_parts[1]
+            }
+        }
+    }
+}
+```''',
+            'FortiGate': '''```vrl
+# FortiGate key=value template
+if contains(.message, "devname=") {
+    pairs = split(.message, " ")
+    for_each(array!(pairs)) -> |_index, pair| {
+        if contains(string!(pair), "=") {
+            kv = split(string!(pair), "=")
+            if length(kv) == 2 {
+                key = kv[0]
+                value = kv[1]
+                if key == "srcip" { .source_ip = value }
+                else if key == "dstip" { .dest_ip = value }
+            }
+        }
+    }
+}
+```'''
+        }
+        return templates.get(pattern, "")
+    
     def _get_vrl_syntax_examples(self):
         """Provide valid VRL syntax examples"""
         return """
@@ -770,16 +830,36 @@ FORBIDDEN (will be rejected):
                              external_configs: Dict[str, str]) -> str:
         """Build the initial prompt with full context"""
         
+        # Optimize external configs for first iteration
+        from prompt_optimizer import optimize_for_llm_session
+        optimized_configs = optimize_for_llm_session(external_configs, iteration=1)
+        
         prompt_parts = []
         
-        # Add external configuration rules
-        if 'vector_vrl_prompt' in external_configs:
+        # Add external configuration rules (optimized)
+        if 'vector_vrl_prompt' in optimized_configs:
             prompt_parts.append("# VRL GENERATION RULES AND REQUIREMENTS:")
-            prompt_parts.append(external_configs['vector_vrl_prompt'])
+            prompt_parts.append(optimized_configs['vector_vrl_prompt'])
             
-        if 'parser_prompts' in external_configs:
+        if 'parser_prompts' in optimized_configs:
             prompt_parts.append("\n# PROJECT-SPECIFIC REQUIREMENTS:")
-            prompt_parts.append(external_configs['parser_prompts'])
+            prompt_parts.append(optimized_configs['parser_prompts'])
+            
+            # Apply provider-specific adaptations
+            if self.provider == LLMProvider.ANTHROPIC:
+                prompt_parts.append("\n# CLAUDE-SPECIFIC VRL ERROR PREVENTION:")
+                prompt_parts.append("You are using Claude - apply extra defensive null checking:")
+                prompt_parts.append("- ALWAYS use length checks before array access: if length(parts) > 1 { ... }")
+                prompt_parts.append("- ALWAYS ensure variables are non-null before predicates: if exists(.field) && contains(string!(.field), pattern)")
+                prompt_parts.append("- NEVER assume array indices exist without length validation")
+                prompt_parts.append("- Use nested conditional structure over complex expressions")
+        
+        if 'type_maps' in optimized_configs:
+            prompt_parts.append("\n# FIELD TYPE MAPPING SCHEMA:")
+            prompt_parts.append("Use this CSV schema to select optimal field types:")
+            prompt_parts.append("```csv")
+            prompt_parts.append(optimized_configs['type_maps'])
+            prompt_parts.append("```")
             
         # Analyze and add sample data
         prompt_parts.append("\n# SAMPLE LOG DATA ANALYSIS:")
@@ -805,6 +885,13 @@ FORBIDDEN (will be rejected):
             prompt_parts.append(f"\nSample {i}:")
             prompt_parts.append(json.dumps(sample, indent=2))
             
+        # Add VRL template if pattern detected
+        if patterns_found:
+            template = self._get_vrl_template(list(patterns_found)[0])
+            if template:
+                prompt_parts.append("\n# TEMPLATE TO START WITH:")
+                prompt_parts.append(template)
+        
         # Add VRL syntax examples
         prompt_parts.append(self._get_vrl_syntax_examples())
         
@@ -826,6 +913,24 @@ FORBIDDEN (will be rejected):
         
     def _build_feedback_prompt(self, test_results: Dict[str, Any]) -> str:
         """Build iteration prompt with test feedback"""
+        
+        # Use compressed prompts for iterations 2+
+        if self.iteration_count > 1:
+            from prompt_optimizer import PromptOptimizer
+            optimizer = PromptOptimizer()
+            
+            # Get previous VRL from conversation history
+            previous_vrl = ""
+            for entry in reversed(self.conversation_history):
+                if entry['role'] == 'assistant' and '```vrl' in entry['content'].lower():
+                    previous_vrl = entry['content']
+                    break
+            
+            return optimizer.compress_feedback_prompt(
+                iteration=self.iteration_count,
+                errors=test_results.get('errors', []),
+                previous_vrl=previous_vrl
+            )
         
         prompt_parts = []
         
@@ -866,9 +971,41 @@ FORBIDDEN (will be rejected):
             prompt_parts.append(f"\n# FIELDS EXTRACTED:")
             prompt_parts.append(f"Successfully extracted: {', '.join(test_results['extracted_fields'])}")
             
+        # Add VRL-specific guidance from external configs if available
+        if hasattr(self, 'external_configs') and test_results.get('errors'):
+            if 'vector_vrl_prompt' in self.external_configs:
+                prompt_parts.append("\n# VRL SYNTAX GUIDANCE:")
+                # Extract key VRL error handling sections
+                vrl_guidance = self.external_configs['vector_vrl_prompt']
+                if 'PERFORMANCE & ERROR‑HANDLING' in vrl_guidance:
+                    # Extract the error handling section
+                    lines = vrl_guidance.split('\n')
+                    in_error_section = False
+                    error_guidance = []
+                    for line in lines:
+                        if 'PERFORMANCE & ERROR‑HANDLING' in line:
+                            in_error_section = True
+                            continue
+                        elif line.startswith('────') and in_error_section:
+                            break
+                        elif in_error_section and line.strip():
+                            error_guidance.append(line)
+                    
+                    if error_guidance:
+                        prompt_parts.extend(error_guidance[:8])  # Limit to key guidance
+                        
+                # Add specific VRL patterns for common errors
+                prompt_parts.append("")
+                prompt_parts.append("CRITICAL VRL PATTERNS:")
+                prompt_parts.append("- split() is INFALLIBLE - never use error assignment")
+                prompt_parts.append("- Variables from array access could be null - check length first")
+                prompt_parts.append("- Pattern: if length(parts) > 1 { .field = parts[1] }")
+                prompt_parts.append("- Use string!() to ensure non-null: safe_var = string!(.field)")
+        
         # Request fixes
         prompt_parts.append("\n# TASK:")
-        prompt_parts.append("Fix the errors above and generate improved VRL code.")
+        prompt_parts.append("Fix the EXACT errors above using proper VRL syntax patterns.")
+        prompt_parts.append("Focus specifically on E103 (unhandled fallible) and E104 (unnecessary error) errors.")
         prompt_parts.append("Remember: NO regex, only string operations!")
         prompt_parts.append("Return ONLY the complete fixed VRL code.")
         
@@ -879,8 +1016,8 @@ FORBIDDEN (will be rejected):
         
         # Intelligent rate limiting based on provider, iteration count, and previous rate limit experience
         if not is_initial and retry_count == 0:
-            # Base delay calculation: exponential backoff for iterations
-            delay = min(2 + (self.iteration_count * 0.5) + (self.iteration_count ** 1.2), 12)
+            # Minimal delay for development speed - just enough to avoid rate limits
+            delay = min(1.0 + (self.iteration_count * 0.2), 3.0)
             
             # Different delays per provider (based on their rate limits)
             if self.provider == LLMProvider.ANTHROPIC:
@@ -1020,7 +1157,8 @@ FORBIDDEN (will be rejected):
             # Static fallbacks as last resort
             fallback_models.extend([
                 "claude-3-5-sonnet-20240620",
-                "claude-3-opus-20240229", 
+                # Dynamic model list - get from API
+                # "claude-3-opus-20240229",  # Removed hardcoded fallback 
                 "claude-3-sonnet-20240229"
             ])
         
@@ -1247,6 +1385,54 @@ if exists(.message) {
         output_cost = total_output_tokens * self.model_capabilities.cost_per_output_token
         
         return input_cost + output_cost
+    
+    def check_anthropic_credits(self) -> Dict[str, Any]:
+        """Check Anthropic credit balance and usage"""
+        if self.provider != LLMProvider.ANTHROPIC or not self.client:
+            return {"error": "Only available for Anthropic API"}
+        
+        try:
+            # Try to get organization/usage info if available
+            # Note: Anthropic doesn't have a public credits API, but we can track usage
+            session_cost = self._estimate_session_cost()
+            
+            return {
+                "session_cost_usd": session_cost,
+                "estimated_tokens_used": self._estimate_total_tokens(),
+                "note": "Anthropic doesn't provide a public credits API. Check console.anthropic.com for actual balance.",
+                "cost_breakdown": {
+                    "input_cost_per_token": self.model_capabilities.cost_per_input_token,
+                    "output_cost_per_token": self.model_capabilities.cost_per_output_token,
+                    "model": self.model
+                }
+            }
+        except Exception as e:
+            return {"error": f"Could not check credits: {str(e)}"}
+    
+    def _estimate_total_tokens(self) -> int:
+        """Estimate total tokens used in session"""
+        total_tokens = 0
+        for entry in self.conversation_history:
+            # Rough estimate: 4 characters per token
+            content_length = len(entry["content"])
+            tokens = content_length // 4
+            total_tokens += tokens
+        return total_tokens
+    
+    def log_cost_summary(self):
+        """Log a cost summary to console"""
+        session_cost = self._estimate_session_cost()
+        total_tokens = self._estimate_total_tokens()
+        
+        logger.info(f"💰 SESSION COST SUMMARY:")
+        logger.info(f"   Estimated cost: ${session_cost:.4f}")
+        logger.info(f"   Total tokens: ~{total_tokens:,}")
+        logger.info(f"   Iterations: {self.iteration_count}")
+        logger.info(f"   Model: {self.model}")
+        
+        credits_info = self.check_anthropic_credits()
+        if "note" in credits_info:
+            logger.warning(f"   ℹ️  {credits_info['note']}")
 
 
 if __name__ == "__main__":

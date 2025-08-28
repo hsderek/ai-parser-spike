@@ -1,0 +1,6 @@
+2025-08-28T20:54:44.880902Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T20:54:44.881136Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_205444.log
+2025-08-28T20:54:44.881237Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/small/ssh-sample.ndjson
+2025-08-28T20:54:44.881303Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T20:54:44.881358Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T20:54:44.881437Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']

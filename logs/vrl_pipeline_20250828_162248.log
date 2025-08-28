@@ -1,0 +1,165 @@
+2025-08-28T16:22:48.520675Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T16:22:48.521092Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_162248.log
+2025-08-28T16:22:48.521335Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/cisco-asa.ndjson
+2025-08-28T16:22:48.521437Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T16:22:48.521507Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T16:22:48.521562Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T16:22:48.524125Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T16:22:48.530446Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T16:22:48.530714Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T16:22:49.034595Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T16:22:49.034961Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T16:22:49.035209Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T16:22:49.035331Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T16:22:49.035417Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 8161 chars of project overrides
+2025-08-28T16:22:49.035507Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T16:22:49.035580Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T16:22:49.725339Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T16:22:49.725883Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 5
+2025-08-28T16:22:49.763526Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T16:22:49.763800Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T16:22:50.105866Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T16:22:50.106089Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T16:22:50.107020Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T16:22:50.419229Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T16:22:50.419667Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T16:22:50.419738Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T16:22:50.419794Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_162249
+2025-08-28T16:22:50.419844Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T16:22:50.419904Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T16:22:50.419987Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T16:22:50.420037Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T16:22:50.420093Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T16:22:50.420159Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T16:22:50.420814Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_162249/iter1_user.txt
+2025-08-28T16:22:50.420886Z INFO     llm_iterative_session:_call_llm:939 - 📤 Calling anthropic API
+2025-08-28T16:22:50.421066Z DEBUG    llm_iterative_session:_call_llm:940 -    Prompt length: 30990 chars
+2025-08-28T16:22:55.411871Z DEBUG    llm_iterative_session:_call_anthropic:1085 - Model claude-opus-4-1-20250805 failed: Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}
+2025-08-28T16:23:56.508287Z WARNING  llm_iterative_session:_call_anthropic:1073 - Fell back from claude-opus-4-1-20250805 to claude-opus-4-20250514
+2025-08-28T16:23:56.508498Z INFO     llm_iterative_session:_call_llm:955 - 📥 Response received in 66.1s (8501 chars)
+2025-08-28T16:23:56.508879Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_162249/iter1_assistant.txt
+2025-08-28T16:23:56.508969Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 1
+2025-08-28T16:23:56.509030Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:23:56.509072Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T16:23:56.509108Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:23:56.509159Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:23:56.509195Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:23:56.512272Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :34:19
+   │
+34 │       code_part = asa_parts[1] ?? ""
+   │                   ^^^^^^^^^^^^ -- -- this expression never resolves
+   │                   │            │
+   │                   │            remove this error coalescing operation
+   │                   this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T16:23:56.512397Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T16:23:56.512466Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T16:23:56.512749Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_162249/iter2_user.txt
+2025-08-28T16:23:56.512819Z DEBUG    llm_iterative_session:_call_llm:936 - Adding 5.3s delay for iteration 2 to avoid rate limits
+2025-08-28T16:24:01.810411Z INFO     llm_iterative_session:_call_llm:939 - 📤 Calling anthropic API
+2025-08-28T16:24:01.810793Z DEBUG    llm_iterative_session:_call_llm:940 -    Prompt length: 829 chars
+2025-08-28T16:25:01.736172Z INFO     llm_iterative_session:_call_llm:955 - 📥 Response received in 59.9s (9035 chars)
+2025-08-28T16:25:01.737022Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_162249/iter2_assistant.txt
+2025-08-28T16:25:01.737137Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 2
+2025-08-28T16:25:01.737236Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:25:01.737291Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 2)
+2025-08-28T16:25:01.737338Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:25:01.737407Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:25:01.737455Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:25:01.741503Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :38:20
+   │
+38 │       code_split = split(code_part, "-")
+   │       ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │       │            │
+   │       │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │            update the expression to be infallible by adding a `!`: `split!(code_part, "-")`
+   │       │            `code_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       code_split, err = split(code_part, "-")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T16:25:01.741652Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 2 failed PyVRL validation
+2025-08-28T16:25:01.741727Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 3)
+2025-08-28T16:25:01.742078Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_162249/iter3_user.txt
+2025-08-28T16:25:01.742156Z DEBUG    llm_iterative_session:_call_llm:936 - Adding 7.2s delay for iteration 3 to avoid rate limits
+2025-08-28T16:25:08.979643Z INFO     llm_iterative_session:_call_llm:939 - 📤 Calling anthropic API
+2025-08-28T16:25:08.980279Z DEBUG    llm_iterative_session:_call_llm:940 -    Prompt length: 829 chars
+2025-08-28T16:25:59.144222Z INFO     llm_iterative_session:_call_llm:955 - 📥 Response received in 50.2s (9027 chars)
+2025-08-28T16:25:59.144632Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_162249/iter3_assistant.txt
+2025-08-28T16:25:59.144711Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 3
+2025-08-28T16:25:59.144777Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:25:59.144830Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 3)
+2025-08-28T16:25:59.144877Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:25:59.144954Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:25:59.145010Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:25:59.147076Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :40:20
+   │
+40 │       code_split = split(asa_parts[1], "-")
+   │       ------------ ^^^^^^^^^^^^^^^^^^^^^^^^
+   │       │            │
+   │       │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │            update the expression to be infallible by adding a `!`: `split!(asa_parts[1], "-")`
+   │       │            `asa_parts[1]` argument type is `string or undefined` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       code_split, err = split(asa_parts[1], "-")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T16:25:59.147197Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 3 failed PyVRL validation
+2025-08-28T16:25:59.147287Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 4)
+2025-08-28T16:25:59.147570Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_162249/iter4_user.txt
+2025-08-28T16:25:59.147643Z DEBUG    llm_iterative_session:_call_llm:936 - Adding 9.3s delay for iteration 4 to avoid rate limits
+2025-08-28T16:26:08.425896Z INFO     llm_iterative_session:_call_llm:939 - 📤 Calling anthropic API
+2025-08-28T16:26:08.426425Z DEBUG    llm_iterative_session:_call_llm:940 -    Prompt length: 829 chars
+2025-08-28T16:27:10.559565Z INFO     llm_iterative_session:_call_llm:955 - 📥 Response received in 62.1s (9818 chars)
+2025-08-28T16:27:10.560089Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_162249/iter4_assistant.txt
+2025-08-28T16:27:10.560187Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 4
+2025-08-28T16:27:10.560266Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:27:10.560325Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 4)
+2025-08-28T16:27:10.560376Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:27:10.560434Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:27:10.560484Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:27:10.599342Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 'NoneType' object has no attribute 'keys'
+2025-08-28T16:27:10.599800Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 4 failed PyVRL validation
+2025-08-28T16:27:10.599881Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 5)
+2025-08-28T16:27:10.600392Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_162249/iter5_user.txt
+2025-08-28T16:27:10.600481Z DEBUG    llm_iterative_session:_call_llm:936 - Adding 11.4s delay for iteration 5 to avoid rate limits
+2025-08-28T16:27:21.999324Z INFO     llm_iterative_session:_call_llm:939 - 📤 Calling anthropic API
+2025-08-28T16:27:22.002465Z DEBUG    llm_iterative_session:_call_llm:940 -    Prompt length: 692 chars
+2025-08-28T16:27:29.553106Z DEBUG    llm_iterative_session:_call_anthropic:1085 - Model claude-opus-4-20250514 failed: Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}
+2025-08-28T16:27:31.545709Z DEBUG    llm_iterative_session:_call_anthropic:1085 - Model claude-opus-4-1-20250805 failed: Error code: 500 - {'type': 'error', 'error': {'type': 'api_error', 'message': 'Overloaded'}, 'request_id': None}
+2025-08-28T16:27:54.501699Z WARNING  llm_iterative_session:_call_anthropic:1073 - Fell back from claude-opus-4-20250514 to claude-sonnet-4-20250514
+2025-08-28T16:27:54.502165Z INFO     llm_iterative_session:_call_llm:955 - 📥 Response received in 32.5s (8650 chars)
+2025-08-28T16:27:54.502943Z DEBUG    llm_iterative_session:_save_conversation:1214 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_162249/iter5_assistant.txt
+2025-08-28T16:27:54.503114Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1221 - Testing iteration 5
+2025-08-28T16:27:54.503296Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:27:54.503450Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 5)
+2025-08-28T16:27:54.503588Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T16:27:54.503744Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T16:27:54.503807Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T16:27:54.542637Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 'NoneType' object has no attribute 'keys'
+2025-08-28T16:27:54.543028Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 5 failed PyVRL validation
+2025-08-28T16:27:54.543259Z WARNING  vrl_testing_loop_clean:run_automated_llm_generation:1260 - Failed to generate valid VRL after 5 iterations

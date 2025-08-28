@@ -1,0 +1,16 @@
+2025-08-28T19:35:44.628400Z INFO     src.vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T19:35:44.628550Z INFO     src.vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_193544.log
+2025-08-28T19:35:44.628616Z INFO     src.vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/large/ssh-real.ndjson
+2025-08-28T19:35:44.628669Z INFO     src.vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T19:35:44.628717Z INFO     src.vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T19:35:44.628763Z INFO     src.vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T19:36:01.275378Z INFO     src.vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T19:36:01.281126Z INFO     src.vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T19:36:01.281220Z INFO     src.vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T19:36:01.794908Z INFO     src.vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.51s
+2025-08-28T19:36:01.795145Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T19:36:01.795279Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T19:36:01.795339Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T19:36:01.795384Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T19:36:01.795442Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T19:36:01.795497Z INFO     src.vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context

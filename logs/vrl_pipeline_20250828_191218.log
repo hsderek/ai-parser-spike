@@ -1,0 +1,265 @@
+2025-08-28T19:12:18.850357Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T19:12:18.850567Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_191218.log
+2025-08-28T19:12:18.850641Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/large/ssh-real.ndjson
+2025-08-28T19:12:18.850705Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T19:12:18.850766Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T19:12:18.850829Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']
+2025-08-28T19:12:36.096703Z INFO     vrl_testing_loop_clean:__init__:113 - Benchmarking local CPU performance...
+2025-08-28T19:12:36.101274Z INFO     vrl_testing_loop_clean:__init__:115 - CPU benchmark multiplier: 10.00x
+2025-08-28T19:12:36.101490Z INFO     vrl_testing_loop_clean:__init__:118 - Measuring Vector CLI startup time...
+2025-08-28T19:12:36.604152Z INFO     vrl_testing_loop_clean:__init__:120 - Vector startup time: 0.50s
+2025-08-28T19:12:36.604634Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1067 - 📋 EXTERNAL CONFIGS SUMMARY (K8s deployed):
+2025-08-28T19:12:36.605095Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1074 -    🎯 vector-vrl-system.md: v1.3.0...
+2025-08-28T19:12:36.605257Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1075 -       Contains: Performance tiers, string ops, Vector 0.49.0 config
+2025-08-28T19:12:36.605367Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1079 -    🔧 parser-system-prompts.md: 10690 chars of project overrides
+2025-08-28T19:12:36.605476Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1085 -    📊 type_maps.csv: 24 field mappings for product evolution
+2025-08-28T19:12:36.605587Z INFO     vrl_testing_loop_clean:_log_external_configs_summary:1087 -    💡 These configs are retained for persistent LLM context
+2025-08-28T19:12:36.605694Z INFO     __main__:test_stream:42 - 🚀 Starting automated generation (max 5 iterations)
+2025-08-28T19:12:36.605799Z INFO     __main__:test_stream:43 - Watch for:
+2025-08-28T19:12:36.605873Z INFO     __main__:test_stream:44 -   - Pre-tokenizer: 655K → 3 samples
+2025-08-28T19:12:36.605970Z INFO     __main__:test_stream:45 -   - Model-specific fixes triggering
+2025-08-28T19:12:36.607065Z INFO     __main__:test_stream:46 -   - E103 → E620 → SUCCESS progression
+2025-08-28T19:12:37.296730Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1201 - 🤖 Starting automated LLM VRL generation
+2025-08-28T19:12:37.297352Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1202 - Provider: anthropic, Max iterations: 5
+2025-08-28T19:12:37.304587Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1210 - 🔧 Optimizing samples with pre-tokenizer...
+2025-08-28T19:12:37.910640Z INFO     pre_tokenizer.enhanced_optimizer:smart_sample_selection:132 - Found 1 distinct patterns in 655147 samples
+2025-08-28T19:12:46.726397Z SUCCESS  pre_tokenizer.enhanced_optimizer:smart_sample_selection:172 - Selected 3 samples covering 1 patterns
+2025-08-28T19:12:46.888646Z INFO     pre_tokenizer.pre_tokenizer:__init__:41 - Initialized PreTokenizer for claude-3-opus-20240229 with 30,000 max tokens
+2025-08-28T19:12:46.889042Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:101 - Optimizing 3 samples for 30,000 tokens
+2025-08-28T19:12:46.889548Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:116 - Reduced to 3 unique samples from 3
+2025-08-28T19:12:46.889624Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:117 - Pattern distribution: {'auth': 1}
+2025-08-28T19:12:46.891377Z SUCCESS  pre_tokenizer.pre_tokenizer:optimize_samples:190 - Selected 3 samples using 1,770 tokens
+2025-08-28T19:12:46.891461Z INFO     pre_tokenizer.pre_tokenizer:optimize_samples:191 - Pattern coverage: 100.0%
+2025-08-28T19:12:46.891514Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1241 - 📊 Sample optimization: 655147 → 3 samples
+2025-08-28T19:12:46.891599Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1242 - 📊 Token usage: 1,770 tokens
+2025-08-28T19:12:46.891677Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1243 - 📊 Pattern coverage: 100.0%
+2025-08-28T19:12:46.923362Z INFO     llm_iterative_session:_init_anthropic:433 - 🔍 Auto-detecting latest Anthropic model...
+2025-08-28T19:12:46.923505Z INFO     llm_iterative_session:_detect_best_anthropic_model:140 - 🔍 Querying Anthropic API for available models...
+2025-08-28T19:12:47.230015Z INFO     llm_iterative_session:_detect_best_anthropic_model:166 - Available Anthropic models: ['claude-opus-4-1-20250805', 'claude-opus-4-20250514', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022']...
+2025-08-28T19:12:47.230243Z INFO     llm_iterative_session:_detect_best_anthropic_model:187 - ✅ Selected best Opus model: claude-opus-4-1-20250805
+2025-08-28T19:12:47.232184Z INFO     llm_iterative_session:_init_anthropic:435 - 🎯 Selected model: claude-opus-4-1-20250805
+2025-08-28T19:12:47.567393Z INFO     llm_iterative_session:__init__:124 - 🤖 Iterative LLM Session initialized
+2025-08-28T19:12:47.568057Z INFO     llm_iterative_session:__init__:125 -    Provider: anthropic
+2025-08-28T19:12:47.568138Z INFO     llm_iterative_session:__init__:126 -    Model: claude-opus-4-1-20250805
+2025-08-28T19:12:47.568201Z INFO     llm_iterative_session:__init__:127 -    Session: llm_session_20250828_191246
+2025-08-28T19:12:47.568261Z INFO     llm_iterative_session:__init__:131 - 📊 Model Capabilities:
+2025-08-28T19:12:47.568338Z INFO     llm_iterative_session:__init__:132 -    Context Window: 200,000 tokens
+2025-08-28T19:12:47.568401Z INFO     llm_iterative_session:__init__:133 -    Max Input: 200,000 tokens
+2025-08-28T19:12:47.568461Z INFO     llm_iterative_session:__init__:134 -    Max Output: 4,096 tokens
+2025-08-28T19:12:47.568520Z INFO     llm_iterative_session:__init__:136 -    Cost: $0.000015/input, $0.000075/output per token
+2025-08-28T19:12:47.568582Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1249 - 💰 Cost tracking: $0.000015/input token, $0.000075/output token
+2025-08-28T19:12:47.568646Z INFO     llm_iterative_session:generate_initial_vrl:679 - 🚀 Starting VRL generation session (iteration 1)
+2025-08-28T19:12:47.570196Z INFO     prompt_optimizer:_optimize_initial_configs:82 - Compressed vector_vrl_prompt: 20935 → 18968 chars (9.4% reduction)
+2025-08-28T19:12:47.570373Z INFO     prompt_optimizer:_optimize_initial_configs:101 - Compressed parser_prompts: 10690 → 1988 chars (81.4% reduction)
+2025-08-28T19:12:47.570477Z INFO     prompt_optimizer:_optimize_initial_configs:133 - Compressed type_maps: 2877 → 2749 chars (4.4% reduction)
+2025-08-28T19:12:47.571016Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_191246/iter1_user.txt
+2025-08-28T19:12:47.571085Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T19:12:47.571168Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 31037 chars
+2025-08-28T19:14:11.202412Z INFO     llm_iterative_session:_call_llm:1038 - 📥 Response received in 83.6s (8861 chars)
+2025-08-28T19:14:11.203199Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved assistant message to .tmp/llm_sessions/llm_session_20250828_191246/iter1_assistant.txt
+2025-08-28T19:14:11.203263Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1263 - Testing iteration 1
+2025-08-28T19:14:11.203328Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:14:11.203404Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - TESTING LLM-GENERATED VRL (Iteration 1)
+2025-08-28T19:14:11.203446Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ============================================================
+2025-08-28T19:14:11.203500Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - 
+1. TESTING WITH PyVRL
+2025-08-28T19:14:11.203548Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ----------------------------------------
+2025-08-28T19:14:11.210615Z ERROR    vrl_testing_loop_clean:test_with_pyvrl:311 - ✗ PyVRL validation failed: 
+error[E203]: syntax error
+   ┌─ :21:9
+   │
+21 │       return
+   │ ╭──────────^
+   │ │ ╭────────'
+22 │ │ │ }
+   │ ╰─│^ unexpected syntax token: "Newline"
+   │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+   ┌─ :22:1
+   │
+22 │ }
+   │ ^
+   │ │
+   │ unexpected syntax token: "RBrace"
+   │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :40:21
+   │
+40 │       space_parts = split(rhost_section, " ")
+   │       ------------- ^^^^^^^^^^^^^^^^^^^^^^^^^
+   │       │             │
+   │       │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │             update the expression to be infallible by adding a `!`: `split!(rhost_section, " ")`
+   │       │             `rhost_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       space_parts, err = split(rhost_section, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :96:21
+   │
+96 │       space_parts = split(user_value, " ")
+   │       ------------- ^^^^^^^^^^^^^^^^^^^^^^
+   │       │             │
+   │       │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │       │             update the expression to be infallible by adding a `!`: `split!(user_value, " ")`
+   │       │             `user_value` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │       or change this to an infallible assignment:
+   │       space_parts, err = split(user_value, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :112:18
+    │
+112 │     from_parts = split(user_section, " from ")
+    │     ------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │            │
+    │     │            this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │            update the expression to be infallible by adding a `!`: `split!(user_section, " from ")`
+    │     │            `user_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     from_parts, err = split(user_section, " from ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :147:18
+    │
+147 │     from_parts = split(user_section, " from ")
+    │     ------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │            │
+    │     │            this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │            update the expression to be infallible by adding a `!`: `split!(user_section, " from ")`
+    │     │            `user_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     from_parts, err = split(user_section, " from ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :182:18
+    │
+182 │     from_parts = split(user_section, " from ")
+    │     ------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │            │
+    │     │            this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │            update the expression to be infallible by adding a `!`: `split!(user_section, " from ")`
+    │     │            `user_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     from_parts, err = split(user_section, " from ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :228:18
+    │
+228 │     port_parts = split(ip_section, " port ")
+    │     ------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │            │
+    │     │            this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │            update the expression to be infallible by adding a `!`: `split!(ip_section, " port ")`
+    │     │            `ip_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     port_parts, err = split(ip_section, " port ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :248:19
+    │
+248 │     space_parts = split(user_section, " ")
+    │     ------------- ^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │             │
+    │     │             this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │             update the expression to be infallible by adding a `!`: `split!(user_section, " ")`
+    │     │             `user_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     space_parts, err = split(user_section, " ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :260:19
+    │
+260 │     space_parts = split(user_section, " ")
+    │     ------------- ^^^^^^^^^^^^^^^^^^^^^^^^
+    │     │             │
+    │     │             this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │             update the expression to be infallible by adding a `!`: `split!(user_section, " ")`
+    │     │             `user_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     space_parts, err = split(user_section, " ")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+    ┌─ :273:21
+    │
+273 │     bracket_parts = split(pid_section, "]")
+    │     --------------- ^^^^^^^^^^^^^^^^^^^^^^^
+    │     │               │
+    │     │               this expression is fallible because at least one argument's type cannot be verified to be valid
+    │     │               update the expression to be infallible by adding a `!`: `split!(pid_section, "]")`
+    │     │               `pid_section` argument type is `string or null` and this function expected a parameter `value` of type `string`
+    │     or change this to an infallible assignment:
+    │     bracket_parts, err = split(pid_section, "]")
+    │
+    = see documentation about error handling at https://errors.vrl.dev/#handling
+    = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+    = learn more about error code 103 at https://errors.vrl.dev/103
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-28T19:14:11.210846Z INFO     vrl_testing_loop_clean:_log_with_timestamp:1111 - ❌ LLM VRL iteration 1 failed PyVRL validation
+2025-08-28T19:14:11.211553Z INFO     error_batch_collector:collect_all_errors:46 - 📋 Phase 1: PyVRL syntax validation
+2025-08-28T19:14:11.211637Z INFO     error_batch_collector:collect_all_errors:52 - 📋 Phase 2: Vector CLI validation
+2025-08-28T19:14:11.222824Z INFO     error_batch_collector:collect_all_errors:75 - 📊 Collected 1 total errors
+2025-08-28T19:14:11.222980Z INFO     error_batch_collector:collect_all_errors:79 -    other: 1 errors
+2025-08-28T19:14:11.223061Z INFO     vrl_testing_loop_clean:run_automated_llm_generation:1347 - 📊 Collected 1 errors for batch fixing
+2025-08-28T19:14:11.223130Z INFO     llm_iterative_session:iterate_with_feedback:713 - 🔄 Iterating VRL generation (iteration 2)
+2025-08-28T19:14:11.223359Z DEBUG    llm_iterative_session:_save_conversation:1297 - 💾 Saved user message to .tmp/llm_sessions/llm_session_20250828_191246/iter2_user.txt
+2025-08-28T19:14:11.223433Z DEBUG    llm_iterative_session:_call_llm:1019 - Adding 1.4s delay for iteration 2 to avoid rate limits
+2025-08-28T19:14:12.623679Z INFO     llm_iterative_session:_call_llm:1022 - 📤 Calling anthropic API
+2025-08-28T19:14:12.624614Z DEBUG    llm_iterative_session:_call_llm:1023 -    Prompt length: 465 chars

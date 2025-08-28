@@ -1,0 +1,197 @@
+# Model Capability Preferences for LiteLLM
+# Updated: August 2025 - Latest model capabilities and preferences
+# This file defines the preference order for models across all providers
+
+providers:
+  anthropic:
+    # Anthropic models - August 2025 latest (standardized format)
+    preference_order:
+      - model: "claude-opus-4-1"                 # Opus 4.1 (best reasoning/capability)
+        capability: "highest"
+        use_case: ["complex_reasoning", "code_generation", "analysis"]
+        context_window: 200000
+        fallback_models: ["claude-opus-4", "claude-opus-3"]
+        
+      - model: "claude-sonnet-4"                 # Sonnet 4 (best performance/speed)
+        capability: "very_high" 
+        use_case: ["production", "fast_responses", "balanced"]
+        context_window: 1000000  # 1M context window
+        fallback_models: ["claude-sonnet-3-7", "claude-sonnet-3-5"]
+        
+      - model: "claude-sonnet-3-7"               # Sonnet 3.7 (latest intermediate)
+        capability: "high"
+        use_case: ["general_purpose", "cost_effective"]
+        context_window: 200000
+        fallback_models: ["claude-sonnet-3-5", "claude-sonnet-3"]
+        
+      - model: "claude-sonnet-3-5"               # Sonnet 3.5 (proven stable)
+        capability: "high"
+        use_case: ["reliable", "production_stable"]
+        context_window: 200000
+        fallback_models: ["claude-sonnet-3", "claude-haiku-3-5"]
+        
+      - model: "claude-opus-3"                   # Opus 3.0 (fallback)
+        capability: "medium_high"
+        use_case: ["fallback", "legacy"]
+        context_window: 200000
+        fallback_models: ["claude-sonnet-3", "claude-haiku-3"]
+
+  openai:
+    # OpenAI models - August 2025 latest
+    preference_order:
+      - model: "o3-2025-04-16"                   # O3 (latest reasoning model)
+        capability: "highest"
+        use_case: ["complex_reasoning", "research"]
+        context_window: 128000
+        
+      - model: "o1-pro"                          # O1 Pro (advanced reasoning)
+        capability: "very_high"
+        use_case: ["problem_solving", "analysis"]
+        context_window: 128000
+        
+      - model: "gpt-5-2025-08-07"                # GPT-5 (if available)
+        capability: "very_high"
+        use_case: ["general_purpose", "latest"]
+        context_window: 128000
+        
+      - model: "gpt-4.5-preview-2025-02-27"     # GPT-4.5 Preview
+        capability: "high"
+        use_case: ["preview_features", "experimental"]
+        context_window: 128000
+        
+      - model: "gpt-4o-2024-11-20"              # GPT-4o (multimodal)
+        capability: "high"
+        use_case: ["production", "multimodal"]
+        context_window: 128000
+
+  google:
+    # Google Gemini models - August 2025 latest
+    preference_order:
+      - model: "gemini-2.5-pro-preview-06-05"   # Gemini 2.5 Pro (latest)
+        capability: "highest"
+        use_case: ["advanced_reasoning", "multimodal"]
+        context_window: 2000000  # 2M context window
+        
+      - model: "gemini-2.0-flash-exp"           # Gemini 2.0 Flash (fast)
+        capability: "very_high"
+        use_case: ["fast_responses", "production"]
+        context_window: 1000000
+        
+      - model: "gemini-1.5-pro-002"             # Gemini 1.5 Pro (stable)
+        capability: "high"
+        use_case: ["reliable", "proven"]
+        context_window: 2000000
+
+  xai:
+    # xAI Grok models - August 2025 latest
+    preference_order:
+      - model: "grok-4-0709"                     # Grok 4 (latest)
+        capability: "highest"
+        use_case: ["advanced_reasoning", "creative"]
+        context_window: 128000
+        
+      - model: "grok-3-mini-fast"                # Grok 3 Mini Fast
+        capability: "high"
+        use_case: ["fast_responses", "cost_effective"]
+        context_window: 128000
+        
+      - model: "grok-2-vision-1212"              # Grok 2 Vision
+        capability: "medium_high"
+        use_case: ["multimodal", "fallback"]
+        context_window: 128000
+
+  deepseek:
+    # DeepSeek models - August 2025 latest
+    preference_order:
+      - model: "deepseek-v3.1"                   # DeepSeek V3.1 (latest)
+        capability: "very_high"
+        use_case: ["coding", "reasoning", "cost_effective"]
+        context_window: 64000
+        
+      - model: "deepseek-r1-0528"                # DeepSeek R1 (reasoning)
+        capability: "high"
+        use_case: ["reasoning", "problem_solving"]
+        context_window: 64000
+
+  cohere:
+    # Cohere models - August 2025 latest
+    preference_order:
+      - model: "command-r-plus-08-2024"          # Command R+ (latest)
+        capability: "high"
+        use_case: ["retrieval", "enterprise"]
+        context_window: 128000
+        
+      - model: "command-r7b-12-2024"             # Command R7B
+        capability: "medium_high"
+        use_case: ["efficient", "cost_effective"]
+        context_window: 128000
+
+# Default selection strategy
+selection_strategy:
+  primary_preference: "capability"     # Select by capability first
+  secondary_preference: "context_window"  # Then by context window
+  fallback_strategy: "provider_order"  # Use provider preference order
+  
+  # Capability ranking (highest to lowest)
+  capability_ranking:
+    - "highest"
+    - "very_high" 
+    - "high"
+    - "medium_high"
+    - "medium"
+    - "low"
+
+# Model aliases for easier reference (standardized format)
+aliases:
+  # Best overall models by use case
+  best_reasoning: "claude-opus-4-1"
+  best_speed: "claude-sonnet-4"
+  best_context: "gemini-2-5-pro"  # 2M context
+  best_cost: "deepseek-v3-1"
+  best_coding: "deepseek-v3-1"
+  best_creative: "grok-4"
+  
+  # Provider defaults (best model per provider)
+  anthropic_default: "claude-opus-4-1"
+  openai_default: "o3"
+  google_default: "gemini-2-5-pro"
+  xai_default: "grok-4"
+  deepseek_default: "deepseek-v3-1"
+  cohere_default: "command-r-plus"
+
+# Use case specific recommendations
+use_cases:
+  vrl_generation:
+    preferred_models:
+      - "claude-opus-4-1"               # Best for code generation
+      - "deepseek-v3-1"                 # Excellent at coding
+      - "claude-sonnet-4"               # Fast and capable
+    
+  complex_analysis:
+    preferred_models:
+      - "claude-opus-4-1"               # Best reasoning
+      - "o3"                            # Strong reasoning
+      - "gemini-2-5-pro"                # Advanced capabilities
+    
+  production_deployment:
+    preferred_models:
+      - "claude-sonnet-4"               # Reliable and fast
+      - "gpt-4o"                        # Production proven
+      - "gemini-2-flash"                # Fast and stable
+
+# Cost optimization tiers
+cost_tiers:
+  premium:    # Best capability, cost is secondary
+    - "claude-opus-4-1"
+    - "o3"
+    - "gemini-2-5-pro"
+  
+  balanced:    # Good capability/cost balance
+    - "claude-sonnet-4"
+    - "gpt-4o"
+    - "gemini-2-flash"
+  
+  economical:  # Cost-optimized but capable
+    - "deepseek-v3-1"
+    - "grok-3-mini-fast"
+    - "claude-sonnet-3-5"

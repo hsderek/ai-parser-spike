@@ -1,0 +1,6 @@
+2025-08-28T19:50:15.066048Z INFO     vrl_testing_loop_clean:_setup_logging:152 - VRL Testing Pipeline logging initialized
+2025-08-28T19:50:15.066280Z INFO     vrl_testing_loop_clean:_setup_logging:153 - Log file: logs/vrl_pipeline_20250828_195015.log
+2025-08-28T19:50:15.066428Z INFO     vrl_testing_loop_clean:_setup_logging:154 - Sample file: samples/large/openstack-real.ndjson
+2025-08-28T19:50:15.066554Z INFO     vrl_testing_loop_clean:_setup_logging:155 - Output directory: samples-parsed
+2025-08-28T19:50:15.066687Z INFO     vrl_testing_loop_clean:_setup_logging:156 - External configs: external
+2025-08-28T19:50:15.066809Z INFO     vrl_testing_loop_clean:_setup_logging:157 - Loaded configs: ['vector_vrl_prompt', 'parser_prompts', 'type_maps']

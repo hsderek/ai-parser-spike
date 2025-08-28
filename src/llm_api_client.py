@@ -158,7 +158,7 @@ class LLMAPIClient:
             
         try:
             message = self.client.messages.create(
-                model="claude-3-opus-20240229",  # or claude-3-sonnet for faster/cheaper
+                model="auto",  # Dynamic model selection - no hardcoding
                 max_tokens=4000,
                 temperature=0.2,  # Lower temperature for more consistent code
                 system="You are an expert VRL (Vector Remap Language) developer. Generate only valid VRL code.",

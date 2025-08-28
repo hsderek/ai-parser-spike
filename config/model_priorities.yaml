@@ -1,0 +1,38 @@
+# Simple Model Priority Configuration
+# Only defines model FAMILY priorities by platform
+# Versions are auto-detected - always use latest available
+
+model_priorities:
+  anthropic:
+    # Priority order of model families (best to least preferred)
+    families:
+      - opus      # Best capability/reasoning
+      - sonnet    # Balanced performance/cost
+      - haiku     # Fast/economical
+    
+  openai:
+    families:
+      - o3        # Latest reasoning model
+      - o1        # Previous reasoning model
+      - gpt-5     # If available
+      - gpt-4     # Stable fallback
+      - gpt-3.5   # Economy option
+  
+  google:
+    families:
+      - gemini-ultra   # Best capability
+      - gemini-pro     # Balanced
+      - gemini-flash   # Fast
+      - gemini-nano    # Lightweight
+  
+  deepseek:
+    families:
+      - deepseek-v3    # Latest version
+      - deepseek-r1    # Reasoning focused
+      - deepseek-v2    # Previous stable
+
+# Default platform preference when not specified
+default_platform: anthropic
+
+# Default family preference when not specified  
+default_family: sonnet  # Good balance of capability/cost
