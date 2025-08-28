@@ -1,5 +1,5 @@
 """
-Unified LiteLLM client for VRL Parser
+Unified LiteLLM client for DFE AI Parser VRL
 Handles all LLM interactions with automatic model selection
 """
 
@@ -8,15 +8,15 @@ import time
 from typing import Dict, List, Optional, Any, Generator
 import litellm
 from loguru import logger
-from .model_selector import ModelSelector
+from .model_selector import DFEModelSelector
 
 
-class LLMClient:
+class DFELLMClient:
     """Unified LLM client using LiteLLM"""
     
     def __init__(self, config: Dict[str, Any] = None):
         self.config = config or {}
-        self.model_selector = ModelSelector(config)
+        self.model_selector = DFEModelSelector(config)
         self.current_model = None
         self.metadata = {}
         

@@ -9,7 +9,7 @@ from pathlib import Path
 from loguru import logger
 
 
-class VRLValidator:
+class DFEVRLValidator:
     """VRL code validator"""
     
     def __init__(self, config: Dict[str, Any] = None):

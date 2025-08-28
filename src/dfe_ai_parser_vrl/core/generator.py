@@ -7,20 +7,20 @@ from typing import Optional, Dict, Any, Tuple
 from pathlib import Path
 from loguru import logger
 
-from ..llm.client import LLMClient
-from ..config.loader import ConfigLoader
-from .validator import VRLValidator
-from .error_fixer import VRLErrorFixer
+from ..llm.client import DFELLMClient
+from ..config.loader import DFEConfigLoader
+from .validator import DFEVRLValidator
+from .error_fixer import DFEVRLErrorFixer
 
 
-class VRLGenerator:
+class DFEVRLGenerator:
     """Main VRL generator class"""
     
     def __init__(self, config_path: str = None):
-        self.config = ConfigLoader.load(config_path)
-        self.llm_client = LLMClient(self.config)
-        self.validator = VRLValidator(self.config)
-        self.error_fixer = VRLErrorFixer(self.llm_client)
+        self.config = DFEConfigLoader.load(config_path)
+        self.llm_client = DFELLMClient(self.config)
+        self.validator = DFEVRLValidator(self.config)
+        self.error_fixer = DFEVRLErrorFixer(self.llm_client)
         
         # Get generation settings
         gen_config = self.config.get("vrl_generation", {})

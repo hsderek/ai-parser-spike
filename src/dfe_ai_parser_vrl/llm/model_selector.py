@@ -14,7 +14,7 @@ from loguru import logger
 import litellm
 
 
-class ModelSelector:
+class DFEModelSelector:
     """
     Model selection entirely driven by configuration
     No hardcoded model names or platform logic
@@ -341,7 +341,7 @@ class ModelSelector:
 
 def demonstrate_selection():
     """Demonstrate config-driven model selection"""
-    selector = ModelSelector()
+    selector = DFEModelSelector()
     
     print("=" * 80)
     print("🧪 CONFIG-DRIVEN MODEL SELECTION (No Hardcoding!)")

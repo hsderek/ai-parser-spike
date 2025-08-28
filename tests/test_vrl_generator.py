@@ -2,12 +2,16 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from vrl_parser.core.generator import VRLGenerator
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from dfe_ai_parser_vrl.core.generator import DFEVRLGenerator
 
 
 def test_generator_init():
     """Test VRL generator initialization"""
-    generator = VRLGenerator()
+    generator = DFEVRLGenerator()
     assert generator is not None
     assert generator.config is not None
     assert generator.llm_client is not None
@@ -15,7 +19,7 @@ def test_generator_init():
 
 def test_device_type_detection():
     """Test auto-detection of device types"""
-    generator = VRLGenerator()
+    generator = DFEVRLGenerator()
     
     # Test various filename patterns
     assert generator._detect_device_type("ssh.log") == "ssh"
@@ -25,12 +29,12 @@ def test_device_type_detection():
     assert generator._detect_device_type("unknown.log") is None
 
 
-@patch('vrl_parser.core.generator.VRLGenerator.generate')
+@patch('dfe_ai_parser_vrl.core.generator.DFEVRLGenerator.generate')
 def test_generate_from_file(mock_generate):
     """Test generating from file"""
     mock_generate.return_value = ("# VRL code", {"validation_passed": True})
     
-    generator = VRLGenerator()
+    generator = DFEVRLGenerator()
     
     # Mock file reading
     with patch('builtins.open', create=True) as mock_open:

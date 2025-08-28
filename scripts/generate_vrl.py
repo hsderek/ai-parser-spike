@@ -7,10 +7,10 @@ import sys
 import argparse
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add src directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from vrl_parser import VRLGenerator
+from dfe_ai_parser_vrl import DFEVRLGenerator
 from loguru import logger
 
 
@@ -46,7 +46,7 @@ def main():
     
     try:
         # Initialize generator
-        generator = VRLGenerator(config_path=args.config)
+        generator = DFEVRLGenerator(config_path=args.config)
         
         # Generate VRL
         logger.info(f"Generating VRL for: {args.log_file}")

@@ -9,7 +9,7 @@ import yaml
 from loguru import logger
 
 
-class ConfigLoader:
+class DFEConfigLoader:
     """Smart configuration loader"""
     
     @classmethod

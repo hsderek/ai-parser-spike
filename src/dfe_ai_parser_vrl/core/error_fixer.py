@@ -7,7 +7,7 @@ from typing import Optional, Dict, Any
 from loguru import logger
 
 
-class VRLErrorFixer:
+class DFEVRLErrorFixer:
     """Fixes VRL syntax errors"""
     
     def __init__(self, llm_client):

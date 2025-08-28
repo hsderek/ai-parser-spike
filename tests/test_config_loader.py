@@ -1,12 +1,16 @@
 """Tests for config loader"""
 
 import pytest
-from vrl_parser.config.loader import ConfigLoader
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from dfe_ai_parser_vrl.config.loader import DFEConfigLoader
 
 
 def test_config_loader():
     """Test config loading"""
-    config = ConfigLoader.load()
+    config = DFEConfigLoader.load()
     
     assert config is not None
     assert "defaults" in config
@@ -15,7 +19,7 @@ def test_config_loader():
 
 def test_config_defaults():
     """Test config defaults"""
-    config = ConfigLoader.load()
+    config = DFEConfigLoader.load()
     
     defaults = config.get("defaults", {})
     assert defaults.get("platform") is not None
@@ -24,7 +28,7 @@ def test_config_defaults():
 
 def test_smart_defaults():
     """Test smart defaults are applied"""
-    config = ConfigLoader.load()
+    config = DFEConfigLoader.load()
     
     # Should have paths configured
     assert "paths" in config

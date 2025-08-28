@@ -1,19 +1,23 @@
 """Tests for model selector"""
 
 import pytest
-from vrl_parser.llm.model_selector import ModelSelector
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from dfe_ai_parser_vrl.llm.model_selector import DFEModelSelector
 
 
 def test_model_selector_init():
     """Test model selector initialization"""
-    selector = ModelSelector()
+    selector = DFEModelSelector()
     assert selector is not None
     assert selector.config is not None
 
 
 def test_default_selection():
     """Test default model selection"""
-    selector = ModelSelector()
+    selector = DFEModelSelector()
     model, metadata = selector.select_model()
     
     # Should select something even with defaults
@@ -23,7 +27,7 @@ def test_default_selection():
 
 def test_capability_selection():
     """Test selecting by capability"""
-    selector = ModelSelector()
+    selector = DFEModelSelector()
     
     # Test each capability
     for capability in ["reasoning", "balanced", "efficient"]:
@@ -33,7 +37,7 @@ def test_capability_selection():
 
 def test_platform_selection():
     """Test selecting by platform"""
-    selector = ModelSelector()
+    selector = DFEModelSelector()
     
     # Test known platforms
     for platform in ["anthropic", "openai", "google"]:
