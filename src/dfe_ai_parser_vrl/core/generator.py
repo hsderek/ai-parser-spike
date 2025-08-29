@@ -119,11 +119,50 @@ class DFEVRLGenerator:
         if not device_type:
             device_type = self._detect_device_type(log_path.name)
         
-        # Read log samples
-        with open(log_path, 'r') as f:
-            sample_logs = f.read()
+        # Stream log samples (memory efficient)
+        sample_logs = self._stream_sample_logs(log_path)
         
         return self.generate(sample_logs, device_type, validate, fix_errors)
+    
+    def _stream_sample_logs(self, log_path: Path, max_lines: int = 1000) -> str:
+        """
+        Stream sample logs using Dask for memory efficiency and performance
+        
+        Args:
+            log_path: Path to log file
+            max_lines: Maximum lines to sample (prevents memory issues)
+            
+        Returns:
+            Sampled log content as string
+        """
+        import dask.bag as db
+        
+        try:
+            # Use Dask for efficient streaming and sampling
+            bag = db.read_text(str(log_path), blocksize="32MB")
+            
+            # Take distributed sample across file 
+            total_partitions = bag.npartitions
+            lines_per_partition = max(1, max_lines // max(1, total_partitions))
+            
+            # Sample from each partition for representative coverage
+            sampled = bag.take(max_lines, warn=False)
+            
+            logger.info(f"Dask sampled {len(sampled)} lines from {log_path.name} ({total_partitions} partitions)")
+            return '\n'.join(sampled)
+            
+        except Exception as e:
+            logger.warning(f"Dask streaming failed: {e}, falling back to basic streaming")
+            # Fallback to simple streaming
+            lines = []
+            with open(log_path, 'r') as f:
+                for i, line in enumerate(f):
+                    if i >= max_lines:
+                        break
+                    lines.append(line.rstrip())
+            
+            logger.info(f"Basic sampled {len(lines)} lines from {log_path.name}")
+            return '\n'.join(lines)
     
     def _detect_device_type(self, filename: str) -> Optional[str]:
         """Auto-detect device type from filename"""

@@ -135,6 +135,32 @@ vrl_generation:
   max_iterations: 10
   iteration_delay: 2  # seconds between iterations
   
+  # Performance optimization - reject regex functions (50-100x slower than string ops)
+  performance:
+    rejected_functions:
+      - parse_regex       # Use parse_syslog, parse_json, parse_csv instead
+      - parse_regex_all   # Use contains() + split() instead
+      - match             # Use contains() instead  
+      - match_array       # Use array operations with contains() instead
+      - to_regex          # Expensive compilation, use string functions
+    preferred_functions:
+      - contains          # Fast string searching
+      - split             # String tokenization
+      - upcase            # Case conversion
+      - downcase          # Case conversion
+      - starts_with       # String prefix testing
+      - ends_with         # String suffix testing
+      - slice             # String/array slicing
+      - parse_syslog      # Structured syslog parsing
+      - parse_json        # JSON parsing
+      - parse_csv         # CSV parsing
+      - parse_timestamp   # Timestamp parsing
+    performance_tiers:
+      tier_1: "String operations (350-400 events/CPU%)"
+      tier_2: "Built-in parsers (200-300 events/CPU%)" 
+      tier_3: "Complex functions (50-100 events/CPU%)"
+      tier_4: "Regex operations (3-10 events/CPU%)"
+  
   # Validation settings
   validation:
     pyvrl_enabled: true
@@ -182,3 +208,18 @@ api:
   timeout: 120
   max_retries: 3
   retry_delay: 5
+
+# Threading configuration
+threading:
+  # Auto-detection settings
+  auto_detect_cores: true
+  core_utilization: 1.0   # Use 100% of available cores (container optimized)
+  max_threads_limit: 32   # Safety limit increased for containers
+  min_threads: 1          # Minimum threads
+  
+  # Override settings (set via environment)
+  # DFE_MAX_THREADS=8 to force specific thread count
+  thread_name_prefix: "dfe-vrl"
+  
+  # Thread pool settings
+  shutdown_timeout: 30  # seconds to wait for threads to finish

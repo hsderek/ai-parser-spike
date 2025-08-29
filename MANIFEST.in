@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+include setup.py
+recursive-include config *.yaml *.yml
+recursive-include src *.py
+recursive-include data/examples *.json *.vrl
+exclude .gitignore
+exclude .env
+prune deprecated
+prune .git
+prune __pycache__
+prune *.egg-info
+prune .pytest_cache
+prune .tmp

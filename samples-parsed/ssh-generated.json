@@ -1,3 +1,0 @@
-{"message": "Aug 28 19:43:22 test-server sshd[12345]: authentication failure; logname= uid=0 euid=0 tty=ssh rhost=192.168.1.100 user=admin", "parsed_timestamp": null, "ssh": {"event": "authentication_failure", "pid": 12345, "source_ip": "192.168.1.100", "username": "admin"}}
-{"message": "Aug 28 19:44:30 test-server sshd[12346]: Accepted password for admin from 192.168.1.100 port 22 ssh2", "parsed_timestamp": null, "ssh": {"event": "authentication_success", "pid": 12346, "port": 22, "source_ip": "192.168.1.100", "username": "admin"}}
-{"message": "Aug 28 19:45:15 test-server sshd[12347]: check pass; user unknown", "parsed_timestamp": null, "ssh": {"event": "unknown_user", "pid": 12347}}

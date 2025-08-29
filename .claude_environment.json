@@ -47,5 +47,10 @@
     "purpose": "Agile spike to prove concept for vector.dev/VRL and Anthropic LLM integration",
     "approach": "Rough and ready implementation, no boilerplate",
     "lessons_learned": "Documented in VECTOR-VRL.md"
+  },
+  "startup": {
+    "venv_activation_required": true,
+    "activation_script": ".vscode/activate_env.sh",
+    "claude_code_startup": "Run after virtual environment activation"
   }
 }

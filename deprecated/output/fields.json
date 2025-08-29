@@ -1,0 +1,65 @@
+{
+  "status": "success",
+  "message": "Successfully generated VRL parser with 2 fields",
+  "data": {
+    "vrl_code": "#---\n# Filename: generated_parser.vrl\n# Purpose: AI-generated VRL parser for structured log data\n# Description: Optimized VRL transforms for extracting high-value fields\n#              Generated using CPU-efficient string operations per VECTOR-VRL guidelines\n# Version: 1.0.0\n# Changelog: |\n#   ## [1.0.0] - 2025-08-26\n#   - Initial AI-generated parser\n# Copyright: \u00a9 2025 HyperSec Pty Ltd\n# Licence: \"HyperSec EULA \u00a9 2025\"\n# Flow: >\n#   input -> field_extraction -> type_conversion -> cleanup -> output\n#---\n\n# Extract valid as string\nif exists(.valid) {\n    .valid = string!(.valid)\n}\n# Extract another as string\nif exists(.another) {\n    .another = string!(.another)\n}\n\n# Cleanup temporary fields and optimize memory usage\n# Remove any remaining error fields\ndel(..*_err)\n\n# Performance optimization: fields processed = 2\n# Estimated CPU cost: 2 low + 0 medium + 0 high cost operations\n\n# Memory optimization - remove large temporary fields early\nif exists(.raw_data) && length(.raw_data) > 1000 {\n    del(.raw_data)\n}\n",
+    "fields": [
+      {
+        "name": "valid",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "json"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      },
+      {
+        "name": "another",
+        "type": "string",
+        "description": "string field with 1 occurrences",
+        "cpu_cost": "low",
+        "confidence": 1.0,
+        "sample_values": [
+          "valid"
+        ],
+        "parser_type": "string",
+        "is_high_value": false
+      }
+    ],
+    "data_source": {
+      "name": "Generic JSON Test Data",
+      "confidence": 0.6,
+      "description": "This appears to be simple test or validation JSON data due to its minimal structure with basic key-value pairs ('valid': 'json', 'another': 'valid') that seem to be used for testing JSON parsing or validation. The field names and values are generic test-related terms rather than meaningful application data.",
+      "common_fields": [
+        "valid",
+        "test",
+        "status",
+        "message"
+      ],
+      "known_parsers": [
+        "json.loads()",
+        "simplejson",
+        "ujson",
+        "rapidjson"
+      ]
+    },
+    "performance_metrics": {},
+    "llm_usage": {
+      "total_tokens": 1447,
+      "input_tokens": 501,
+      "output_tokens": 946,
+      "estimated_cost_usd": 0.015693000000000002,
+      "api_calls": 2
+    },
+    "summary": {
+      "total_fields": 2,
+      "high_value_fields": 0,
+      "low_cpu_cost_fields": 2,
+      "medium_cpu_cost_fields": 0,
+      "high_cpu_cost_fields": 0
+    }
+  }
+}

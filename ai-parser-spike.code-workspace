@@ -1,0 +1,49 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.pythonPath": "./.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "terminal.integrated.env.linux": {
+      "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}",
+      "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+      "PYTHONPATH": "${workspaceFolder}/src"
+    },
+    "terminal.integrated.profiles.linux": {
+      "uv-env": {
+        "path": "/bin/bash",
+        "args": ["-l", "-c", "cd ${workspaceFolder} && source .venv/bin/activate && exec bash"]
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "uv-env",
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "terminal.integrated.automationProfile.linux": {
+      "path": "/bin/bash",
+      "args": ["-l", "-c", "cd ${workspaceFolder} && source .venv/bin/activate && exec bash"]
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Activate Virtual Environment",
+        "type": "shell",
+        "command": "source .venv/bin/activate",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        }
+      }
+    ]
+  }
+}

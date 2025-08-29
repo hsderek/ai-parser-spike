@@ -5,6 +5,7 @@ Handles all LLM interactions with automatic model selection
 
 import os
 import time
+import regex as re  # Enhanced regex library for better performance
 from typing import Dict, List, Optional, Any, Generator
 import litellm
 from loguru import logger
@@ -163,7 +164,13 @@ class DFELLMClient:
         messages = [
             {
                 "role": "system",
-                "content": "You are a VRL (Vector Remap Language) expert. Fix the syntax error in the provided VRL code."
+                "content": """You are a VRL (Vector Remap Language) expert focused on high-performance parsing.
+
+CRITICAL: NO REGEX FUNCTIONS - Use only string operations for 50-100x better performance.
+❌ FORBIDDEN: parse_regex(), match(), parse_regex_all(), match_array(), to_regex()
+✅ USE ONLY: contains(), split(), upcase(), downcase(), starts_with(), ends_with(), parse_syslog!()
+
+Fix the syntax error while maintaining performance requirements."""
             },
             {
                 "role": "user",
@@ -176,7 +183,7 @@ VRL Code:
 {vrl_code}
 ```
 
-Return only the fixed VRL code without explanation."""
+Return only the fixed VRL code without explanation. Remember: NO REGEX functions."""
             }
         ]
         
@@ -185,17 +192,56 @@ Return only the fixed VRL code without explanation."""
     
     def _build_vrl_messages(self, sample_logs: str, device_type: str = None) -> List[Dict[str, str]]:
         """Build messages for VRL generation"""
-        system_prompt = """You are an expert in Vector Remap Language (VRL) for log parsing.
-Generate a VRL parser that extracts all relevant fields from the provided logs.
+        
+        # Detect if syslog parsing is needed
+        has_unparsed_syslog = self._detect_syslog_in_samples(sample_logs)
+        
+        # Build dynamic syslog guidance based on detection
+        if has_unparsed_syslog:
+            syslog_guidance = """
+SYSLOG PARSING DETECTED:
+✅ Sample data contains unparsed syslog format - use parse_syslog!(.message) to extract headers
+✅ After parsing: work with the extracted .message field for content parsing"""
+            syslog_rule = "1. Use parse_syslog!() for unparsed syslog format in .message"
+        else:
+            syslog_guidance = """
+DFE PRE-PARSED CONTEXT:
+🔧 Sample data appears pre-parsed - syslog headers already extracted by DFE
+📝 .message contains ONLY the message content (not full syslog line)
+❌ DO NOT use parse_syslog!() - headers already parsed"""
+            syslog_rule = "1. DO NOT use parse_syslog!() - syslog headers already parsed by DFE"
+            
+        system_prompt = f"""You are an expert in Vector Remap Language (VRL) for high-performance log parsing in HyperSec DFE.
 
-Requirements:
-1. Parse timestamps into proper timestamp format
-2. Extract all meaningful fields
-3. Handle errors gracefully with null coalescing
-4. Use appropriate VRL functions
-5. Return clean, working VRL code
+CRITICAL DATA STRUCTURE UNDERSTANDING:{syslog_guidance}
+📝 .logoriginal = Contains full raw log (use as LAST RESORT only)
+📝 Structured fields (.timestamp, .hostname, etc.) may already exist
 
-Output only the VRL code without explanations."""
+CRITICAL PERFORMANCE REQUIREMENTS:
+⚠️  NO REGEX FUNCTIONS - They are 50-100x slower than string operations
+❌ FORBIDDEN: parse_regex(), match(), parse_regex_all(), match_array(), to_regex()
+✅ USE ONLY: contains(), split(), upcase(), downcase(), starts_with(), ends_with()
+
+Performance Tiers:
+• String operations: 350-400 events/CPU% (REQUIRED)
+• Built-in parsers: 200-300 events/CPU% (use parse_json!, parse_csv! for structured data)
+• Regex operations: 3-10 events/CPU% (FORBIDDEN)
+
+VRL Generation Rules:
+{syslog_rule}
+2. Use parse_json!() for JSON content in .message
+3. Use parse_csv!() for CSV content in .message  
+4. For custom parsing: ONLY contains(), split(), slice() operations on .message
+5. Parse timestamps with parse_timestamp!() if needed
+6. Handle errors with null coalescing (??)
+7. Use infallible functions (!) where possible
+
+Example Pattern (NO REGEX, DFE Context):
+```vrl
+{self._get_example_vrl(has_unparsed_syslog)}
+```
+
+Output only clean VRL code without explanations."""
         
         user_prompt = f"""Generate a VRL parser for these logs:
 
@@ -237,3 +283,94 @@ Generate complete VRL code that parses these logs."""
             "capability": self.metadata.get("capability"),
             "family": self.metadata.get("family")
         }
+    
+    def _detect_syslog_in_samples(self, sample_logs: str) -> bool:
+        """
+        Detect if sample logs contain unparsed syslog format in fields other than .logoriginal/.logjson
+        
+        Returns:
+            True if syslog parsing should be recommended, False otherwise
+        """
+        # Common syslog patterns:
+        # RFC3164: <priority>timestamp hostname tag: message
+        # RFC5424: <priority>version timestamp hostname appname procid msgid message
+        syslog_patterns = [
+            # RFC3164 format: "Dec 10 06:55:46 hostname sshd[1234]: message"
+            r'\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\w+\s+\w+\[?\d*\]?:',
+            
+            # RFC5424 format: "2023-12-10T06:55:46.123Z hostname appname 1234 - message"
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\s+\w+\s+\w+\s+\d+\s+[-\w]*\s+',
+            
+            # Priority tag: "<123>Dec 10..."
+            r'<\d{1,3}>\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}',
+            
+            # Timestamp + hostname + process[pid] pattern
+            r'\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+[\w.-]+\s+[\w.-]+\[\d+\]:',
+        ]
+        
+        # Use enhanced regex library with threading for pattern matching
+        from ..utils.streaming import concurrent_regex_search_threadpool
+        
+        # Sample first 20 lines for efficient detection
+        lines = sample_logs.strip().split('\n')[:20]
+        lines = [line for line in lines if line.strip()]  # Remove empty lines
+        
+        # Filter out JSON structure lines
+        valid_lines = [
+            line for line in lines 
+            if not (line.strip().startswith('{') or '{"logoriginal"' in line or '{"logjson"' in line)
+        ]
+        
+        lines_checked = len(valid_lines)
+        if lines_checked == 0:
+            return False
+        
+        # Use concurrent regex search with enhanced regex library
+        match_results = concurrent_regex_search_threadpool(valid_lines, syslog_patterns)
+        syslog_matches = sum(match_results)
+        
+        # If >30% of checked lines look like syslog, recommend syslog parsing
+        syslog_ratio = syslog_matches / max(lines_checked, 1)
+        should_use_syslog = syslog_ratio > 0.3
+        
+        logger.debug(f"Syslog detection: {syslog_matches}/{lines_checked} lines checked ({syslog_ratio:.1%}), recommend syslog parsing: {should_use_syslog}")
+        
+        return should_use_syslog
+    
+    def _get_example_vrl(self, has_unparsed_syslog: bool) -> str:
+        """Get appropriate VRL example based on syslog detection"""
+        if has_unparsed_syslog:
+            return '''# GOOD: Parse syslog first, then work with message content
+parsed = parse_syslog!(.message)
+.timestamp = parsed.timestamp
+.hostname = parsed.hostname
+.message_content = parsed.message
+
+# Then parse the message content with string operations
+if contains(.message_content, "Invalid user") {
+    parts = split(.message_content, " ")
+    .event_type = "invalid_user"
+    .username = parts[2]
+}
+
+# BAD: Regex (FORBIDDEN)
+# matches = parse_regex(.message_content, r"Invalid user (\w+)")'''
+        else:
+            return '''# GOOD: String operations on pre-parsed message content
+if contains(.message, "Invalid user") {
+    parts = split(.message, " ")
+    .event_type = "invalid_user"
+    .username = parts[2]
+    if contains(.message, "from ") {
+        from_parts = split(.message, "from ")
+        if length(from_parts) > 1 {
+            .source_ip = split(from_parts[1], " ")[0]
+        }
+    }
+}
+
+# BAD: Using parse_syslog (headers already parsed)
+# parsed = parse_syslog!(.message)  # WRONG - no syslog header in .message
+
+# BAD: Regex (FORBIDDEN)  
+# matches = parse_regex(.message, r"Invalid user (\w+)")'''

@@ -28,6 +28,83 @@ This is an agile spike project to prove concept for integrating vector.dev/VRL w
 - Keep it simple and functional
 - Document lessons learned in VECTOR-VRL.md
 
+## Performance Architecture Principles
+
+### Multi-Threading Requirements
+- **ALWAYS use module threading**: Use `dfe_ai_parser_vrl.get_thread_pool()` for concurrent operations
+- **CPU-optimized by default**: Module auto-detects CPU cores and uses 100% utilization (container optimized)
+- **Thread configuration**: Override with `DFE_MAX_THREADS` environment variable
+- **Shared thread pool**: Never create individual ThreadPoolExecutors, use the module singleton
+
+### Streaming I/O Requirements  
+- **NO loading entire files into memory**: Always use streaming file operations
+- **Process line-by-line**: Use generators and iterators for large files
+- **Chunk-based processing**: Read files in chunks, not all-at-once
+- **Memory efficient**: Design for files that exceed available RAM
+
+### Code Implementation Rules
+1. **File operations MUST stream**:
+   ```python
+   # GOOD: Streaming
+   def process_file(file_path):
+       with open(file_path, 'r') as f:
+           for line in f:  # Streams line by line
+               yield process_line(line)
+   
+   # BAD: Loading all into memory
+   def process_file(file_path):
+       with open(file_path, 'r') as f:
+           data = f.read()  # Loads entire file
+           return process_all(data)
+   ```
+
+2. **Regex operations MUST use threading**:
+   ```python  
+   # GOOD: Use streaming utilities with enhanced regex library
+   from dfe_ai_parser_vrl.utils.streaming import concurrent_regex_search_threadpool
+   
+   results = concurrent_regex_search_threadpool(lines, patterns)
+   
+   # GOOD: For large files, use Dask
+   from dfe_ai_parser_vrl.utils.streaming import concurrent_regex_search_dask
+   
+   results = concurrent_regex_search_dask(file_path, patterns)
+   
+   # BAD: Single-threaded regex
+   def search_patterns_sequential(lines, patterns):
+       for pattern in patterns:
+           for line in lines:
+               re.search(pattern, line)  # Slow sequential processing
+   ```
+
+3. **Large data processing MUST use dedicated libraries**:
+   ```python
+   # GOOD: Use Dask for large file processing
+   import dask.bag as db
+   
+   bag = db.read_text("large_file.log", blocksize="64MB")
+   results = bag.map(process_line).compute()
+   
+   # GOOD: Use ijson for streaming JSON
+   import ijson
+   
+   def stream_json_items(file_path):
+       with open(file_path, 'rb') as f:
+           for item in ijson.items(f, 'logs.item'):
+               yield item
+   
+   # GOOD: Use streaming utilities
+   from dfe_ai_parser_vrl.utils.streaming import stream_file_chunks
+   
+   for chunk in stream_file_chunks(file_path, chunk_lines=1000):
+       process_chunk(chunk)
+   ```
+
+### Required Libraries
+- **`ijson`**: Streaming JSON parser for large JSON files
+- **`dask[complete]`**: Parallel/distributed data processing
+- **`regex`**: Enhanced regex library (replaces `re` for better performance)
+
 ## Python Environment
 - **ALWAYS use `uv` for package management** (never pip directly)
 - Always use `./.venv` for virtual environment

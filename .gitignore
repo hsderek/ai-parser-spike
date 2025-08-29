@@ -54,10 +54,30 @@ htmlcov/
 Thumbs.db
 
 # Project specific
-test_data/
-output/
+data/output/
 .tmp/
 *.ndjson
 *.toml
 !pyproject.toml
 !vector.toml
+*.vrl
+!data/examples/**/*.vrl
+test_output*/
+test_final/
+
+# Logs
+*.log
+logs/
+
+# AWS credentials
+*.pem
+*.key
+aws_credentials
+
+# Claude
+.claude_environment.json
+
+# Deprecated
+deprecated/**/*.log
+deprecated/**/*.pyc
+deprecated/**/__pycache__/

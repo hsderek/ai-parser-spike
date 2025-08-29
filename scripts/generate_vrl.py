@@ -16,7 +16,7 @@ from loguru import logger
 
 def main():
     parser = argparse.ArgumentParser(description="Generate VRL parser from log samples")
-    parser.add_argument("log_file", help="Path to log file")
+    parser.add_argument("log_file", help="Path to log file (e.g., data/input/SSH.log)")
     parser.add_argument("--device-type", help="Device type (e.g., ssh, apache, cisco)")
     parser.add_argument("--output", help="Output VRL file path")
     parser.add_argument("--no-validate", action="store_true", help="Skip validation")

@@ -15,10 +15,16 @@ class DFEVRLValidator:
     def __init__(self, config: Dict[str, Any] = None):
         self.config = config or {}
         val_config = self.config.get("vrl_generation", {}).get("validation", {})
+        perf_config = self.config.get("vrl_generation", {}).get("performance", {})
         
         self.use_pyvrl = val_config.get("pyvrl_enabled", True)
         self.use_vector = val_config.get("vector_cli_enabled", True)
         self.timeout = val_config.get("timeout", 30)
+        
+        # Load rejected regex functions from config
+        self.rejected_functions = perf_config.get('rejected_functions', [
+            'parse_regex', 'parse_regex_all', 'match', 'match_array', 'to_regex'
+        ])
     
     def validate(self, vrl_code: str, sample_logs: str = None) -> Tuple[bool, Optional[str]]:
         """
@@ -31,6 +37,11 @@ class DFEVRLValidator:
         Returns:
             Tuple of (is_valid, error_message)
         """
+        # Check for regex functions first (performance rejection)
+        is_valid, error = self._validate_no_regex(vrl_code)
+        if not is_valid:
+            return False, error
+            
         # Try PyVRL first (faster)
         if self.use_pyvrl:
             is_valid, error = self._validate_with_pyvrl(vrl_code)
@@ -52,10 +63,10 @@ class DFEVRLValidator:
             
             # Test compilation
             try:
-                pyvrl.compile(vrl_code)
+                pyvrl.Transform(vrl_code)
                 logger.debug("PyVRL validation passed")
                 return True, None
-            except pyvrl.CompileError as e:
+            except ValueError as e:
                 error_msg = str(e)
                 logger.debug(f"PyVRL validation failed: {error_msg}")
                 return False, self._parse_pyvrl_error(error_msg)
@@ -68,53 +79,43 @@ class DFEVRLValidator:
             return True, None  # Don't fail on validator errors
     
     def _validate_with_vector(self, vrl_code: str, sample_logs: str) -> Tuple[bool, Optional[str]]:
-        """Validate using Vector CLI"""
-        try:
-            # Create temporary files
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.vrl', delete=False) as vrl_file:
-                vrl_file.write(vrl_code)
-                vrl_path = vrl_file.name
+        """Validate using Vector CLI - temporarily disabled"""
+        # Vector CLI test command doesn't support standalone VRL validation
+        # TODO: Implement proper Vector config-based validation
+        logger.debug("Vector CLI validation temporarily disabled")
+        return True, None
+    
+    def _validate_no_regex(self, vrl_code: str) -> Tuple[bool, Optional[str]]:
+        """
+        Validate that VRL code doesn't use regex functions (performance optimization)
+        Per VECTOR-VRL.md: String operations are 50-100x faster than regex
+        """
+        found_functions = []
+        
+        for func in self.rejected_functions:
+            # Check for both regular and infallible versions
+            patterns = [f"{func}(", f"{func}!"]
+            for pattern in patterns:
+                if pattern in vrl_code:
+                    found_functions.append(func)
+                    break
+        
+        if found_functions:
+            perf_config = self.config.get("vrl_generation", {}).get("performance", {})
+            preferred = perf_config.get('preferred_functions', [
+                'contains', 'split', 'upcase', 'downcase', 'starts_with', 'ends_with'
+            ])
             
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as log_file:
-                log_file.write(sample_logs)
-                log_path = log_file.name
-            
-            # Run Vector test
-            cmd = [
-                "vector", "test",
-                "--runner", "vrl",
-                "--vrl-script", vrl_path,
-                "--input", log_path
-            ]
-            
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=self.timeout
+            error_msg = (
+                f"REJECTED: VRL contains regex functions: {', '.join(found_functions)}. "
+                f"Per VECTOR-VRL.md, regex is 50-100x slower than string operations. "
+                f"Use instead: {', '.join(preferred[:4])}. "
+                f"Performance: String ops (350-400 events/CPU%) vs Regex (3-10 events/CPU%)"
             )
+            logger.warning(error_msg)
+            return False, error_msg
             
-            # Clean up temp files
-            Path(vrl_path).unlink(missing_ok=True)
-            Path(log_path).unlink(missing_ok=True)
-            
-            if result.returncode == 0:
-                logger.debug("Vector CLI validation passed")
-                return True, None
-            else:
-                error_msg = result.stderr or result.stdout
-                logger.debug(f"Vector CLI validation failed: {error_msg}")
-                return False, self._parse_vector_error(error_msg)
-                
-        except FileNotFoundError:
-            logger.warning("Vector CLI not found, skipping Vector validation")
-            return True, None
-        except subprocess.TimeoutExpired:
-            logger.warning("Vector validation timeout")
-            return True, None
-        except Exception as e:
-            logger.error(f"Vector validation error: {e}")
-            return True, None
+        return True, None
     
     def _parse_pyvrl_error(self, error_msg: str) -> str:
         """Parse PyVRL error message"""

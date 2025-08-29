@@ -328,6 +328,12 @@ class DFEModelSelector:
     
     def _format_model_name(self, model: str, platform: str) -> str:
         """Format model name for LiteLLM"""
+        # Handle Bedrock model format conversion
+        if "us.anthropic." in model:
+            # Convert us.anthropic.claude-3-5-haiku-20241022-v1:0 to claude-3-5-haiku-20241022
+            clean_model = model.replace("us.anthropic.", "").replace("-v1:0", "")
+            return f"anthropic/{clean_model}"
+        
         # Remove common prefixes
         model = model.replace("openrouter/", "")
         model = model.replace("anthropic/", "")

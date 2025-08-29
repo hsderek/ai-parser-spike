@@ -30,6 +30,9 @@ dependencies = [
     "pyyaml>=6.0",
     "pyvrl>=0.0.2",
     "python-dotenv>=1.0.0",
+    "ijson>=3.2.0", # Streaming JSON parser
+    "dask[complete]>=2024.1.0", # Parallel data processing
+    "regex>=2023.0.0", # Enhanced regex performance
 ]
 
 [project.optional-dependencies]
