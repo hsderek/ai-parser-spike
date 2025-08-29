@@ -1,0 +1,132 @@
+{
+  "success": false,
+  "iterations_used": 10,
+  "fixes_applied": 14,
+  "total_time_seconds": 285.40123081207275,
+  "vrl_length": 2372,
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 7731,
+      "vrl_length_after": 2583
+    },
+    {
+      "iteration": 2,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 2614,
+      "vrl_length_after": 2099
+    },
+    {
+      "iteration": 3,
+      "error_code": "E110",
+      "fix_applied": true,
+      "vrl_length_before": 2099,
+      "vrl_length_after": 2001
+    },
+    {
+      "iteration": 4,
+      "error_code": "E651",
+      "fix_applied": true,
+      "vrl_length_before": 1965,
+      "vrl_length_after": 1942
+    },
+    {
+      "iteration": 5,
+      "error_code": "E110",
+      "fix_applied": true,
+      "vrl_length_before": 1942,
+      "vrl_length_after": 1974
+    },
+    {
+      "iteration": 6,
+      "error_code": "E110",
+      "fix_applied": true,
+      "vrl_length_before": 1974,
+      "vrl_length_after": 1990
+    },
+    {
+      "iteration": 8,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 2439,
+      "vrl_length_after": 1943
+    },
+    {
+      "iteration": 9,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 1967,
+      "vrl_length_after": 2296
+    },
+    {
+      "iteration": 10,
+      "error_code": "E110",
+      "fix_applied": true,
+      "vrl_length_before": 2296,
+      "vrl_length_after": 2372
+    }
+  ],
+  "failed_patterns": [],
+  "error_progression": [
+    {
+      "iteration": 1,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 2,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 3,
+      "error_code": "E110",
+      "error_message": "SYNTAX: error[E110]: fallible predicate"
+    },
+    {
+      "iteration": 4,
+      "error_code": "E651",
+      "error_message": "SYNTAX: error[E651]: unnecessary error coalescing operation"
+    },
+    {
+      "iteration": 5,
+      "error_code": "E110",
+      "error_message": "SYNTAX: error[E110]: fallible predicate"
+    },
+    {
+      "iteration": 6,
+      "error_code": "E110",
+      "error_message": "SYNTAX: error[E110]: fallible predicate"
+    },
+    {
+      "iteration": 7,
+      "error_code": "E110",
+      "error_message": "SYNTAX: error[E110]: fallible predicate"
+    },
+    {
+      "iteration": 8,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 9,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 10,
+      "error_code": "E110",
+      "error_message": "SYNTAX: error[E110]: fallible predicate"
+    }
+  ],
+  "cyclical_detection": true,
+  "anti_cyclical_features": [
+    "iteration_history_tracking",
+    "pattern_blacklisting",
+    "cycle_detection",
+    "progressive_simplification"
+  ]
+}

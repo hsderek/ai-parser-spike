@@ -1,0 +1,31 @@
+You are a VRL performance optimization expert. Analyze these {{ device_type or 'log' }} samples and propose {{ candidate_count }} substantially different VRL parsing approaches.
+
+Each strategy should have a FUNDAMENTALLY DIFFERENT approach to parsing, such as:
+1. Ultra-fast string operations only (no built-in parsers)
+2. Structured parsing with built-in functions (parse_syslog, parse_json)
+3. Pattern detection with conditional logic
+4. Field extraction with minimal processing
+5. Security-focused with threat detection
+6. Performance-optimized with early exits
+7. Comprehensive parsing with all possible fields
+8. Minimalist approach (only essential fields)
+9. Event classification focused
+10. Time-series optimized
+
+SAMPLE DATA:
+```
+{{ sample_logs[:5000] }}
+```
+
+For each strategy, provide:
+- **name**: Short identifier (e.g., "ultra_string_ops")
+- **description**: What makes this approach unique
+- **approach**: Key technical differences from other strategies
+- **vpi_target**: Expected VPI performance tier
+
+Return ONLY a JSON array of {{ candidate_count }} strategies:
+[
+  {"name": "strategy1", "description": "...", "approach": "...", "vpi_target": "high"},
+  {"name": "strategy2", "description": "...", "approach": "...", "vpi_target": "moderate"},
+  ...
+]

@@ -111,10 +111,12 @@ def get_thread_pool() -> ThreadPoolExecutor:
 
 # Module imports
 from .core.generator import DFEVRLGenerator
+from .core.performance import DFEVRLIterativeSession, VRLPerformanceOptimizer
 from .llm.client import DFELLMClient
 from .config.loader import DFEConfigLoader
 
 __all__ = [
-    "DFEVRLGenerator", "DFELLMClient", "DFEConfigLoader",
+    "DFEVRLGenerator", "DFEVRLIterativeSession", "VRLPerformanceOptimizer", 
+    "DFELLMClient", "DFEConfigLoader",
     "get_max_threads", "set_max_threads", "get_thread_pool"
 ]

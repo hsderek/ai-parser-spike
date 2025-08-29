@@ -1,0 +1,116 @@
+{
+  "validation_passed": false,
+  "iterations_used": 9,
+  "total_time": 430.95278692245483,
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 8580,
+      "vrl_length_after": 9065
+    },
+    {
+      "iteration": 2,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 9166,
+      "vrl_length_after": 2793
+    },
+    {
+      "iteration": 4,
+      "error_code": "E103",
+      "fix_applied": true,
+      "vrl_length_before": 1966,
+      "vrl_length_after": 2048
+    },
+    {
+      "iteration": 5,
+      "error_code": "E103",
+      "fix_applied": true,
+      "vrl_length_before": 1976,
+      "vrl_length_after": 2012
+    },
+    {
+      "iteration": 7,
+      "error_code": "E203",
+      "fix_applied": true,
+      "vrl_length_before": 2357,
+      "vrl_length_after": 2330
+    },
+    {
+      "iteration": 8,
+      "error_code": "E103",
+      "fix_applied": true,
+      "vrl_length_before": 2234,
+      "vrl_length_after": 2330
+    },
+    {
+      "iteration": 9,
+      "error_code": "E651",
+      "fix_applied": true,
+      "vrl_length_before": 2378,
+      "vrl_length_after": 2226
+    },
+    {
+      "iteration": 10,
+      "error_code": "E651",
+      "fix_applied": true,
+      "vrl_length_before": 2322,
+      "vrl_length_after": 2274
+    }
+  ],
+  "error_progression": [
+    {
+      "iteration": 1,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 2,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 3,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 4,
+      "error_code": "E651",
+      "error_message": "SYNTAX: error[E651]: unnecessary error coalescing operation"
+    },
+    {
+      "iteration": 5,
+      "error_code": "E651",
+      "error_message": "SYNTAX: error[E651]: unnecessary error coalescing operation"
+    },
+    {
+      "iteration": 6,
+      "error_code": "E651",
+      "error_message": "SYNTAX: error[E651]: unnecessary error coalescing operation"
+    },
+    {
+      "iteration": 7,
+      "error_code": "E203",
+      "error_message": "SYNTAX: error[E203]: syntax error"
+    },
+    {
+      "iteration": 8,
+      "error_code": "E651",
+      "error_message": "SYNTAX: error[E651]: unnecessary error coalescing operation"
+    },
+    {
+      "iteration": 9,
+      "error_code": "E103",
+      "error_message": "SYNTAX: error[E103]: unhandled fallible assignment"
+    },
+    {
+      "iteration": 10,
+      "error_code": "E103",
+      "error_message": "SYNTAX: error[E103]: unhandled fallible assignment"
+    }
+  ],
+  "type_safety_insufficient": true
+}

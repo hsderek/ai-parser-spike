@@ -469,6 +469,7 @@ source = { editable = "." }
 dependencies = [
     { name = "dask", extra = ["complete"] },
     { name = "ijson" },
+    { name = "jinja2" },
     { name = "litellm" },
     { name = "loguru" },
     { name = "python-dotenv" },
@@ -497,6 +498,7 @@ requires-dist = [
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0.0" },
     { name = "dask", extras = ["complete"], specifier = ">=2024.1.0" },
     { name = "ijson", specifier = ">=3.2.0" },
+    { name = "jinja2", specifier = ">=3.1.6" },
     { name = "litellm", specifier = ">=1.40.0" },
     { name = "loguru", specifier = ">=0.7.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0.0" },

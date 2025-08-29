@@ -1,0 +1,18 @@
+STRATEGY: Ultra-High VPI String Operations Only
+
+FORBIDDEN FUNCTIONS: parse_regex, match, parse_regex_all, to_regex
+REQUIRED FUNCTIONS: contains, split, starts_with, ends_with, upcase, downcase
+
+Generate VRL using ONLY string operations for maximum performance.
+Target: 400+ events/CPU% (VPI 2000+)
+
+Example Pattern:
+```vrl
+if contains(.message, "Failed password") {
+    parts = split(.message, " ") ?? []
+    if length(parts) >= 6 {
+        .username = parts[4] ?? ""
+        .source_ip = parts[6] ?? ""
+    }
+}
+```

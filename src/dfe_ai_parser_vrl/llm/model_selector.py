@@ -29,7 +29,18 @@ class DFEModelSelector:
         """Load configuration file"""
         try:
             if not config_path:
-                config_path = Path(__file__).parent.parent.parent / "config" / "config.yaml"
+                # Try multiple possible config locations
+                possible_paths = [
+                    Path(__file__).parent.parent.parent.parent / "config" / "config.yaml",  # Root config
+                    Path(__file__).parent.parent / "config" / "config.yaml",  # Module config
+                    Path("config/config.yaml"),  # Relative path
+                ]
+                
+                config_path = None
+                for path in possible_paths:
+                    if path.exists():
+                        config_path = path
+                        break
             
             if Path(config_path).exists():
                 with open(config_path, 'r') as f:

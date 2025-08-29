@@ -33,6 +33,7 @@ dependencies = [
     "ijson>=3.2.0", # Streaming JSON parser
     "dask[complete]>=2024.1.0", # Parallel data processing
     "regex>=2023.0.0", # Enhanced regex performance
+    "jinja2>=3.1.6",
 ]
 
 [project.optional-dependencies]

@@ -51,23 +51,34 @@ class DFEVRLGenerator:
             "model_used": self.llm_client.get_model_info(),
             "iterations": 0,
             "errors_fixed": 0,
-            "validation_passed": False
+            "validation_passed": False,
+            "iteration_history": [],  # Track what was tried and failed
+            "failed_patterns": [],    # Patterns that caused repeated failures
+            "error_progression": []   # Track how errors evolved
         }
         
-        # Generate initial VRL
+        # Generate initial VRL with streaming progress
         logger.info("Generating initial VRL code...")
-        vrl_code = self.llm_client.generate_vrl(sample_logs, device_type)
+        vrl_code = self.llm_client.generate_vrl(sample_logs, device_type, stream=True)
         metadata["iterations"] = 1
         
         if not validate:
             return vrl_code, metadata
         
-        # Validation loop
+        # Anti-cyclical validation loop with history tracking
         for iteration in range(self.max_iterations):
             logger.info(f"Validation iteration {iteration + 1}/{self.max_iterations}")
             
             # Validate VRL
             is_valid, error_message = self.validator.validate(vrl_code, sample_logs)
+            
+            # Track error progression to detect cycles
+            error_code = self._extract_error_code(error_message) if error_message else "NONE"
+            metadata["error_progression"].append({
+                "iteration": iteration + 1,
+                "error_code": error_code,
+                "error_message": error_message[:200] if error_message else None
+            })
             
             if is_valid:
                 logger.success("VRL validation passed!")
@@ -78,17 +89,90 @@ class DFEVRLGenerator:
                 logger.warning(f"Validation failed: {error_message}")
                 break
             
-            # Attempt to fix error
-            logger.info(f"Fixing error: {error_message}")
-            fixed_vrl = self.error_fixer.fix(vrl_code, error_message, sample_logs)
+            # Check for cyclical patterns (same error 3+ times)
+            recent_errors = [e["error_code"] for e in metadata["error_progression"][-3:]]
+            if len(recent_errors) >= 3 and len(set(recent_errors)) == 1:
+                logger.warning(f"🔄 CYCLICAL PATTERN DETECTED: {error_code} repeated 3+ times")
+                self._analyze_and_blacklist_patterns(vrl_code, error_message, metadata)
+                
+                # Try progressive simplification approach
+                logger.info("🎯 Switching to PROGRESSIVE SIMPLIFICATION to break cycle")
+                vrl_code = self._generate_simplified_vrl(sample_logs, device_type, metadata)
+                continue
             
+            # Try local fixes first (free)
+            logger.info("Attempting local error fixes...")
+            fixed_vrl = self.error_fixer.fix_locally(vrl_code, error_message)
+            
+            local_fix_applied = False
             if fixed_vrl and fixed_vrl != vrl_code:
+                logger.info("✨ Local fix applied (free)")
                 vrl_code = fixed_vrl
                 metadata["errors_fixed"] += 1
-                metadata["iterations"] += 1
-            else:
-                logger.warning("Unable to fix error, stopping iterations")
-                break
+                local_fix_applied = True
+                
+                # Re-validate after local fix
+                is_valid_after_local, error_after_local = self.validator.validate(vrl_code, sample_logs)
+                if is_valid_after_local:
+                    logger.success("✅ Local fix resolved all issues!")
+                    metadata["validation_passed"] = True
+                    break
+                else:
+                    logger.info(f"Local fix partial - still has errors: {self._extract_error_code(error_after_local)}")
+                    error_message = error_after_local  # Update error for LLM fix
+            
+            # Use LLM fix with iteration history to prevent cycles
+            if not local_fix_applied or not metadata.get("validation_passed", False):
+                logger.info(f"Using LLM to fix error: {self._extract_error_code(error_message)}")
+                
+                # Build iteration context to prevent repetition
+                iteration_context = self._build_iteration_context(metadata, error_message)
+                
+                try:
+                    fixed_vrl = self.error_fixer.fix_with_history(
+                        vrl_code, error_message, sample_logs, iteration_context
+                    )
+                    
+                    if fixed_vrl and fixed_vrl != vrl_code:
+                        # Track this attempt in history
+                        attempt_record = {
+                            "iteration": iteration + 1,
+                            "error_code": self._extract_error_code(error_message),
+                            "fix_applied": True,
+                            "vrl_length_before": len(vrl_code),
+                            "vrl_length_after": len(fixed_vrl)
+                        }
+                        metadata["iteration_history"].append(attempt_record)
+                        
+                        vrl_code = fixed_vrl
+                        metadata["errors_fixed"] += 1
+                        metadata["iterations"] += 1
+                        logger.info(f"🤖 LLM fix applied - iteration {iteration + 1}")
+                    else:
+                        logger.warning(f"LLM unable to fix error at iteration {iteration + 1}")
+                        
+                        # Track failed attempt
+                        failed_attempt = {
+                            "iteration": iteration + 1,
+                            "error_code": self._extract_error_code(error_message),
+                            "fix_applied": False,
+                            "reason": "LLM returned no changes"
+                        }
+                        metadata["iteration_history"].append(failed_attempt)
+                        metadata["iterations"] += 1
+                        
+                except Exception as e:
+                    logger.error(f"LLM fix failed: {e}")
+                    
+                    # Track error in history
+                    error_attempt = {
+                        "iteration": iteration + 1,
+                        "error_code": self._extract_error_code(error_message),
+                        "fix_applied": False,
+                        "reason": f"LLM fix exception: {str(e)[:100]}"
+                    }
+                    metadata["iteration_history"].append(error_attempt)
+                    metadata["iterations"] += 1
             
             # Rate limiting
             time.sleep(self.iteration_delay)
@@ -163,6 +247,111 @@ class DFEVRLGenerator:
             
             logger.info(f"Basic sampled {len(lines)} lines from {log_path.name}")
             return '\n'.join(lines)
+    
+    def _extract_error_code(self, error_message: str) -> str:
+        """Extract error code from error message"""
+        if not error_message:
+            return "unknown"
+        
+        import re
+        match = re.search(r'error\[E(\d+)\]', error_message)
+        if match:
+            return f"E{match.group(1)}"
+        
+        # Extract error type from message
+        if ':' in error_message:
+            return error_message.split(':')[0].strip()
+        
+        return error_message.split()[0] if error_message.split() else "unknown"
+    
+    def _build_iteration_context(self, metadata: Dict[str, Any], current_error: str) -> str:
+        """Build context of previous iterations to prevent cyclical failures"""
+        
+        history = metadata.get("iteration_history", [])
+        failed_patterns = metadata.get("failed_patterns", [])
+        error_progression = metadata.get("error_progression", [])
+        
+        if not history and not failed_patterns:
+            return "First iteration attempt."
+        
+        context_parts = []
+        
+        # Previous iteration summary
+        if history:
+            context_parts.append("PREVIOUS ITERATION ATTEMPTS:")
+            for attempt in history[-3:]:  # Last 3 attempts
+                status = "✅ FIXED" if attempt.get("fix_applied") else "❌ FAILED"
+                context_parts.append(f"  Iteration {attempt['iteration']}: {attempt['error_code']} → {status}")
+                if not attempt.get("fix_applied"):
+                    context_parts.append(f"    Reason: {attempt.get('reason', 'Unknown')}")
+        
+        # Failed patterns to avoid
+        if failed_patterns:
+            context_parts.append("")
+            context_parts.append("❌ AVOID THESE PATTERNS (caused repeated failures):")
+            for pattern in failed_patterns[-5:]:  # Last 5 failed patterns
+                context_parts.append(f"  ❌ {pattern}")
+        
+        # Error trend analysis
+        if len(error_progression) >= 3:
+            recent_error_codes = [e["error_code"] for e in error_progression[-3:]]
+            if len(set(recent_error_codes)) == 1:
+                context_parts.append("")
+                context_parts.append(f"⚠️ WARNING: {recent_error_codes[0]} error repeating - try different approach")
+        
+        context_parts.append("")
+        context_parts.append("🎯 REQUIREMENT: Generate different solution than previous attempts")
+        
+        return "\n".join(context_parts)
+    
+    def _analyze_and_blacklist_patterns(self, vrl_code: str, error_message: str, metadata: Dict[str, Any]):
+        """Analyze failed VRL patterns and add to blacklist"""
+        
+        failed_patterns = metadata.setdefault("failed_patterns", [])
+        
+        # Extract problematic patterns from VRL
+        lines = vrl_code.split('\n')
+        
+        # Common problematic patterns that cause cycles
+        if "parts[length(parts) - 1]" in vrl_code:
+            failed_patterns.append("parts[length(parts) - 1] - function calls in array indices")
+        
+        if "?? []" in vrl_code and "E651" in error_message:
+            failed_patterns.append("split(...) ?? [] - unnecessary coalescing on infallible operations")
+        
+        if "return\n}" in vrl_code.replace(" ", ""):
+            failed_patterns.append("bare return statements - use abort or remove")
+        
+        # Extract specific error lines
+        import re
+        line_matches = re.findall(r'(\d+)\s*│[^│]*│\s*(.+)', error_message)
+        for line_num, line_content in line_matches[:3]:  # Top 3 problem lines
+            if line_content.strip():
+                failed_patterns.append(f"Line {line_num}: {line_content.strip()}")
+        
+        logger.info(f"📝 Added {len(line_matches)} failed patterns to blacklist")
+    
+    def _generate_simplified_vrl(self, sample_logs: str, device_type: str, metadata: Dict[str, Any]) -> str:
+        """Generate simplified VRL to break cyclical complexity"""
+        
+        failed_patterns = metadata.get("failed_patterns", [])
+        
+        # Create simplified generation strategy
+        simplified_strategy = {
+            "name": "anti_cyclical_simple",
+            "description": "Ultra-simple VRL to break error cycles",
+            "approach": "Minimal logic, avoid complex patterns that failed before"
+        }
+        
+        logger.info("🔄 Generating simplified VRL to break cycles...")
+        
+        # Generate with explicit anti-cyclical instructions
+        return self.llm_client.generate_vrl(
+            sample_logs=sample_logs,
+            device_type=device_type,
+            stream=False,
+            strategy=simplified_strategy
+        )
     
     def _detect_device_type(self, filename: str) -> Optional[str]:
         """Auto-detect device type from filename"""

@@ -1,0 +1,1388 @@
+2025-08-29 20:40:30.503 | INFO     | dfe_ai_parser_vrl.config.loader:load:33 - Loading config from: /projects/ai-parser-spike/config/config.yaml
+2025-08-29 20:40:30.517 | DEBUG    | dfe_ai_parser_vrl.config.loader:_apply_smart_defaults:173 - Vector CLI detected
+2025-08-29 20:40:30.519 | DEBUG    | dfe_ai_parser_vrl.config.loader:_apply_smart_defaults:181 - PyVRL detected
+2025-08-29 20:40:30.519 | INFO     | dfe_ai_parser_vrl:_detect_optimal_thread_count:58 - Detected 16 CPU cores, using 16 threads (100% utilization)
+2025-08-29 20:40:31.882 | INFO     | dfe_ai_parser_vrl.llm.prompts:__init__:30 - 📝 Prompt manager initialized with templates from /projects/ai-parser-spike/src/dfe_ai_parser_vrl/prompts
+2025-08-29 20:40:31.908 | INFO     | dfe_ai_parser_vrl.core.field_conflict_checker:_load_reserved_fields:54 - ✅ Loaded 24 reserved field names from common_header.csv
+2025-08-29 20:40:31.909 | INFO     | dfe_ai_parser_vrl.core.field_conflict_checker:_load_meta_schema_types:77 - ✅ Loaded 23 meta schema types from type_maps.csv
+2025-08-29 20:40:31.964 | INFO     | dfe_ai_parser_vrl.config.loader:load:33 - Loading config from: /projects/ai-parser-spike/config/config.yaml
+2025-08-29 20:40:31.984 | DEBUG    | dfe_ai_parser_vrl.config.loader:_apply_smart_defaults:173 - Vector CLI detected
+2025-08-29 20:40:31.984 | DEBUG    | dfe_ai_parser_vrl.config.loader:_apply_smart_defaults:181 - PyVRL detected
+2025-08-29 20:40:31.993 | INFO     | dfe_ai_parser_vrl.llm.model_selector:select_model:120 - 🎯 Selecting REASONING model for anthropic
+2025-08-29 20:40:31.993 | DEBUG    | dfe_ai_parser_vrl.llm.model_selector:_get_available_models:288 - Found 1085 models from LiteLLM
+2025-08-29 20:40:33.688 | INFO     | dfe_ai_parser_vrl.llm.model_selector:select_model:133 - ✅ Selected REASONING model: anthropic/claude-opus-4-1-20250805
+2025-08-29 20:40:33.689 | INFO     | dfe_ai_parser_vrl.llm.client:_select_model:58 - Using model: anthropic/claude-opus-4-1-20250805 (reasoning mode)
+2025-08-29 20:40:33.689 | INFO     | dfe_ai_parser_vrl.core.generator:generate:47 - Starting VRL generation for ssh device
+2025-08-29 20:40:33.690 | INFO     | dfe_ai_parser_vrl.core.generator:generate:61 - Generating initial VRL code...
+2025-08-29 20:40:33.697 | INFO     | dfe_ai_parser_vrl.core.schema_tokenizer:get_optimized_schema_prompt:49 - Schema size 1633 tokens > 800, applying pre-tokenization
+2025-08-29 20:40:33.697 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:237 - 🔄 Streaming VRL generation with real-time progress...
+🎯 FINAL SSH TEST - MANDATORY TYPE SAFETY
+============================================================
+Testing if type safety pattern results in working VRL
+Target: validation_passed=True within 10 iterations
+
+SSH sample: Dec 10 06:55:46 LabSZ sshd[24200]: Invalid user test from 192.168.1.1
+
+Enhanced features active:
+  ✅ Mandatory type safety pattern
+  ✅ Anti-cyclical iteration history
+  ✅ Pattern blacklisting
+  ✅ Vector CLI integration
+
+🚀 Starting SSH VRL generation...
+```vrl
+# Type-safe string conversion for primary message field
+message_str = if exists(.message) { to_string(.message) ?? "" } else { "" }
+msg_str = if exists(.msg) { to_string(.msg) ?? "" } else { "" }
+primary_message = if message_str != "" { message_str } else { msg2025-08-29 20:40:38.733 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 55 tokens (4%) | 10.9 tok/sec (ETA: 132s)
+_str }
+
+# Early exit for non-SSH logs
+if !contains(primary_message, "sshd") && !contains(primary_message, "SSH") {
+    return
+}
+
+# Fast event type detection
+if contains(primary_message, "Accepted password") {
+    .ssh_event_type = "login_success"
+    .ssh_auth_method = "password"
+    
+    # Extract username and source IP
+    parts2025-08-29 20:40:42.244 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 100 tokens (7%) | 11.7 tok/sec (ETA: 120s)
+ = split(primary_message, " for ") ?? []
+    if length(parts) >= 2 {
+        user_part = parts[1] ?? ""
+        user_parts = split(user_part, " from ") ?? []
+        if length(user_parts) >= 2 {
+            .ssh_username = user_parts[0] ?? ""
+            ip_part = user_parts[1] ?? ""
+            ip_parts = split(ip_part, " ") ?? []
+            if length(ip_parts) >= 1 {
+                .ssh_source_ip = ip2025-08-29 20:40:47.396 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 167 tokens (11%) | 12.2 tok/sec (ETA: 109s)
+_parts[0] ?? ""
+            }
+        }
+    }
+    
+    # Extract port
+    if contains(primary_message, " port ") {
+        port_parts = split(primary_message, " port ") ?? []
+        if length(port_parts) >= 2 {
+            port_str = port_parts[1] ?? ""
+            port_end_parts = split(port_str, " ") ?? []
+            if length(port_end_parts) >= 1 {
+                .ssh_source_port = port_end_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "Accepted publickey") {
+    .ssh_event_type = "login_2025-08-29 20:40:52.525 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 239 tokens (16%) | 12.7 tok/sec (ETA: 99s)
+success"
+    .ssh_auth_method = "publickey"
+    
+    # Extract username and source IP
+    parts = split(primary_message, " for ") ?? []
+    if length(parts) >= 2 {
+        user_part = parts[1] ?? ""
+        user_parts = split(user_part, " from ") ?? []
+        if length(user_parts) >= 2 {
+            .ssh_username = user_parts[0] ?? ""
+            ip_part = user_parts[1] ?? ""
+            ip_parts = split(ip_part, " ") ?? []
+            if length(ip_parts) >= 1 {
+                .ssh_source_ip = ip_parts[0] ?? ""
+            }
+        }
+    }
+    
+    # Extract SSH2025-08-29 20:40:57.692 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 325 tokens (22%) | 13.5 tok/sec (ETA: 87s)
+ key type
+    if contains(primary_message, "RSA SHA256:") {
+        .ssh_key_type = "RSA"
+        key_parts = split(primary_message, "RSA SHA256:") ?? []
+        if length(key_parts) >= 2 {
+            fingerprint_part = key_parts[1] ?? ""
+            fingerprint_parts = split(fingerprint_part, " ") ?? []
+            if length(fingerprint_parts) >= 1 {
+                .ssh_key_fingerprint = fingerprint_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "Failed password") {
+    .ssh_event_2025-08-29 20:41:02.722 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 390 tokens (26%) | 13.4 tok/sec (ETA: 83s)
+type = "login_failed"
+    .ssh_auth_method = "password"
+    .ssh_failure_reason = "2025-08-29 20:41:03.500 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 400 tokens (27%) | 13.4 tok/sec (ETA: 82s)
+invalid_password"
+    
+    # Extract username and source IP
+    parts = split(primary_message, " for ") ?? []
+    if length(parts) >= 2 {
+        user_part = parts[1] ?? ""
+        if contains(user_part, "invalid user ") {
+            .ssh_invalid_user = true
+            user_clean = replace(user_part, "invalid user ", "")
+            user_parts = split(user_clean, " from ") ?? []
+        } else {
+            user_parts = split(user_part, " from ") ?? []
+        }
+        
+        if length(user_parts) >= 2 {
+            .ssh_username = user_parts[0] ?? ""2025-08-29 20:41:08.609 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 478 tokens (32%) | 13.7 tok/sec (ETA: 75s)
+
+            ip_part = user_parts[1] ?? ""
+            ip_parts = split(ip_part, " ") ?? []
+            if length(ip_parts) >= 1 {
+                .ssh_source_ip = ip_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "Connection closed by authenticating user") {
+    .ssh_event_type = "connection_closed"
+    .ssh_disconnect_reason = "authentication_timeout"
+    
+    # Extract username and IP
+    parts = split(primary_message, "authenticating user ") ?? []
+    if length(parts) >= 2 {
+        user_ip_part = parts[1] ?? ""
+        user_ip_parts = split(user_ip_part, " ")2025-08-29 20:41:13.832 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 559 tokens (37%) | 13.9 tok/sec (ETA: 68s)
+ ?? []
+        if length(user_ip_parts) >= 2 {
+            .ssh_username = user_ip_parts[0] ?? ""
+            .ssh_source_ip = user_ip_parts[1] ?? ""
+        }
+    }
+} else if contains(primary_message, "Connection reset by") {
+    .ssh_event_type = "connection_reset"
+    
+    # Extract IP and port
+    parts = split(primary_message, "Connection reset by ") ?? []
+    if length(parts) >= 2 {
+        ip_port_part = parts[1] ?? ""
+        ip_port_parts = split(ip_port_part, " port ") ?? []
+        if length(ip_port_parts) >= 2 {
+            .ssh_source_ip = ip_port_parts[0] ?? ""2025-08-29 20:41:18.962 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 644 tokens (43%) | 14.2 tok/sec (ETA: 60s)
+
+            port_preauth = ip_port_parts[1] ?? ""
+            port_parts = split(port_preauth, " ") ?? []
+            if length(port_parts) >= 1 {
+                .ssh_source_port = port_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "Disconnected from") {
+    .ssh_event_type = "disconnected"
+    
+    # Extract IP and port
+    parts = split(primary_message, "Disconnected from ") ?? []
+    if length(parts) >= 2 {
+        disconnect_part = parts[1] ?? ""
+        
+        # Check for user in message
+        if contains(disconnect_part, "user 2025-08-29 20:41:23.991 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 722 tokens (48%) | 14.4 tok/sec (ETA: 54s)
+") {
+            user_parts = split(disconnect_part, "user ") ?? []
+            if length(user_parts) >= 2 {
+                user_ip_part = user_parts[1] ?? ""
+                user_ip_split = split(user_ip_part, " ") ?? []
+                if length(user_ip_split) >= 2 {
+                    .ssh_username = user_ip_split[0] ?? ""
+                    .ssh_source_ip = user_ip_split[1] ?? ""
+                }
+            }
+        } else {
+            # Just IP and port
+            ip_port_parts = split(disconnect_part, " port ") ?? []
+            if length(ip_port_parts) >= 2 {
+                .ssh_source_2025-08-29 20:41:29.094 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 799 tokens (53%) | 14.4 tok/sec (ETA: 49s)
+ip = ip_port_parts[0] ?? ""
+                port_end = ip_port_parts[1] ?? ""
+                port_parts = split(port_end, " ") ?? []
+                if length(port_parts) >= 1 {
+                    .ssh_source_port = port_parts[0] ?? ""
+                }
+            }
+        }
+    }
+} else if contains(primary_message, "pam_unix(sshd:session): session opened") {
+    .ssh_event_type = "session_opened"
+    
+    # Extract username
+    if contains(primary_message, " for user ") {
+        parts = split(primary_message, " for user ") ?? []
+        if length(parts) >= 2 {
+            user_part = parts[1] ??2025-08-29 20:41:34.218 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 881 tokens (59%) | 14.6 tok/sec (ETA: 43s)
+ ""
+            user_parts = split(user_part, " ") ?? []
+            if length(user_parts) >= 1 {
+                .ssh_username = user_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "pam_unix(sshd:session): session closed") {
+    .ssh_event_type = "session_closed"
+    
+    # Extract username
+    if contains(primary_message, " for user ") {
+        parts = split(primary_message, " for user ") ?? []
+        if length(parts) >= 2 {
+            user_part = parts[1] ?? ""
+            .ssh_username = user_part
+        }
+    }
+} else if contains(primary_message, "Invali2025-08-29 20:41:39.224 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 962 tokens (64%) | 14.7 tok/sec (ETA: 37s)
+d user") {
+    .ssh_event_type = "invalid_user"
+    
+    # Extract username and IP
+    parts = split(primary_message, "Invalid user ") ?? []
+    if length(parts) >= 2 {
+        user_ip_part = parts[1] ?? ""
+        user_ip_parts = split(user_ip_part, " from ") ?? []
+        if length(user_ip_parts) >= 2 {
+            .ssh_username = user_ip_parts[0] ?? ""
+            ip_port_part = user_ip_parts[1] ?? ""
+            ip_parts = split(ip_port_part, " ") ?? []
+            if length(ip_parts) >= 1 {
+                .ssh2025-08-29 20:41:44.390 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 1039 tokens (69%) | 14.7 tok/sec (ETA: 31s)
+_source_ip = ip_parts[0] ?? ""
+            }
+        }
+    }
+} else if contains(primary_message, "Server listening on") {
+    .ssh_event_type = "server_start"
+    
+    # Extract listening address and port
+    if contains(primary_message, " port ") {
+        parts = split(primary_message, " port ") ?? []
+        if length(parts) >= 2 {
+            port_part = parts[1] ?? ""
+            port_parts = split(port_part, ".") ?? []
+            if length(2025-08-29 20:41:48.252 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 1100 tokens (73%) | 14.8 tok/sec (ETA: 27s)
+port_parts) >= 1 {
+                .ssh_listen_port = port_parts[0] ?? ""
+            }
+        }
+    }
+    
+    if contains(primary_message, "Server listening on ::") {
+        .ssh_listen_address = "::"
+    } else if contains(primary_message, "Server listening on 0.0.0.0") {
+        .ssh_listen_address = "0.0.0.0"
+    }
+}
+
+# Extract process ID if present
+if contains(primary_message, "sshd[") {
+    parts = split(primary_message, "sshd[") ?? []
+    if length(parts) >= 2 {
+        pid_part = parts[1] ?? ""
+        pid_parts = split(pi2025-08-29 20:41:53.409 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:267 -    📊 Progress: 1179 tokens (79%) | 14.8 tok/sec (ETA: 22s)
+d_part, "]") ?? []
+        if length(pid_parts) >= 1 {
+            .ssh_pid = pid_parts[0] ?? ""
+        }
+    }
+}
+```2025-08-29 20:41:54.584 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:275 - ✅ VRL generation complete!
+2025-08-29 20:41:54.585 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:276 -    📈 Final stats: 1195 tokens in 80.9s (14.8 tok/sec)
+2025-08-29 20:41:54.585 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 1/10
+2025-08-29 20:41:54.587 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :8:11
+  │
+8 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+9 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:1
+  │
+9 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :17:13
+   │
+17 │     parts = split(primary_message, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                               │
+   │             │                               remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :228:13
+    │
+228 │     parts = split(primary_message, "sshd[") ?? []
+    │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+    │             │                               │
+    │             │                               remove this error coalescing operation
+    │             this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:41:54.587 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:41:54.587 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E203 fix
+2025-08-29 20:41:54.587 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:41:54.589 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :8:11
+  │
+8 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+9 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:1
+  │
+9 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :17:13
+   │
+17 │     parts = split(primary_message, " for ") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                               │
+   │             │                               remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :228:13
+    │
+228 │     parts = split(primary_message, "sshd[") ?? [];
+    │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+    │             │                               │
+    │             │                               remove this error coalescing operation
+    │             this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:41:54.589 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E203
+2025-08-29 20:41:54.589 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E203
+2025-08-29 20:41:54.589 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:43:14.917 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.2654
+2025-08-29 20:43:14.917 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 1
+2025-08-29 20:43:16.918 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 2/10
+2025-08-29 20:43:16.920 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :8:11
+  │
+8 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+9 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:1
+  │
+9 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :17:13
+   │
+17 │     parts = split(primary_message, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                               │
+   │             │                               remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :239:13
+    │
+239 │     parts = split(primary_message, "sshd[") ?? []
+    │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+    │             │                               │
+    │             │                               remove this error coalescing operation
+    │             this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:43:16.920 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:43:16.920 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E203 fix
+2025-08-29 20:43:16.920 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:43:16.921 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :8:11
+  │
+8 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+9 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:1
+  │
+9 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :17:13
+   │
+17 │     parts = split(primary_message, " for ") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                               │
+   │             │                               remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+    ┌─ :239:13
+    │
+239 │     parts = split(primary_message, "sshd[") ?? [];
+    │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+    │             │                               │
+    │             │                               remove this error coalescing operation
+    │             this expression can't fail
+    │
+    = see language documentation at https://vrl.dev
+    = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:43:16.921 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E203
+2025-08-29 20:43:16.921 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E203
+2025-08-29 20:43:16.922 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:43:46.731 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.1164
+2025-08-29 20:43:46.731 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 2
+2025-08-29 20:43:48.732 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 3/10
+2025-08-29 20:43:48.734 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :8:11
+  │
+8 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+9 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :9:1
+  │
+9 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :40:15
+   │
+40 │     if length(parts ?? []) > 1 {
+   │               ^^^^^ -- -- this expression never resolves
+   │               │     │
+   │               │     remove this error coalescing operation
+   │               this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :57:15
+   │
+57 │     if length(parts ?? []) > 1 {
+   │               ^^^^^ -- -- this expression never resolves
+   │               │     │
+   │               │     remove this error coalescing operation
+   │               this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :70:15
+   │
+70 │     if length(parts ?? []) > 1 {
+   │               ^^^^^ -- -- this expression never resolves
+   │               │     │
+   │               │     remove this error coalescing operation
+   │               this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:43:48.734 | WARNING  | dfe_ai_parser_vrl.core.generator:generate:95 - 🔄 CYCLICAL PATTERN DETECTED: E203 repeated 3+ times
+2025-08-29 20:43:48.734 | INFO     | dfe_ai_parser_vrl.core.generator:_analyze_and_blacklist_patterns:332 - 📝 Added 0 failed patterns to blacklist
+2025-08-29 20:43:48.734 | INFO     | dfe_ai_parser_vrl.core.generator:generate:99 - 🎯 Switching to PROGRESSIVE SIMPLIFICATION to break cycle
+2025-08-29 20:43:48.734 | INFO     | dfe_ai_parser_vrl.core.generator:_generate_simplified_vrl:346 - 🔄 Generating simplified VRL to break cycles...
+2025-08-29 20:43:48.734 | INFO     | dfe_ai_parser_vrl.core.schema_tokenizer:get_optimized_schema_prompt:49 - Schema size 1633 tokens > 800, applying pre-tokenization
+2025-08-29 20:43:48.735 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:280 - 🔄 Generating VRL (non-streaming)...
+2025-08-29 20:44:10.132 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0940
+2025-08-29 20:44:10.133 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:293 - ✅ VRL generated (680 completion tokens)
+2025-08-29 20:44:10.133 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 4/10
+2025-08-29 20:44:10.134 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:44:10.134 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:44:10.134 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E651 fix
+2025-08-29 20:44:10.135 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:44:10.136 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :34:23
+   │
+34 │         user_tokens = split(user_part, " ")
+   │         ------------- ^^^^^^^^^^^^^^^^^^^^^
+   │         │             │
+   │         │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │             update the expression to be infallible by adding a `!`: `split!(user_part, " ")`
+   │         │             `user_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         user_tokens, err = split(user_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :46:21
+   │
+46 │         ip_tokens = split(ip_part, " ")
+   │         ----------- ^^^^^^^^^^^^^^^^^^^
+   │         │           │
+   │         │           this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │           update the expression to be infallible by adding a `!`: `split!(ip_part, " ")`
+   │         │           `ip_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         ip_tokens, err = split(ip_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :58:23
+   │
+58 │         port_tokens = split(port_part, " ")
+   │         ------------- ^^^^^^^^^^^^^^^^^^^^^
+   │         │             │
+   │         │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │             update the expression to be infallible by adding a `!`: `split!(port_part, " ")`
+   │         │             `port_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         port_tokens, err = split(port_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:44:10.136 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E103
+2025-08-29 20:44:10.136 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E103
+2025-08-29 20:44:10.136 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:44:34.012 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0699
+2025-08-29 20:44:34.012 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 4
+2025-08-29 20:44:36.012 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 5/10
+2025-08-29 20:44:36.013 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:44:36.014 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:44:36.014 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E651 fix
+2025-08-29 20:44:36.014 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:44:36.015 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :34:23
+   │
+34 │         user_tokens = split(user_part, " ")
+   │         ------------- ^^^^^^^^^^^^^^^^^^^^^
+   │         │             │
+   │         │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │             update the expression to be infallible by adding a `!`: `split!(user_part, " ")`
+   │         │             `user_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         user_tokens, err = split(user_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :46:21
+   │
+46 │         ip_tokens = split(ip_part, " ")
+   │         ----------- ^^^^^^^^^^^^^^^^^^^
+   │         │           │
+   │         │           this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │           update the expression to be infallible by adding a `!`: `split!(ip_part, " ")`
+   │         │           `ip_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         ip_tokens, err = split(ip_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :58:23
+   │
+58 │         port_tokens = split(port_part, " ")
+   │         ------------- ^^^^^^^^^^^^^^^^^^^^^
+   │         │             │
+   │         │             this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │             update the expression to be infallible by adding a `!`: `split!(port_part, " ")`
+   │         │             `port_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         port_tokens, err = split(port_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:44:36.015 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E103
+2025-08-29 20:44:36.015 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E103
+2025-08-29 20:44:36.015 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:45:00.962 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0686
+2025-08-29 20:45:00.963 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 5
+2025-08-29 20:45:02.963 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 6/10
+2025-08-29 20:45:02.965 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :33:21
+   │
+33 │         user_part = parts[1] ?? ""
+   │                     ^^^^^^^^ -- -- this expression never resolves
+   │                     │        │
+   │                     │        remove this error coalescing operation
+   │                     this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :45:19
+   │
+45 │         ip_part = parts[1] ?? ""
+   │                   ^^^^^^^^ -- -- this expression never resolves
+   │                   │        │
+   │                   │        remove this error coalescing operation
+   │                   this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :57:21
+   │
+57 │         port_part = parts[1] ?? ""
+   │                     ^^^^^^^^ -- -- this expression never resolves
+   │                     │        │
+   │                     │        remove this error coalescing operation
+   │                     this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:45:02.965 | WARNING  | dfe_ai_parser_vrl.core.generator:generate:95 - 🔄 CYCLICAL PATTERN DETECTED: E651 repeated 3+ times
+2025-08-29 20:45:02.965 | INFO     | dfe_ai_parser_vrl.core.generator:_analyze_and_blacklist_patterns:332 - 📝 Added 0 failed patterns to blacklist
+2025-08-29 20:45:02.965 | INFO     | dfe_ai_parser_vrl.core.generator:generate:99 - 🎯 Switching to PROGRESSIVE SIMPLIFICATION to break cycle
+2025-08-29 20:45:02.965 | INFO     | dfe_ai_parser_vrl.core.generator:_generate_simplified_vrl:346 - 🔄 Generating simplified VRL to break cycles...
+2025-08-29 20:45:02.966 | INFO     | dfe_ai_parser_vrl.core.schema_tokenizer:get_optimized_schema_prompt:49 - Schema size 1633 tokens > 800, applying pre-tokenization
+2025-08-29 20:45:02.966 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:280 - 🔄 Generating VRL (non-streaming)...
+2025-08-29 20:45:36.003 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.1028
+2025-08-29 20:45:36.003 | INFO     | dfe_ai_parser_vrl.llm.client:generate_vrl:293 - ✅ VRL generated (798 completion tokens)
+2025-08-29 20:45:36.004 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 7/10
+2025-08-29 20:45:36.005 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :6:11
+  │
+6 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+7 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :7:1
+  │
+7 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :67:13
+   │
+67 │     parts = split(message_str, "sshd[") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:45:36.006 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:45:36.006 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E203 fix
+2025-08-29 20:45:36.006 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:45:36.009 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E203]: syntax error
+  ┌─ :6:11
+  │
+6 │         return
+  │ ╭────────────^
+  │ │ ╭──────────'
+7 │ │ │ }
+  │ ╰─│^ unexpected syntax token: "Newline"
+  │   ╰' expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E203]: syntax error
+  ┌─ :7:1
+  │
+7 │ }
+  │ ^
+  │ │
+  │ unexpected syntax token: "RBrace"
+  │ expected one of: "!", "(", "[", "_", "abort", "false", "float literal", "function call", "identifier", "if", "integer literal", "null", "raw string literal", "regex literal", "return", "string literal", "timestamp literal", "true", "{", "path literal"
+  │
+  = see language documentation at https://vrl.dev
+  = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :67:13
+   │
+67 │     parts = split(message_str, "sshd[") ?? [];
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:45:36.011 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E203
+2025-08-29 20:45:36.011 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E203
+2025-08-29 20:45:36.011 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:46:17.977 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0815
+2025-08-29 20:46:17.978 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 7
+2025-08-29 20:46:19.978 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 8/10
+2025-08-29 20:46:19.980 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :67:13
+   │
+67 │     parts = split(message_str, "sshd[") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:46:19.980 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:46:19.980 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E651 fix
+2025-08-29 20:46:19.980 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:46:19.982 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :34:22
+   │
+34 │         user_parts = split(user_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(user_part, " ")`
+   │         │            `user_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         user_parts, err = split(user_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :46:20
+   │
+46 │         ip_parts = split(ip_part, " ")
+   │         ---------- ^^^^^^^^^^^^^^^^^^^
+   │         │          │
+   │         │          this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │          update the expression to be infallible by adding a `!`: `split!(ip_part, " ")`
+   │         │          `ip_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         ip_parts, err = split(ip_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :58:22
+   │
+58 │         port_parts = split(port_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(port_part, " ")`
+   │         │            `port_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         port_parts, err = split(port_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :70:21
+   │
+70 │         pid_parts = split(pid_part, "]")
+   │         ----------- ^^^^^^^^^^^^^^^^^^^^
+   │         │           │
+   │         │           this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │           update the expression to be infallible by adding a `!`: `split!(pid_part, "]")`
+   │         │           `pid_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         pid_parts, err = split(pid_part, "]")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:46:19.982 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E103
+2025-08-29 20:46:19.982 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E103
+2025-08-29 20:46:19.982 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:46:44.854 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0810
+2025-08-29 20:46:44.854 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 8
+2025-08-29 20:46:46.855 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 9/10
+2025-08-29 20:46:46.857 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :34:22
+   │
+34 │         user_parts = split(user_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(user_part, " ")`
+   │         │            `user_part` argument type is `string, integer, float, boolean, timestamp, regex, null, array or object` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         user_parts, err = split(user_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :46:20
+   │
+46 │         ip_parts = split(ip_part, " ")
+   │         ---------- ^^^^^^^^^^^^^^^^^^^
+   │         │          │
+   │         │          this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │          update the expression to be infallible by adding a `!`: `split!(ip_part, " ")`
+   │         │          `ip_part` argument type is `string, integer, float, boolean, timestamp, regex, null, array or object` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         ip_parts, err = split(ip_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :58:22
+   │
+58 │         port_parts = split(port_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(port_part, " ")`
+   │         │            `port_part` argument type is `string, integer, float, boolean, timestamp, regex, null, array or object` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         port_parts, err = split(port_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :70:21
+   │
+70 │         pid_parts = split(pid_part, "]")
+   │         ----------- ^^^^^^^^^^^^^^^^^^^^
+   │         │           │
+   │         │           this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │           update the expression to be infallible by adding a `!`: `split!(pid_part, "]")`
+   │         │           `pid_part` argument type is `string, integer, float, boolean, timestamp, regex, null, array or object` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         pid_parts, err = split(pid_part, "]")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:46:46.857 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:46:46.857 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E103 fix
+2025-08-29 20:46:46.858 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:46:46.859 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :67:13
+   │
+67 │     parts = split(message_str, "sshd[") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:46:46.859 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E651
+2025-08-29 20:46:46.859 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E651
+2025-08-29 20:46:46.859 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:47:16.656 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0801
+2025-08-29 20:47:16.656 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 9
+2025-08-29 20:47:18.656 | INFO     | dfe_ai_parser_vrl.core.generator:generate:70 - Validation iteration 10/10
+2025-08-29 20:47:18.658 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E103]: unhandled fallible assignment
+   ┌─ :34:22
+   │
+34 │         user_parts = split(user_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(user_part, " ")`
+   │         │            `user_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         user_parts, err = split(user_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :46:20
+   │
+46 │         ip_parts = split(ip_part, " ")
+   │         ---------- ^^^^^^^^^^^^^^^^^^^
+   │         │          │
+   │         │          this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │          update the expression to be infallible by adding a `!`: `split!(ip_part, " ")`
+   │         │          `ip_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         ip_parts, err = split(ip_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :58:22
+   │
+58 │         port_parts = split(port_part, " ")
+   │         ------------ ^^^^^^^^^^^^^^^^^^^^^
+   │         │            │
+   │         │            this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │            update the expression to be infallible by adding a `!`: `split!(port_part, " ")`
+   │         │            `port_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         port_parts, err = split(port_part, " ")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E103]: unhandled fallible assignment
+   ┌─ :70:21
+   │
+70 │         pid_parts = split(pid_part, "]")
+   │         ----------- ^^^^^^^^^^^^^^^^^^^^
+   │         │           │
+   │         │           this expression is fallible because at least one argument's type cannot be verified to be valid
+   │         │           update the expression to be infallible by adding a `!`: `split!(pid_part, "]")`
+   │         │           `pid_part` argument type is `string or null` and this function expected a parameter `value` of type `string`
+   │         or change this to an infallible assignment:
+   │         pid_parts, err = split(pid_part, "]")
+   │
+   = see documentation about error handling at https://errors.vrl.dev/#handling
+   = see functions characteristics documentation at https://vrl.dev/expressions/#function-call-characteristics
+   = learn more about error code 103 at https://errors.vrl.dev/103
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:47:18.658 | INFO     | dfe_ai_parser_vrl.core.generator:generate:104 - Attempting local error fixes...
+2025-08-29 20:47:18.658 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_locally:75 - Applying local E103 fix
+2025-08-29 20:47:18.659 | INFO     | dfe_ai_parser_vrl.core.generator:generate:109 - ✨ Local fix applied (free)
+2025-08-29 20:47:18.660 | DEBUG    | dfe_ai_parser_vrl.core.validator:_validate_with_pyvrl:92 - PyVRL validation failed: 
+error[E651]: unnecessary error coalescing operation
+   ┌─ :31:13
+   │
+31 │     parts = split(message_str, " for ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :43:13
+   │
+43 │     parts = split(message_str, " from ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :55:13
+   │
+55 │     parts = split(message_str, " port ") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                            │
+   │             │                            remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+error[E651]: unnecessary error coalescing operation
+   ┌─ :67:13
+   │
+67 │     parts = split(message_str, "sshd[") ?? []
+   │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ -- -- this expression never resolves
+   │             │                           │
+   │             │                           remove this error coalescing operation
+   │             this expression can't fail
+   │
+   = see language documentation at https://vrl.dev
+   = try your code in the VRL REPL, learn more at https://vrl.dev/examples
+
+2025-08-29 20:47:18.660 | INFO     | dfe_ai_parser_vrl.core.generator:generate:121 - Local fix partial - still has errors: E651
+2025-08-29 20:47:18.660 | INFO     | dfe_ai_parser_vrl.core.generator:generate:126 - Using LLM to fix error: E651
+2025-08-29 20:47:18.660 | INFO     | dfe_ai_parser_vrl.core.error_fixer:fix_with_history:95 - 🔄 Using LLM error fix with iteration history context
+2025-08-29 20:47:42.641 | DEBUG    | dfe_ai_parser_vrl.llm.client:completion:100 - LiteLLM completion cost: $0.0797
+2025-08-29 20:47:42.642 | INFO     | dfe_ai_parser_vrl.core.generator:generate:150 - 🤖 LLM fix applied - iteration 10
+
+
+🏁 FINAL RESULTS:
+========================================
+⏱️  Time: 431.0 seconds
+✅ Success: False
+🔄 Iterations: 9/10
+🔧 Fixes: 16
+📝 VRL length: 2274 chars
+
+❌ FAILED
+❌ Stopped at iteration 9
+Encountered non-recoverable issue

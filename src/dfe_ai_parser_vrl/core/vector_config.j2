@@ -1,0 +1,44 @@
+data_dir: "{{ data_dir }}"
+
+api:
+  enabled: true
+  address: "127.0.0.1:{{ api_port }}"
+  graphql: true
+  playground: false
+
+sources:
+  {{ test_name }}_log_source:
+    type: file
+    include:
+      - "{{ input_file }}"
+    read_from: beginning
+
+transforms:
+  # HyperSec 101 transform - flatten message JSON
+  {{ test_name }}_message_flatten:
+    type: remap
+    inputs: ["{{ test_name }}_log_source"]
+    source: |
+      . = parse_json(.message) ?? {}
+  
+  {{ test_name }}_message_filter:
+    type: filter
+    inputs: ["{{ test_name }}_message_flatten"]
+    condition:
+      type: "vrl"
+      source: "!is_empty(.)"
+  
+  # VRL parser transform
+  {{ test_name }}_vrl_parser:
+    type: remap
+    inputs: ["{{ test_name }}_message_filter"]
+    source: |
+{{ vrl_code | indent(6, true) }}
+
+sinks:
+  {{ test_name }}_file_output:
+    type: file
+    inputs: ["{{ test_name }}_vrl_parser"]
+    path: "{{ output_file }}"
+    encoding:
+      codec: json

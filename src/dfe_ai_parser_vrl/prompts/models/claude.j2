@@ -1,0 +1,22 @@
+CLAUDE-SPECIFIC VRL SYNTAX COACHING:
+Claude tends to generate sophisticated parsing logic but struggles with VRL's specific error handling.
+
+Key Claude VRL Fixes:
+1. Always wrap array access: (array ?? [])[index] ?? default
+2. Never use ?? on field assignments: .field = value (not .field = value ?? null)
+3. Use length() checks before array access: if length(parts) > 2 { .field = parts[2] }
+4. Prefer exists() checks: if exists(.field) { ... }
+
+Common Claude Errors to Avoid:
+- E103: Unhandled fallible (array access without bounds)
+- E651: Unnecessary coalescing (using ?? on infallible operations)
+- E110: Fallible predicate (using fallible expressions in if conditions)
+
+CLAUDE PERFORMANCE OPTIMIZATION:
+Claude generates comprehensive parsing but needs performance guidance.
+
+Focus on:
+1. String operations first: contains() before split()
+2. Early exits: Skip processing if key fields missing
+3. Minimal array operations: Use length() checks
+4. Avoid nested splits: Store intermediate results

@@ -14,6 +14,7 @@ defaults:
   max_iterations: 10
   validation_enabled: true
   streaming: true
+  optimize_for: cpu_efficiency  # Default to CPU efficiency
 
 # Platform identification patterns
 platform_patterns:
@@ -122,18 +123,28 @@ use_cases:
   vrl_generation:
     capability: reasoning
     max_tokens: 8000
+    temperature: 0.3
+    top_p: 0.9
+  error_fixing:
+    capability: reasoning  
+    max_tokens: 4000
+    temperature: 0.1
+    top_p: 0.8
   quick_validation:
     capability: efficient
     max_tokens: 2000
+    temperature: 0.1
   production:
     capability: balanced
     max_tokens: 4000
+    temperature: 0.2
 
 # VRL generation settings
 vrl_generation:
   # Iteration settings
-  max_iterations: 10
+  max_iterations: 100
   iteration_delay: 2  # seconds between iterations
+  max_cost_threshold: 20.0  # Stop if total cost exceeds $20
   
   # Performance optimization - reject regex functions (50-100x slower than string ops)
   performance:
@@ -178,6 +189,35 @@ vrl_generation:
       - E203  # Syntax error
       - E620  # Infallible abort
       - E651  # Unnecessary coalescing
+
+# Performance iteration settings
+performance:
+  max_iterations: 10
+  iteration_delay: 2
+  cost_threshold: 5.0
+  optimize_for: cpu_efficiency  # Default optimization target
+  available_modes:
+    - cpu_efficiency  # Events per CPU percent (best for containers/multi-tenant)
+    - throughput      # Events per second (best for dedicated processing)
+    - balanced        # Combination of both
+  
+  # Performance candidate generation
+  candidate_count: 3  # Number of different VRL approaches to generate
+  candidate_strategies:
+    - name: "string_ops_focused"
+      description: "Ultra-high VPI using only string operations"
+      forbidden_functions: ["parse_regex", "match", "parse_regex_all"]
+      preferred_functions: ["contains", "split", "starts_with", "ends_with"]
+      
+    - name: "structured_parser"
+      description: "Balanced approach using built-in parsers"  
+      preferred_functions: ["parse_syslog", "parse_json", "parse_csv"]
+      moderate_functions: ["parse_timestamp", "to_int"]
+      
+    - name: "hybrid_optimized"
+      description: "Hybrid approach optimized for specific use case"
+      strategy: "analyze_patterns_first"
+      adaptive_optimization: true
   
   # Token optimization
   optimization:

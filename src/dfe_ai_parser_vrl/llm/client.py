@@ -10,6 +10,8 @@ from typing import Dict, List, Optional, Any, Generator
 import litellm
 from loguru import logger
 from .model_selector import DFEModelSelector
+from .prompts import build_vrl_generation_prompt, build_strategy_generation_prompt
+from .error_handler import handle_llm_error, validate_llm_response
 
 
 class DFELLMClient:
@@ -17,9 +19,11 @@ class DFELLMClient:
     
     def __init__(self, config: Dict[str, Any] = None):
         self.config = config or {}
-        self.model_selector = DFEModelSelector(config)
+        # Pass config dict to model selector, it will handle loading from file
+        self.model_selector = DFEModelSelector()
         self.current_model = None
         self.metadata = {}
+        self.last_completion_cost = None  # Track actual LiteLLM costs
         
         # Configure LiteLLM
         litellm.drop_params = True  # Drop unsupported params
@@ -87,20 +91,45 @@ class DFELLMClient:
                 **kwargs
             )
             
+            # Track actual cost from LiteLLM
+            if not stream and hasattr(response, 'usage'):
+                try:
+                    cost = litellm.completion_cost(completion_response=response)
+                    if cost and cost > 0:
+                        self.last_completion_cost = cost
+                        logger.debug(f"LiteLLM completion cost: ${cost:.4f}")
+                except Exception as e:
+                    logger.debug(f"Could not get completion cost: {e}")
+                    self.last_completion_cost = None
+            else:
+                self.last_completion_cost = None
+            
             if stream:
                 return self._stream_response(response)
             else:
                 return response
                 
         except Exception as e:
-            logger.error(f"LLM completion failed: {e}")
+            # Smart error handling
+            error_info = handle_llm_error(e, operation="LLM completion")
             
-            # Try with a different model
-            if "rate_limit" in str(e).lower():
-                logger.info("Rate limited, switching to different model")
-                self._select_model(capability="efficient")
-                time.sleep(5)
-                return self.completion(messages, max_tokens, temperature, stream, **kwargs)
+            # Handle retryable errors
+            if error_info["should_retry"] and not error_info["is_llm_issue"]:
+                if error_info["error_category"] == "api":
+                    logger.info("🔄 API error - trying different model")
+                    self._select_model(capability="efficient")
+                    time.sleep(5)
+                    return self.completion(messages, max_tokens, temperature, stream, **kwargs)
+                elif error_info["error_category"] == "network":
+                    logger.info("🔄 Network error - retrying after delay")
+                    time.sleep(3)
+                    return self.completion(messages, max_tokens, temperature, stream, **kwargs)
+            
+            # Re-raise if not retryable or is actual LLM issue
+            if error_info["is_llm_issue"]:
+                logger.error(f"🤖 LLM generation error (not retryable): {e}")
+            elif error_info["is_infrastructure_issue"]:
+                logger.error(f"⚙️ Infrastructure error (fix required): {e}")
             
             raise
     
@@ -110,10 +139,62 @@ class DFELLMClient:
             if chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
     
+    def generate_candidate_strategies(self,
+                                    sample_logs: str,
+                                    device_type: str = None,
+                                    candidate_count: int = 3) -> List[Dict[str, str]]:
+        """
+        Generate multiple VRL parsing strategies using LLM analysis
+        
+        Args:
+            sample_logs: Sample log data to analyze
+            device_type: Optional device type hint
+            candidate_count: Number of different strategies to generate
+            
+        Returns:
+            List of strategy dicts with name, description, approach
+        """
+        # Use template-based prompt
+        strategy_prompt = build_strategy_generation_prompt(
+            sample_logs=sample_logs,
+            device_type=device_type,
+            candidate_count=candidate_count
+        )
+
+        messages = [{"role": "user", "content": strategy_prompt}]
+        
+        try:
+            response = self.completion(messages, max_tokens=2000, temperature=0.8)
+            content = response.choices[0].message.content.strip()
+            
+            # Extract JSON from response
+            if content.startswith('['):
+                import json
+                strategies = json.loads(content)
+                logger.info(f"Generated {len(strategies)} candidate strategies")
+                return strategies
+            else:
+                logger.warning("Strategy generation didn't return JSON, using defaults")
+                return self._get_default_strategies(candidate_count)
+                
+        except Exception as e:
+            logger.warning(f"Strategy generation failed: {e}, using defaults")
+            return self._get_default_strategies(candidate_count)
+    
+    def _get_default_strategies(self, count: int) -> List[Dict[str, str]]:
+        """Fallback default strategies"""
+        defaults = [
+            {"name": "string_ops_only", "description": "Ultra-fast string operations only", "approach": "contains + split only", "vpi_target": "high"},
+            {"name": "structured_parsing", "description": "Built-in parsers with string ops", "approach": "parse_syslog + string ops", "vpi_target": "moderate"},
+            {"name": "hybrid_adaptive", "description": "Adaptive parsing based on patterns", "approach": "conditional parsing strategy", "vpi_target": "balanced"}
+        ]
+        return defaults[:count]
+    
     def generate_vrl(self, 
                     sample_logs: str,
                     device_type: str = None,
-                    stream: bool = True) -> str:
+                    stream: bool = True,
+                    strategy: Dict[str, str] = None) -> str:
         """
         Generate VRL parser for sample logs
         
@@ -121,27 +202,97 @@ class DFELLMClient:
             sample_logs: Sample log data
             device_type: Optional device type hint
             stream: Whether to stream the response
+            strategy: Optional strategy dict for candidate differentiation
             
         Returns:
             Generated VRL code
         """
-        # Select appropriate model for VRL generation
-        self._select_model(use_case="vrl_generation")
+        # Use current model if available, otherwise select for VRL generation
+        if not self.current_model:
+            self._select_model(use_case="vrl_generation")
         
-        # Build messages
-        messages = self._build_vrl_messages(sample_logs, device_type)
+        # Build enhanced messages with strategy and model-specific guidance
+        strategy_name = strategy.get("name") if strategy else None
+        prompt_content = build_vrl_generation_prompt(
+            sample_logs=sample_logs,
+            device_type=device_type, 
+            strategy=strategy_name,
+            model=self.current_model
+        )
         
-        # Generate completion
+        # Add strategy-specific instruction
+        user_instruction = f"Generate VRL parser for the {device_type or 'log'} data above."
+        if strategy:
+            user_instruction += f"\n\nUSE STRATEGY: {strategy['name']} - {strategy['description']}"
+            user_instruction += f"\nAPPROACH: {strategy['approach']}"
+        user_instruction += "\n\nReturn only clean VRL code."
+        
+        messages = [
+            {"role": "system", "content": prompt_content},
+            {"role": "user", "content": user_instruction}
+        ]
+        
+        # Generate completion with full LiteLLM streaming progress monitoring
         if stream:
+            logger.info("🔄 Streaming VRL generation with real-time progress...")
             vrl_code = ""
+            token_count = 0
+            start_time = time.time()
+            last_progress_time = start_time
+            
             for chunk in self.completion(messages, max_tokens=8000, temperature=0.3, stream=True):
                 vrl_code += chunk
+                chunk_tokens = len(chunk.split())
+                token_count += chunk_tokens
+                
+                current_time = time.time()
+                elapsed = current_time - start_time
+                
+                # Show detailed progress every 100 tokens or every 5 seconds
+                if (token_count % 100 == 0) or (current_time - last_progress_time > 5.0):
+                    # Calculate generation rate
+                    tokens_per_sec = token_count / max(elapsed, 0.1)
+                    
+                    # Estimate completion (rough estimate based on typical VRL length)
+                    estimated_total_tokens = 1500  # Typical VRL length
+                    progress_pct = min((token_count / estimated_total_tokens) * 100, 95)
+                    
+                    if tokens_per_sec > 0:
+                        remaining_tokens = max(0, estimated_total_tokens - token_count)
+                        eta_seconds = remaining_tokens / tokens_per_sec
+                        eta_str = f" (ETA: {eta_seconds:.0f}s)" if eta_seconds > 5 else ""
+                    else:
+                        eta_str = ""
+                    
+                    logger.info(f"   📊 Progress: {token_count} tokens ({progress_pct:.0f}%) | {tokens_per_sec:.1f} tok/sec{eta_str}")
+                    last_progress_time = current_time
+                
                 print(chunk, end="", flush=True)
+            
+            final_elapsed = time.time() - start_time
+            final_rate = token_count / max(final_elapsed, 0.1)
+            
+            logger.info(f"✅ VRL generation complete!")
+            logger.info(f"   📈 Final stats: {token_count} tokens in {final_elapsed:.1f}s ({final_rate:.1f} tok/sec)")
             print()
-            return vrl_code
+            return self._extract_vrl_code(vrl_code)
         else:
+            logger.info("🔄 Generating VRL (non-streaming)...")
             response = self.completion(messages, max_tokens=8000, temperature=0.3)
-            return response.choices[0].message.content
+            
+            # Validate response content
+            response_content = response.choices[0].message.content
+            is_valid, validation_error = validate_llm_response(response_content, "VRL generation")
+            
+            if not is_valid:
+                logger.error(f"📭 Invalid LLM response: {validation_error}")
+                raise ValueError(f"LLM returned invalid content: {validation_error}")
+            
+            # Log completion info if available
+            if hasattr(response, 'usage') and response.usage:
+                logger.info(f"✅ VRL generated ({response.usage.completion_tokens} completion tokens)")
+            
+            return self._extract_vrl_code(response_content)
     
     def fix_vrl_error(self, 
                      vrl_code: str, 
@@ -158,32 +309,70 @@ class DFELLMClient:
         Returns:
             Fixed VRL code
         """
-        # Use efficient model for fixes
-        self._select_model(capability="efficient")
+        # Use same model as generation to avoid model switching issues
+        logger.info("Using same model for error fixes to maintain consistency")
+        
+        # Extract detailed error information for LLM debugging
+        error_code = self._extract_error_code(error_message)
+        error_lines = self._extract_error_lines(error_message, vrl_code)
+        problem_analysis = self._analyze_error_context(error_message, vrl_code)
+        
+        logger.info(f"🔍 Providing detailed debug info to LLM: {error_code}")
         
         messages = [
             {
-                "role": "system",
-                "content": """You are a VRL (Vector Remap Language) expert focused on high-performance parsing.
+                "role": "system", 
+                "content": f"""You are a VRL expert specializing in syntax error debugging and fixing.
 
-CRITICAL: NO REGEX FUNCTIONS - Use only string operations for 50-100x better performance.
-❌ FORBIDDEN: parse_regex(), match(), parse_regex_all(), match_array(), to_regex()
-✅ USE ONLY: contains(), split(), upcase(), downcase(), starts_with(), ends_with(), parse_syslog!()
+🚨🚨🚨 ABSOLUTELY NO REGEX - WILL CAUSE IMMEDIATE FAILURE 🚨🚨🚨
+❌ FORBIDDEN: parse_regex(), parse_regex!(), match(), match_array(), to_regex()
+❌ FORBIDDEN: r"pattern", r'pattern', regex literals, \\w, \\d, \\S, [a-z]
 
-Fix the syntax error while maintaining performance requirements."""
+✅ REQUIRED: Use ONLY contains(), split(), starts_with(), ends_with()
+❌ NO bare return statements: Use abort "reason" instead  
+✅ PROPER conditionals: Use if-else properly with braces
+
+🚨 MANDATORY TYPE SAFETY FOR ALL STRING OPERATIONS (Fixes E110):
+PATTERN: Before ANY string operation on a field, create type-safe variable:
+```vrl
+field_str = if exists(.field) {{ to_string(.field) ?? "" }} else {{ "" }}
+```
+
+THEN use field_str for ALL string operations:
+✅ contains(field_str, "pattern")     # CORRECT
+✅ split(field_str, " ")             # CORRECT  
+✅ starts_with(field_str, "prefix")  # CORRECT
+
+❌ NEVER use original field directly:
+❌ contains(.field, "pattern")       # E110 error
+❌ split(.field, " ")               # E110 error
+
+ERROR DEBUGGING CONTEXT:
+Error Type: {error_code}
+Problem Lines: {error_lines} 
+Analysis: {problem_analysis}
+
+Fix the VRL to be syntactically correct while maintaining functionality.
+CRITICAL: Maintain performance - NO REGEX EVER."""
             },
             {
                 "role": "user",
-                "content": f"""Fix this VRL syntax error:
+                "content": f"""URGENT: Fix this VRL {error_code} error with detailed context provided.
 
-Error: {error_message}
+SPECIFIC ERROR:
+{error_message}
 
-VRL Code:
+CURRENT VRL CODE:
 ```vrl
 {vrl_code}
 ```
 
-Return only the fixed VRL code without explanation. Remember: NO REGEX functions."""
+DEBUGGING HELP:
+- Error occurs at: {error_lines}
+- Context analysis: {problem_analysis}
+- Must fix {error_code} error specifically
+
+Return ONLY the corrected VRL code that eliminates this error."""
             }
         ]
         
@@ -274,6 +463,102 @@ Generate complete VRL code that parses these logs."""
                 return content[start:end].strip()
         
         return content.strip()
+    
+    def _extract_error_code(self, error_message: str) -> str:
+        """Extract VRL error code for debugging"""
+        if not error_message:
+            return "UNKNOWN"
+        
+        import re
+        
+        # Look for Vector error codes (E103, E651, etc.)
+        match = re.search(r'error\[E(\d+)\]', error_message)
+        if match:
+            return f"E{match.group(1)}"
+        
+        # Look for error types
+        if "syntax error" in error_message.lower():
+            return "E203_SYNTAX"
+        elif "fallible" in error_message.lower():
+            return "E103_FALLIBLE"
+        elif "coalescing" in error_message.lower():
+            return "E651_COALESCING"
+        elif "predicate" in error_message.lower():
+            return "E110_PREDICATE"
+        
+        # Extract first word as error type
+        words = error_message.split()
+        return words[0] if words else "UNKNOWN"
+    
+    def _extract_error_lines(self, error_message: str, vrl_code: str) -> str:
+        """Extract specific lines mentioned in error for debugging"""
+        import re
+        
+        # Look for line numbers in error message
+        line_matches = re.findall(r'(?:line\s+|┌─\s+:)(\d+)', error_message)
+        
+        if not line_matches:
+            return "Error location not specified"
+        
+        vrl_lines = vrl_code.split('\n')
+        problem_lines = []
+        
+        for line_num_str in line_matches:
+            try:
+                line_num = int(line_num_str)
+                if 1 <= line_num <= len(vrl_lines):
+                    line_content = vrl_lines[line_num - 1]
+                    problem_lines.append(f"Line {line_num}: {line_content.strip()}")
+            except ValueError:
+                continue
+        
+        return "; ".join(problem_lines) if problem_lines else "Could not extract error lines"
+    
+    def _analyze_error_context(self, error_message: str, vrl_code: str) -> str:
+        """Analyze error context to provide debugging insights"""
+        
+        analysis_points = []
+        
+        # Analyze common error patterns
+        if "return" in error_message and "unexpected" in error_message:
+            analysis_points.append("ISSUE: Bare return statement not allowed in VRL")
+            analysis_points.append("FIX: Remove return statement or use abort instead")
+        
+        if "RBrace" in error_message and "unexpected" in error_message:
+            analysis_points.append("ISSUE: Mismatched braces in conditional structure")
+            analysis_points.append("FIX: Check if-else brace matching")
+        
+        if "fallible" in error_message.lower():
+            analysis_points.append("ISSUE: Using fallible operation without error handling")
+            analysis_points.append("FIX: Add ?? null or use infallible version with !")
+        
+        if "coalescing" in error_message.lower():
+            analysis_points.append("ISSUE: Unnecessary ?? operator on infallible operation")
+            analysis_points.append("FIX: Remove ?? operator from string literals and safe operations")
+        
+        if "any" in error_message and "string" in error_message:
+            analysis_points.append("ISSUE: Variable has ambiguous type (any vs string)")
+            analysis_points.append("FIX: Use to_string(.field) ?? \"\" to ensure string type")
+        
+        # Count problem areas in VRL
+        lines = vrl_code.split('\n')
+        
+        # Check for common problem patterns
+        return_count = sum(1 for line in lines if 'return' in line.strip())
+        if return_count > 0:
+            analysis_points.append(f"FOUND: {return_count} return statements that may need fixing")
+        
+        brace_open = sum(1 for line in lines if '{' in line)
+        brace_close = sum(1 for line in lines if '}' in line) 
+        if brace_open != brace_close:
+            analysis_points.append(f"FOUND: Brace mismatch - {brace_open} open, {brace_close} close")
+        
+        fallible_ops = sum(1 for line in lines if any(op in line for op in ['split(', 'parse_']))
+        null_coalescing = sum(1 for line in lines if '??' in line)
+        if fallible_ops > null_coalescing:
+            analysis_points.append(f"FOUND: {fallible_ops} fallible ops, {null_coalescing} with ?? - may need more error handling")
+        
+        return "; ".join(analysis_points) if analysis_points else "No specific context analysis available"
     
     def get_model_info(self) -> Dict[str, Any]:
         """Get information about current model"""

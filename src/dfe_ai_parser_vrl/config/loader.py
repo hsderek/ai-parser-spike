@@ -55,10 +55,16 @@ class DFEConfigLoader:
             paths.append(Path(config_path))
         
         # Search in standard locations
-        project_root = Path(__file__).parent.parent.parent
+        # __file__ = .../src/dfe_ai_parser_vrl/config/loader.py
+        # parent = .../src/dfe_ai_parser_vrl/config/  
+        # parent.parent = .../src/dfe_ai_parser_vrl/
+        # parent.parent.parent = .../src/
+        # parent.parent.parent.parent = .../  (project root)
+        project_root = Path(__file__).parent.parent.parent.parent
+        
         paths.extend([
-            project_root / "config" / "config.yaml",
-            project_root / "config.yaml",
+            project_root / "config" / "config.yaml",  # /projects/ai-parser-spike/config/config.yaml
+            project_root / "config.yaml", 
             Path.home() / ".vrl_parser" / "config.yaml",
             Path("/etc/vrl_parser/config.yaml"),
         ])
