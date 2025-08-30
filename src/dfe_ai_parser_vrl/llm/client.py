@@ -194,7 +194,8 @@ class DFELLMClient:
                     sample_logs: str,
                     device_type: str = None,
                     stream: bool = True,
-                    strategy: Dict[str, str] = None) -> str:
+                    strategy: Dict[str, str] = None,
+                    baseline_vrl: str = None) -> str:
         """
         Generate VRL parser for sample logs
         
@@ -211,13 +212,14 @@ class DFELLMClient:
         if not self.current_model:
             self._select_model(use_case="vrl_generation")
         
-        # Build enhanced messages with strategy and model-specific guidance
+        # Build enhanced messages with strategy, model-specific guidance, and incumbent baseline
         strategy_name = strategy.get("name") if strategy else None
         prompt_content = build_vrl_generation_prompt(
             sample_logs=sample_logs,
             device_type=device_type, 
             strategy=strategy_name,
-            model=self.current_model
+            model=self.current_model,
+            baseline_vrl=baseline_vrl
         )
         
         # Add strategy-specific instruction

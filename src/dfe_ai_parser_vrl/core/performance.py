@@ -236,10 +236,10 @@ if exists(.raw_data) && length(string!(.raw_data)) > 1000 {
             return "poor"
 
 
-class DFEVRLIterativeSession:
+class DFEVRLPerformanceOptimizer:
     """
-    Manages iterative VRL generation with performance tracking,
-    cost optimization, and success metrics.
+    Performance optimization stage: Takes candidate_baseline from baseline_stage
+    and generates optimized VRL variants with VPI performance measurement.
     """
     
     def __init__(self, config_path: str = None):
@@ -270,27 +270,29 @@ class DFEVRLIterativeSession:
         self.candidate_count = perf_config.get("candidate_count", 3)
         self.candidate_strategies = perf_config.get("candidate_strategies", [])
         
-        logger.info(f"🎯 VRL Performance Iteration Session: {self.session_id}")
+        logger.info(f"🎯 VRL Performance Optimization Session: {self.session_id}")
         logger.info(f"   Max iterations: {self.max_iterations}")
         logger.info(f"   Cost threshold: ${self.cost_threshold}")
         logger.info(f"   CPU benchmark multiplier: {self.cpu_benchmark_multiplier:.2f}")
         logger.info(f"   Vector startup time: {self.vector_startup_time:.2f}s")
         logger.info(f"   Default optimization: {self.default_optimize_for}")
     
-    def run_performance_iteration(self, 
-                                 log_file: str,
-                                 device_type: str = None,
-                                 optimize_for: str = None) -> Tuple[str, Dict[str, Any]]:
+    def run_performance_optimization(self, 
+                                     log_file: str,
+                                     device_type: str = None,
+                                     optimize_for: str = None,
+                                     baseline_vrl: str = None) -> Tuple[str, Dict[str, Any]]:
         """
-        Run complete performance iteration cycle
+        Run complete performance optimization cycle
         
         Args:
             log_file: Path to log file
             device_type: Optional device type hint
             optimize_for: "cpu_efficiency", "throughput", or "balanced" (defaults to config)
+            baseline_vrl: Optional working VRL to use as starting point
             
         Returns:
-            Tuple of (best_vrl_code, session_metrics)
+            Tuple of (optimized_vrl_code, optimization_metrics)
         """
         # Use config default if not specified
         if optimize_for is None:
@@ -318,12 +320,40 @@ class DFEVRLIterativeSession:
         total_cost = 0.0
         candidates = []
         
-        # Step 1: Generate candidate strategies using LLM
-        logger.info(f"🎯 Generating {self.candidate_count} candidate strategies...")
+        # Step 0: Establish candidate_baseline from baseline_stage if not provided
+        candidate_baseline = None
+        if not hasattr(self, '_candidate_baseline'):
+            logger.info("🔄 Running baseline_stage to establish candidate_baseline...")
+            from .generator import DFEVRLGenerator
+            baseline_generator = DFEVRLGenerator(self.config)
+            
+            candidate_baseline, baseline_metadata = baseline_generator.generate(
+                sample_logs=sample_logs,
+                device_type=device_type,
+                validate=True,
+                fix_errors=True
+            )
+            
+            # Validate candidate_baseline works
+            if baseline_metadata.get('validation_passed', False):
+                logger.info("✅ Baseline_stage produced working candidate_baseline")
+                self._candidate_baseline = candidate_baseline
+            else:
+                logger.warning("⚠️ Baseline_stage failed - performance_stage cannot proceed")
+                return "", self._generate_session_metrics(0, [])
+        
+        candidate_baseline = getattr(self, '_candidate_baseline', None)
+        
+        # Step 1: Generate candidate strategies using candidate_baseline
+        logger.info(f"🎯 Performance_stage: Generating {self.candidate_count} candidate strategies...")
+        if candidate_baseline:
+            logger.info("📋 Using candidate_baseline from baseline_stage for optimization")
+        
         strategies = self.llm_client.generate_candidate_strategies(
             sample_logs=sample_logs,
             device_type=device_type,
-            candidate_count=self.candidate_count
+            candidate_count=self.candidate_count,
+            baseline_vrl=candidate_baseline
         )
         # Use actual LiteLLM cost if available
         strategy_cost = getattr(self.llm_client, 'last_completion_cost', 0) or 0
@@ -337,7 +367,7 @@ class DFEVRLIterativeSession:
         logger.info(f"\n🚀 Generating and validating {len(strategies)} VRL candidates in parallel...")
         
         candidates = self._generate_and_validate_candidates_parallel(
-            strategies, sample_logs, device_type, total_cost
+            strategies, sample_logs, device_type, total_cost, candidate_baseline
         )
         total_cost += sum(c.total_cost for c in candidates)
         
@@ -911,7 +941,8 @@ Focus on:
                                                   strategies: List[Dict[str, str]], 
                                                   sample_logs: str,
                                                   device_type: str,
-                                                  initial_cost: float) -> List[VRLCandidate]:
+                                                  initial_cost: float,
+                                                  baseline_vrl: str = None) -> List[VRLCandidate]:
         """Generate and validate VRL candidates in parallel using threading"""
         from concurrent.futures import as_completed
         from .. import get_thread_pool
@@ -919,11 +950,11 @@ Focus on:
         executor = get_thread_pool()
         future_to_strategy = {}
         
-        # Submit parallel VRL generation tasks
+        # Submit parallel VRL generation tasks with baseline
         for strategy in strategies:
             future = executor.submit(
                 self._generate_and_validate_single_candidate,
-                strategy, sample_logs, device_type
+                strategy, sample_logs, device_type, baseline_vrl
             )
             future_to_strategy[future] = strategy
         
@@ -947,17 +978,19 @@ Focus on:
     def _generate_and_validate_single_candidate(self, 
                                               strategy: Dict[str, str],
                                               sample_logs: str, 
-                                              device_type: str) -> VRLCandidate:
+                                              device_type: str,
+                                              baseline_vrl: str = None) -> VRLCandidate:
         """Generate and validate a single VRL candidate (runs in thread)"""
         candidate = VRLCandidate(strategy=strategy, vrl_code="")
         
         try:
-            # Generate initial VRL
+            # Generate VRL using strategy and incumbent baseline
             vrl_code = self.llm_client.generate_vrl(
                 sample_logs=sample_logs,
                 device_type=device_type,
                 stream=False,
-                strategy=strategy
+                strategy=strategy,
+                incumbent_vrl=baseline_vrl  # Use working baseline for all candidates
             )
             candidate.vrl_code = vrl_code
             # Use actual LiteLLM cost if available

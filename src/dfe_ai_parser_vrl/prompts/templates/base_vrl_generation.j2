@@ -170,6 +170,22 @@ PERFORMANCE REQUIREMENTS (VRL CPU Cost Guide):
 • KEYED MEMORY LOOKUPS: get_enrichment_table_record() with unique keys
 • PARSE ONCE, REUSE: Amortize parsing cost across logic
 • SHORT-CIRCUITING: Use ?? coalescing and early abort for drops
+• NESTED CONDITIONS: Group common patterns to reduce redundant checks
+
+🔄 OPTIMIZATION: NEST COMMON CONDITIONS
+Instead of:
+```vrl
+if contains(msg, "user") && contains(msg, "invalid") { ... }
+else if contains(msg, "user") && contains(msg, "valid") { ... }
+```
+
+Use nested structure:
+```vrl
+if contains(msg, "user") {
+    if contains(msg, "invalid") { ... }
+    else if contains(msg, "valid") { ... }
+}
+```
 
 REFERENCE PATTERNS:
 ```vrl
@@ -188,6 +204,20 @@ if exists(.payload) && length!(.payload) <= 4096 {
 # Early abort for drops
 if .level == "debug" { abort "drop noisy debug" }
 ```
+
+{% if baseline_vrl %}
+🏆 BASELINE VRL (Proven working reference):
+```vrl
+{{ baseline_vrl }}
+```
+
+This baseline VRL WORKS and passes validation. Your task:
+1. MAINTAIN the field extraction functionality
+2. OPTIMIZE the approach for better performance  
+3. BUILD ON the proven patterns above
+4. NEST common conditions to reduce redundant checks
+
+{% endif %}
 
 {% if device_type %}
 DEVICE TYPE: {{ device_type.upper() }} - Optimize for {{ device_type }}-specific field patterns

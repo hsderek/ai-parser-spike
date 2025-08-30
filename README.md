@@ -4,16 +4,26 @@ AI-powered Vector Remap Language (VRL) parser generator for HyperSec Data Fusion
 
 ## Overview
 
-DFE AI Parser VRL leverages large language models to automatically generate VRL parsers for various log formats. It uses LiteLLM for unified LLM access and supports multiple AI providers including Anthropic, OpenAI, and Google.
+DFE AI Parser VRL leverages large language models to automatically generate and optimize VRL parsers through a two-stage architecture:
+
+### **🎯 Two-Stage Architecture:**
+- **baseline_stage**: Establishes working VRL that passes validation (`DFEVRLGenerator`)
+- **performance_stage**: Optimizes candidate_baseline for maximum VPI performance (`DFEVRLPerformanceOptimizer`)
+
+### **📋 Standard Terminology:**
+- **baseline_vrl**: Input working VRL (if available)
+- **candidate_baseline**: Working VRL output from baseline_stage  
+- **optimized_vrl**: Best performing VRL from performance_stage
 
 ## Features
 
-- **AI-Powered Generation**: Automatically generates VRL parsers from log samples
-- **Multi-Provider Support**: Works with Anthropic, OpenAI, Google, and more via LiteLLM
-- **Smart Model Selection**: Config-driven selection with capability-based routing
-- **Error Auto-Fix**: Automatically fixes VRL syntax errors through iterative refinement
-- **Validation**: Built-in validation using PyVRL and Vector CLI
-- **Device Detection**: Auto-detects log types (SSH, Apache, Cisco, etc.)
+- **Two-Stage Optimization**: baseline_stage → performance_stage workflow
+- **Incumbent-Based Learning**: Each stage builds on proven working patterns
+- **Error Learning System**: Learns from repeating failures to improve local fixes
+- **Vector CLI Integration**: Reliable validation with intelligent termination
+- **VPI Performance Measurement**: Hardware-normalized performance scoring
+- **Multi-Provider Support**: Works with Anthropic, OpenAI, Google via LiteLLM
+- **Field Conflict Prevention**: Avoids reserved DFE infrastructure fields
 
 ## Installation
 

@@ -33,7 +33,8 @@ class DFEPromptManager:
                                    sample_logs: str,
                                    device_type: str = None,
                                    strategy: Dict[str, str] = None,
-                                   model: str = None) -> str:
+                                   model: str = None,
+                                   baseline_vrl: str = None) -> str:
         """Build VRL generation prompt from templates"""
         
         try:
@@ -60,7 +61,8 @@ class DFEPromptManager:
                 strategy=strategy,
                 model_specific=model_specific,
                 schema_info=schema_prompt,
-                sample_logs=sample_logs[:6000]  # Reduced to make room for schema info
+                sample_logs=sample_logs[:5000],  # Make room for schema + incumbent
+                baseline_vrl=baseline_vrl[:2000] if baseline_vrl else None  # Truncate for tokens
             )
             
             return prompt
@@ -72,19 +74,27 @@ class DFEPromptManager:
     def build_strategy_generation_prompt(self,
                                        sample_logs: str,
                                        device_type: str = None,
-                                       candidate_count: int = 3) -> str:
-        """Build strategy generation prompt from template"""
+                                       candidate_count: int = 3,
+                                       baseline_vrl: str = None) -> str:
+        """Build strategy generation prompt from template with working baseline"""
         
         try:
             template = self.template_env.get_template("templates/candidate_strategy_generation.j2")
             return template.render(
                 sample_logs=sample_logs,
                 device_type=device_type,
-                candidate_count=candidate_count
+                candidate_count=candidate_count,
+                baseline_vrl=baseline_vrl[:2000] if baseline_vrl else None  # Truncate for token budget
             )
         except Exception as e:
             logger.error(f"Failed to build strategy prompt: {e}")
-            return f"Generate {candidate_count} different VRL parsing strategies for {device_type or 'log'} data."
+            
+            # Enhanced fallback with baseline
+            fallback = f"Generate {candidate_count} different VRL parsing strategies for {device_type or 'log'} data."
+            if baseline_vrl:
+                fallback += f"\\n\\nWorking baseline example:\\n```vrl\\n{baseline_vrl[:1000]}\\n```\\n\\nCreate performance variations of this proven approach."
+            
+            return fallback
     
     def _get_model_family(self, model: str) -> Optional[str]:
         """Extract model family for template selection"""
@@ -143,22 +153,26 @@ _prompt_manager = DFEPromptManager()
 def build_vrl_generation_prompt(sample_logs: str, 
                                device_type: str = None,
                                strategy: str = None,
-                               model: str = None) -> str:
-    """Build VRL generation prompt using template system"""
+                               model: str = None,
+                               baseline_vrl: str = None) -> str:
+    """Build VRL generation prompt using template system with incumbent baseline"""
     strategy_dict = {"name": strategy} if strategy else None
     return _prompt_manager.build_vrl_generation_prompt(
         sample_logs=sample_logs,
         device_type=device_type,
         strategy=strategy_dict,
-        model=model
+        model=model,
+        baseline_vrl=baseline_vrl
     )
 
 def build_strategy_generation_prompt(sample_logs: str,
                                    device_type: str = None, 
-                                   candidate_count: int = 3) -> str:
-    """Build strategy generation prompt using template system"""
+                                   candidate_count: int = 3,
+                                   baseline_vrl: str = None) -> str:
+    """Build strategy generation prompt using template system with working baseline"""
     return _prompt_manager.build_strategy_generation_prompt(
         sample_logs=sample_logs,
         device_type=device_type,
-        candidate_count=candidate_count
+        candidate_count=candidate_count,
+        baseline_vrl=baseline_vrl
     )

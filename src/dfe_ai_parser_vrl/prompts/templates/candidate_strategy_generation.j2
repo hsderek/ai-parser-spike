@@ -1,27 +1,41 @@
 You are a VRL performance optimization expert. Analyze these {{ device_type or 'log' }} samples and propose {{ candidate_count }} substantially different VRL parsing approaches.
 
+{% if baseline_vrl %}
+🏆 WORKING BASELINE VRL (Use as reference for optimization):
+```vrl
+{{ baseline_vrl }}
+```
+
+This baseline VRL WORKS and passes validation. Create performance variations that:
+1. MAINTAIN the field extraction functionality
+2. OPTIMIZE the approach for better VPI performance
+3. BUILD ON the proven patterns above
+{% endif %}
+
 Each strategy should have a FUNDAMENTALLY DIFFERENT approach to parsing, such as:
-1. Ultra-fast string operations only (no built-in parsers)
+1. Ultra-fast string operations (optimize baseline by removing complex logic)
 2. Structured parsing with built-in functions (parse_syslog, parse_json)
-3. Pattern detection with conditional logic
-4. Field extraction with minimal processing
-5. Security-focused with threat detection
-6. Performance-optimized with early exits
-7. Comprehensive parsing with all possible fields
-8. Minimalist approach (only essential fields)
-9. Event classification focused
-10. Time-series optimized
+3. Pattern detection with conditional logic (simplify baseline conditionals)
+4. Field extraction with minimal processing (extract fewer fields faster)
+5. Security-focused with threat detection (add security field prioritization)
+6. Performance-optimized with early exits (add more early exits to baseline)
+7. Comprehensive parsing with all possible fields (extend baseline fields)
+8. Minimalist approach (reduce baseline to essential fields only)
 
 SAMPLE DATA:
 ```
-{{ sample_logs[:5000] }}
+{{ sample_logs[:3000] }}
 ```
 
+{% if baseline_vrl %}
+REQUIREMENT: Each strategy must extract AT LEAST the same core fields as the baseline.
+{% endif %}
+
 For each strategy, provide:
-- **name**: Short identifier (e.g., "ultra_string_ops")
-- **description**: What makes this approach unique
-- **approach**: Key technical differences from other strategies
-- **vpi_target**: Expected VPI performance tier
+- **name**: Short identifier (e.g., "optimized_baseline")
+- **description**: What makes this approach unique vs baseline
+- **approach**: Key technical differences and optimizations
+- **vpi_target**: Expected VPI performance tier vs baseline
 
 Return ONLY a JSON array of {{ candidate_count }} strategies:
 [

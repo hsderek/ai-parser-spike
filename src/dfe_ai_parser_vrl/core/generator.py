@@ -8,6 +8,7 @@ from pathlib import Path
 from loguru import logger
 
 from ..llm.client import DFELLMClient
+from ..llm.session_manager import get_vrl_session, cleanup_vrl_session
 from ..config.loader import DFEConfigLoader
 from .validator import DFEVRLValidator
 from .error_fixer import DFEVRLErrorFixer
@@ -31,7 +32,8 @@ class DFEVRLGenerator:
                 sample_logs: str,
                 device_type: str = None,
                 validate: bool = True,
-                fix_errors: bool = True) -> Tuple[str, Dict[str, Any]]:
+                fix_errors: bool = True,
+                baseline_vrl: str = None) -> Tuple[str, Dict[str, Any]]:
         """
         Generate VRL parser for sample logs
         
@@ -40,14 +42,23 @@ class DFEVRLGenerator:
             device_type: Optional device type hint
             validate: Whether to validate generated VRL
             fix_errors: Whether to attempt fixing validation errors
+            baseline_vrl: Existing working VRL to use as baseline/reference
             
         Returns:
             Tuple of (vrl_code, metadata)
         """
-        logger.info(f"Starting VRL generation for {device_type or 'unknown'} device")
+        logger.info(f"Starting baseline_stage VRL generation for {device_type or 'unknown'} device")
+        
+        # Get or create VRL generation session with Derek's guide loaded
+        session = get_vrl_session(
+            device_type=device_type or 'unknown',
+            session_type="baseline_stage", 
+            baseline_vrl=baseline_vrl
+        )
         
         metadata = {
             "device_type": device_type,
+            "session_id": session.session_id,
             "model_used": self.llm_client.get_model_info(),
             "iterations": 0,
             "errors_fixed": 0,
@@ -57,9 +68,17 @@ class DFEVRLGenerator:
             "error_progression": []   # Track how errors evolved
         }
         
-        # Generate initial VRL with streaming progress
-        logger.info("Generating initial VRL code...")
-        vrl_code = self.llm_client.generate_vrl(sample_logs, device_type, stream=True)
+        # Generate initial VRL with streaming progress and baseline reference
+        if baseline_vrl:
+            logger.info("Generating VRL code with baseline reference...")
+        else:
+            logger.info("Generating initial VRL code...")
+        
+        # Use session-based generation with Derek's guide loaded
+        vrl_code = session.generate_vrl(
+            sample_logs=sample_logs,
+            strategy=None  # No specific strategy for baseline_stage
+        )
         metadata["iterations"] = 1
         
         if not validate:
@@ -129,9 +148,8 @@ class DFEVRLGenerator:
                 iteration_context = self._build_iteration_context(metadata, error_message)
                 
                 try:
-                    fixed_vrl = self.error_fixer.fix_with_history(
-                        vrl_code, error_message, sample_logs, iteration_context
-                    )
+                    # Use session-based error fixing with full context
+                    fixed_vrl = session.fix_vrl_error(vrl_code, error_message, sample_logs)
                     
                     if fixed_vrl and fixed_vrl != vrl_code:
                         # Track this attempt in history
@@ -176,6 +194,15 @@ class DFEVRLGenerator:
             
             # Rate limiting
             time.sleep(self.iteration_delay)
+        
+        # Add session summary to metadata
+        session_summary = session.get_session_summary()
+        metadata["session_summary"] = session_summary
+        
+        # Clean up session if validation passed
+        if metadata.get("validation_passed", False):
+            logger.info("✅ baseline_stage complete - cleaning up session")
+            cleanup_vrl_session(device_type or 'unknown', "baseline_stage")
         
         return vrl_code, metadata
     

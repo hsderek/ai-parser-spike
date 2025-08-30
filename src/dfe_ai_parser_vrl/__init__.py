@@ -110,13 +110,15 @@ def get_thread_pool() -> ThreadPoolExecutor:
     return _threading_config.get_thread_pool()
 
 # Module imports
-from .core.generator import DFEVRLGenerator
-from .core.performance import DFEVRLIterativeSession, VRLPerformanceOptimizer
+from .core.generator import DFEVRLGenerator  # baseline_stage
+from .core.performance import DFEVRLPerformanceOptimizer, VRLPerformanceOptimizer  # performance_stage
 from .llm.client import DFELLMClient
 from .config.loader import DFEConfigLoader
 
 __all__ = [
-    "DFEVRLGenerator", "DFEVRLIterativeSession", "VRLPerformanceOptimizer", 
+    "DFEVRLGenerator",  # baseline_stage: Establishes working baseline VRL
+    "DFEVRLPerformanceOptimizer",  # performance_stage: Optimizes candidate_baseline 
+    "VRLPerformanceOptimizer", 
     "DFELLMClient", "DFEConfigLoader",
     "get_max_threads", "set_max_threads", "get_thread_pool"
 ]

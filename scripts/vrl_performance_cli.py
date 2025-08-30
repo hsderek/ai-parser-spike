@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-VRL Performance Iteration CLI
+VRL Baseline → Performance Optimization CLI
 
 Command-line interface for running VRL performance iteration tests
 with detailed metrics and cost analysis.
@@ -24,7 +24,7 @@ from dfe_ai_parser_vrl.core.performance import DFEVRLIterativeSession
 
 def main():
     parser = argparse.ArgumentParser(
-        description="VRL Performance Iteration Testing",
+        description="VRL Baseline → Performance Optimization Testing",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
@@ -72,7 +72,7 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(exist_ok=True)
     
-    logger.info(f"🎯 VRL Performance Iteration CLI")
+    logger.info(f"🎯 VRL Baseline → Performance Optimization CLI")
     logger.info(f"   Log file: {args.log_file}")
     logger.info(f"   Device type: {args.device_type or 'auto-detect'}")
     logger.info(f"   Optimize for: {args.optimize_for}")
