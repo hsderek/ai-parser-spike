@@ -1,0 +1,27 @@
+{
+  "session_id": "vrl_perf_session_20250830_131925",
+  "approach": "multi_candidate",
+  "total_candidates": 1,
+  "valid_candidates": 1,
+  "total_cost": 0.733455,
+  "duration_seconds": 0.0,
+  "successful": true,
+  "winner_vpi": 0,
+  "candidates": [
+    {
+      "candidate_number": 1,
+      "strategy_name": "hybrid_adaptive",
+      "strategy_description": "Adaptive parsing based on patterns",
+      "is_valid": true,
+      "vpi": 47474,
+      "events_per_second": 7190,
+      "cpu_percent": 10.0,
+      "duration": 0.0,
+      "cost": 0.22938,
+      "error_code": null,
+      "vrl_size": 7752
+    }
+  ],
+  "cpu_benchmark_multiplier": 6.602811580057617,
+  "vector_startup_time": 0.5007684230804443
+}

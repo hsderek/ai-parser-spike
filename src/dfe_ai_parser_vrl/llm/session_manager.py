@@ -43,15 +43,15 @@ class VRLGenerationSession:
         # Load layered prompt system at session start
         self._initialize_session_prompts()
         
-        logger.info(f"🚀 VRL Generation Session initialized: {self.session_id}")
+        logger.info(f"[PROC] VRL Generation Session initialized: {self.session_id}")
         logger.info(f"   Session type: {session_type}")
         logger.info(f"   Device type: {device_type}")
-        logger.info(f"   Baseline VRL: {'✅ Provided' if baseline_vrl else '❌ None'}")
+        logger.info(f"   Baseline VRL: {'[OK] Provided' if baseline_vrl else '[INFO] None'}")
     
     def _initialize_session_prompts(self):
         """Initialize layered prompt system with Derek's guide as Layer 1"""
         
-        logger.info("📚 Loading layered prompt system...")
+        logger.info("[PROC] Loading layered prompt system...")
         
         # Layer 1: Derek's VRL Guide (authoritative)
         self.dereks_guide = self._load_and_tokenize_vrl_guide()
@@ -68,10 +68,10 @@ class VRLGenerationSession:
         # Build initial system message with all layers
         self.system_message = self._build_layered_system_message()
         
-        logger.info(f"   ✅ Layer 1: Derek's guide loaded ({len(self.dereks_guide)} chars)")
-        logger.info(f"   ✅ Layer 2: {self.error_patterns.get('total_learned_fixes', 0)} error patterns")
-        logger.info(f"   ✅ Layer 3: Template guidance loaded")
-        logger.info(f"   ✅ Layer 4: Model-specific hints loaded")
+        logger.info(f"   [OK] Layer 1: Derek's guide loaded ({len(self.dereks_guide)} chars)")
+        logger.info(f"   [OK] Layer 2: {self.error_patterns.get('total_learned_fixes', 0)} error patterns")
+        logger.info(f"   [OK] Layer 3: Template guidance loaded")
+        logger.info(f"   [OK] Layer 4: Model-specific hints loaded")
     
     def _load_and_tokenize_vrl_guide(self) -> str:
         """Load Derek's VRL guide with smart pre-tokenization"""

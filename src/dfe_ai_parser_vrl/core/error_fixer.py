@@ -42,6 +42,10 @@ class DFEVRLErrorFixer:
             "E651": {  # Unnecessary coalescing
                 "pattern": r"error\[E651\].*unnecessary.*coalescing",
                 "fix": self._fix_unnecessary_coalescing
+            },
+            "E610": {  # Function compilation error
+                "pattern": r"error\[E610\].*function compilation error.*del\(",
+                "fix": self._fix_del_variable_error
             }
         }
     
@@ -306,3 +310,18 @@ Return only the fixed VRL code that breaks the error cycle."""
     def _fix_unnecessary_coalescing(self, vrl_code: str, error_message: str) -> str:
         """Fix unnecessary error coalescing - use comprehensive E651 fixer"""
         return apply_comprehensive_e651_fixes(vrl_code)
+    
+    def _fix_del_variable_error(self, vrl_code: str, error_message: str) -> str:
+        """Fix del() variable error - remove or convert to field deletion"""
+        lines = vrl_code.split('\n')
+        fixed_lines = []
+        
+        for line in lines:
+            stripped = line.strip()
+            # Remove del(variable) calls that don't work in VRL
+            if stripped.startswith('del(') and not stripped.startswith('del(.'):
+                # Remove the line entirely or comment it out
+                continue
+            fixed_lines.append(line)
+            
+        return '\n'.join(fixed_lines)

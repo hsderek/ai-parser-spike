@@ -192,9 +192,9 @@ vrl_generation:
 
 # Performance iteration settings
 performance:
-  max_iterations: 10
-  iteration_delay: 2
-  cost_threshold: 5.0
+  max_iterations: 50
+  iteration_delay: 1
+  cost_threshold: 20.0
   optimize_for: cpu_efficiency  # Default optimization target
   available_modes:
     - cpu_efficiency  # Events per CPU percent (best for containers/multi-tenant)

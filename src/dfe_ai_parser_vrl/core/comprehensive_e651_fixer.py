@@ -19,7 +19,7 @@ class ComprehensiveE651Fixer:
             # split() operations with unnecessary ?? []
             (r'split\([^)]+\)\s*\?\?\s*\[\]', self._remove_split_coalescing),
             
-            # Array access patterns - handle bounds-checked vs unbounded
+            # Array access patterns - handle bounds-checked vs unbounded  
             (r'(\w+)\[(\d+)\]\s*\?\?\s*""', self._fix_array_access_coalescing),
             
             # Field assignments with unnecessary ?? null
@@ -31,10 +31,31 @@ class ComprehensiveE651Fixer:
             # length() operations with unnecessary ?? number
             (r'length\([^)]+\)\s*\?\?\s*\d+', self._remove_length_coalescing),
             
-            # Infallible string operations
+            # Infallible string operations - EXPANDED
             (r'(string!\([^)]+\))\s*\?\?\s*""', r'\1'),
-            (r'(upcase\([^)]+\))\s*\?\?\s*""', r'\1'),
+            (r'(to_string\([^)]+\))\s*\?\?\s*""', r'\1'),
+            (r'(upcase\([^)]+\))\s*\?\?\s*""', r'\1'),  
             (r'(downcase\([^)]+\))\s*\?\?\s*""', r'\1'),
+            (r'(trim\([^)]+\))\s*\?\?\s*""', r'\1'),
+            (r'(replace\([^)]+\))\s*\?\?\s*""', r'\1'),
+            (r'(strip_whitespace\([^)]+\))\s*\?\?\s*""', r'\1'),
+            
+            # More complex string operations that are infallible
+            (r'(contains\([^)]+\))\s*\?\?\s*(false|true)', r'\1'),
+            (r'(starts_with\([^)]+\))\s*\?\?\s*(false|true)', r'\1'),
+            (r'(ends_with\([^)]+\))\s*\?\?\s*(false|true)', r'\1'),
+            
+            # Assignment patterns with unnecessary coalescing
+            (r'(\w+)\s*=\s*(to_string\([^)]+\))\s*\?\?\s*""', r'\1 = \2'),
+            (r'(\w+)\s*=\s*(string!\([^)]+\))\s*\?\?\s*""', r'\1 = \2'),
+            
+            # Conditional expressions with unnecessary coalescing
+            (r'\{\s*(to_string\([^)]+\))\s*\?\?\s*""\s*\}', r'{ \1 }'),
+            (r'\{\s*(string!\([^)]+\))\s*\?\?\s*""\s*\}', r'{ \1 }'),
+            
+            # Function call results that don't need coalescing
+            (r'(slice\([^)]+\))\s*\?\?\s*\[\]', r'\1'),
+            (r'(push\([^)]+\))\s*\?\?\s*\[\]', r'\1'),
             
             # Double coalescing patterns
             (r'\?\?\s*[^?\s]+\s*\?\?\s*', self._fix_double_coalescing),
