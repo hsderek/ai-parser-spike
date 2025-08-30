@@ -19,9 +19,8 @@ class ComprehensiveE651Fixer:
             # split() operations with unnecessary ?? []
             (r'split\([^)]+\)\s*\?\?\s*\[\]', self._remove_split_coalescing),
             
-            # Array access with unnecessary ?? ""
-            (r'(\w+)\[(\d+)\]\s*\?\?\s*""', r'\1[\2]'),
-            (r'parts\[(\d+)\]\s*\?\?\s*""', r'parts[\1]'),
+            # Array access patterns - handle bounds-checked vs unbounded
+            (r'(\w+)\[(\d+)\]\s*\?\?\s*""', self._fix_array_access_coalescing),
             
             # Field assignments with unnecessary ?? null
             (r'(\.[\w_]+)\s*=\s*([^?]+)\s*\?\?\s*null', r'\1 = \2'),
@@ -106,6 +105,19 @@ class ComprehensiveE651Fixer:
         """Fix double coalescing patterns"""
         # Find ?? X ?? Y patterns and simplify to ?? Y
         return re.sub(r'\?\?\s*[^?\s]+\s*(\?\?\s*[^?\s]+)', r'\1', line)
+    
+    def _fix_array_access_coalescing(self, line: str, pattern: str) -> str:
+        """Fix array access coalescing based on context"""
+        # If we're inside a bounds-checked block, remove the coalescing
+        # Otherwise, keep it but fix the syntax
+        
+        # Simple heuristic: if line is indented (inside if block), likely bounds-checked
+        if line.lstrip() != line:  # Line has leading whitespace
+            # Remove the coalescing for bounds-checked access
+            return re.sub(r'(\w+)\[(\d+)\]\s*\?\?\s*""', r'\1[\2]', line)
+        else:
+            # Keep coalescing but fix syntax for unbounded access
+            return re.sub(r'(\w+)\[(\d+)\]\s*\?\?\s*""', r'(\1[\2]) ?? ""', line)
 
 
 # Global comprehensive fixer instance

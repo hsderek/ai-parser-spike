@@ -69,6 +69,7 @@ class VRLCandidate:
     current_performance: Optional[PerformanceBaseline] = None
     improvement_cycle: int = 0
     total_cost: float = 0.0
+    duration: float = 0.0
     
     @property
     def latest_vpi(self) -> int:
@@ -320,29 +321,34 @@ class DFEVRLPerformanceOptimizer:
         total_cost = 0.0
         candidates = []
         
-        # Step 0: Establish candidate_baseline from baseline_stage if not provided
-        candidate_baseline = None
-        if not hasattr(self, '_candidate_baseline'):
-            logger.info("🔄 Running baseline_stage to establish candidate_baseline...")
-            from .generator import DFEVRLGenerator
-            baseline_generator = DFEVRLGenerator(self.config)
-            
-            candidate_baseline, baseline_metadata = baseline_generator.generate(
-                sample_logs=sample_logs,
-                device_type=device_type,
-                validate=True,
-                fix_errors=True
-            )
-            
-            # Validate candidate_baseline works
-            if baseline_metadata.get('validation_passed', False):
-                logger.info("✅ Baseline_stage produced working candidate_baseline")
-                self._candidate_baseline = candidate_baseline
-            else:
-                logger.warning("⚠️ Baseline_stage failed - performance_stage cannot proceed")
-                return "", self._generate_session_metrics(0, [])
+        # Step 0: Establish candidate_baseline from baseline_vrl or baseline_stage
+        candidate_baseline = baseline_vrl  # Use provided baseline_vrl if available
         
-        candidate_baseline = getattr(self, '_candidate_baseline', None)
+        if not candidate_baseline:
+            if not hasattr(self, '_candidate_baseline'):
+                logger.info("🔄 Running baseline_stage to establish candidate_baseline...")
+                from .generator import DFEVRLGenerator
+                baseline_generator = DFEVRLGenerator()
+                
+                candidate_baseline, baseline_metadata = baseline_generator.generate(
+                    sample_logs=sample_logs,
+                    device_type=device_type,
+                    validate=True,
+                    fix_errors=True
+                )
+                
+                # Validate candidate_baseline works
+                if baseline_metadata.get('validation_passed', False):
+                    logger.info("✅ Baseline_stage produced working candidate_baseline")
+                    self._candidate_baseline = candidate_baseline
+                    candidate_baseline = self._candidate_baseline
+                else:
+                    logger.warning("⚠️ Baseline_stage failed - performance_stage cannot proceed")
+                    return "", self._generate_session_metrics(0, [])
+            else:
+                candidate_baseline = getattr(self, '_candidate_baseline', None)
+        else:
+            logger.info("📋 Using provided baseline_vrl as candidate_baseline")
         
         # Step 1: Generate candidate strategies using candidate_baseline
         logger.info(f"🎯 Performance_stage: Generating {self.candidate_count} candidate strategies...")
@@ -352,8 +358,7 @@ class DFEVRLPerformanceOptimizer:
         strategies = self.llm_client.generate_candidate_strategies(
             sample_logs=sample_logs,
             device_type=device_type,
-            candidate_count=self.candidate_count,
-            baseline_vrl=candidate_baseline
+            candidate_count=self.candidate_count
         )
         # Use actual LiteLLM cost if available
         strategy_cost = getattr(self.llm_client, 'last_completion_cost', 0) or 0
@@ -371,14 +376,7 @@ class DFEVRLPerformanceOptimizer:
         )
         total_cost += sum(c.total_cost for c in candidates)
         
-        # TODO: PERFORMANCE OPTIMIZATION STAGE (DISABLED FOR STAGE 1 FOCUS)
         # Step 3: Serial performance testing (no interference)
-        # Step 4: Iterative improvement cycles with 5% threshold  
-        # Step 5: VPI-based candidate ranking and selection
-        # 
-        # UNCOMMENT BELOW WHEN STAGE 1 IS RELIABLE:
-        
-        """
         logger.info(f"\n📊 Running serial performance tests...")
         valid_candidates = [c for c in candidates if c.is_valid]
         
@@ -412,25 +410,14 @@ class DFEVRLPerformanceOptimizer:
                                 key=lambda c: c.latest_vpi, 
                                 reverse=True)
         
-        winner = final_candidates[0]
-        return winner.vrl_code, self._generate_session_metrics(total_cost, [c.__dict__ for c in final_candidates])
-        """
-        
-        # STAGE 1 FOCUS: Return first valid candidate
         self.end_time = datetime.now()
-        valid_candidates = [c for c in candidates if c.is_valid]
+        winner = final_candidates[0]
+        logger.success(f"\n🎯 PERFORMANCE STAGE SUCCESS: {winner.strategy['name']} optimized VRL achieved!")
+        logger.info(f"   Winner VPI: {winner.latest_vpi:,} ({self._classify_performance_tier(winner.latest_vpi)})")
+        logger.info(f"   Total cost: ${winner.total_cost:.4f}")
+        logger.info(f"   Improvement cycles: {winner.improvement_cycle}")
         
-        if valid_candidates:
-            # Return first working candidate for stage 1
-            winner = valid_candidates[0]
-            logger.success(f"\n🎯 STAGE 1 SUCCESS: {winner.strategy['name']} working VRL achieved!")
-            logger.info(f"   Cost: ${winner.total_cost:.4f}")
-            logger.info(f"   Validation attempts: {len(winner.validation_attempts)}")
-            
-            return winner.vrl_code, self._generate_session_metrics(total_cost, [c.__dict__ for c in candidates])
-        else:
-            logger.error("❌ STAGE 1 FAILED: No valid VRL candidates generated")
-            return "", self._generate_session_metrics(total_cost, [c.__dict__ for c in candidates])
+        return winner.vrl_code, self._generate_session_metrics(total_cost, [c.__dict__ for c in final_candidates])
     
     def _stream_sample_logs(self, log_path: Path, max_lines: int = 1000) -> str:
         """Efficiently stream sample logs using dask/streaming utilities"""
@@ -751,26 +738,43 @@ Focus on:
         
         # Handle candidate-based metrics
         if candidates:
-            valid_candidates = [c for c in candidates if c["is_valid"]]
+            valid_candidates = [c for c in candidates if (c.is_valid if hasattr(c, 'is_valid') else c["is_valid"])]
             successful = len(valid_candidates) > 0
             
             candidate_metrics = []
             for i, candidate in enumerate(candidates):
-                strategy = candidate["strategy"]
-                perf = candidate.get("performance")
+                # Handle both dict and dataclass objects
+                if hasattr(candidate, 'strategy'):
+                    # Dataclass object
+                    strategy = candidate.strategy
+                    perf = candidate.current_performance
+                    is_valid = candidate.is_valid
+                    duration = candidate.duration
+                    cost = candidate.total_cost
+                    vrl_code = candidate.vrl_code
+                    error_message = ""
+                else:
+                    # Dict object
+                    strategy = candidate["strategy"]
+                    perf = candidate.get("current_performance")
+                    is_valid = candidate["is_valid"]
+                    duration = candidate["duration"]
+                    cost = candidate["total_cost"]
+                    vrl_code = candidate["vrl_code"]
+                    error_message = candidate.get("error_message", "")
                 
                 candidate_metrics.append({
                     "candidate_number": i + 1,
                     "strategy_name": strategy["name"],
                     "strategy_description": strategy["description"], 
-                    "is_valid": candidate["is_valid"],
+                    "is_valid": is_valid,
                     "vpi": perf.vrl_performance_index if perf else 0,
                     "events_per_second": perf.events_per_second if perf else 0,
                     "cpu_percent": perf.cpu_percent if perf else 0,
-                    "duration": candidate["duration"],
-                    "cost": candidate["cost"],
-                    "error_code": self._extract_error_code(candidate.get("error_message", "")),
-                    "vrl_size": len(candidate["vrl_code"])
+                    "duration": duration,
+                    "cost": cost,
+                    "error_code": self._extract_error_code(error_message),
+                    "vrl_size": len(vrl_code)
                 })
             
             return {
@@ -990,7 +994,7 @@ Focus on:
                 device_type=device_type,
                 stream=False,
                 strategy=strategy,
-                incumbent_vrl=baseline_vrl  # Use working baseline for all candidates
+                baseline_vrl=baseline_vrl  # Use working baseline for all candidates
             )
             candidate.vrl_code = vrl_code
             # Use actual LiteLLM cost if available

@@ -34,6 +34,7 @@ dependencies = [
     "dask[complete]>=2024.1.0", # Parallel data processing
     "regex>=2023.0.0", # Enhanced regex performance
     "jinja2>=3.1.6",
+    "psutil>=7.0.0",
 ]
 
 [project.optional-dependencies]

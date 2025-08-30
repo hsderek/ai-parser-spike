@@ -34,8 +34,11 @@ VRL ERROR PREVENTION PATTERNS (From Real Testing):
    ❌ contains(.ANY_FIELD, "pattern")  # E110: .ANY_FIELD has type 'any'
 
 2. Array Access Safety (E103 Prevention):  
-   ✅ parts = split(field_str, " ") ?? []
-   ✅ if length(parts) >= 3 { .username = parts[2] ?? "" }
+   ✅ parts = split(field_str, " ")  # split() is infallible with string input
+   ✅ if length(parts) >= 3 { .username = string!(parts[2]) }  # MANDATORY: Use string!() for array access
+   ✅ extracted_part = string!(parts[1])  # Then use extracted_part for further operations
+   ❌ .username = (parts[2]) ?? ""  # E651: unnecessary coalescing  
+   ❌ user_parts = split(parts[1], " ")  # E103: parts[1] is 'string or null'
    ❌ .username = split(field_str, " ")[2]  # E103: unhandled fallible
 
 3. Function Name Accuracy (E110 Prevention):
@@ -45,7 +48,9 @@ VRL ERROR PREVENTION PATTERNS (From Real Testing):
 4. Fallible vs Infallible (E651 Prevention):
    ✅ .timestamp = parse_timestamp(.timestamp_str) ?? null  # Fallible needs ??
    ✅ .clean_msg = upcase(field_str)  # Infallible - no ?? needed  
+   ✅ parts = split(field_str, " ")  # split() is infallible with string input
    ❌ .clean_msg = upcase(field_str) ?? ""  # E651: unnecessary coalescing
+   ❌ parts = split(field_str, " ") ?? []  # E651: unnecessary coalescing
 
 SYNERGISTIC OPTIMIZATION TECHNIQUES:
 Combine multiple optimization approaches for maximum performance:
@@ -76,7 +81,8 @@ Combine multiple optimization approaches for maximum performance:
    if contains(.message, "Failed") { .event_type = "failure" }
    
    # Tier 2 (Fast): Important operational fields  
-   .username = (split(.message, " from ") ?? [])[0] ?? ""
+   parts = split(.message, " from ")
+   .username = string!(parts[0])
    
    # Tier 3 (Moderate): Nice-to-have fields
    .timestamp_parsed = parse_timestamp(.timestamp) ?? null
@@ -116,9 +122,9 @@ Combine multiple optimization approaches for maximum performance:
 5. **Memory + CPU Optimization**: Minimize allocations and CPU cycles
    ```vrl
    # Reuse variables, avoid repeated splits
-   message_parts = split(message_str, " ") ?? []
-   .field1 = message_parts[0] ?? ""
-   .field2 = message_parts[1] ?? ""  # Reuse same split result
+   message_parts = split(message_str, " ")
+   .field1 = (message_parts[0]) ?? ""
+   .field2 = (message_parts[1]) ?? ""  # Reuse same split result
    ```
 
 {{ schema_info }}
