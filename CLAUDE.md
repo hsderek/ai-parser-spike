@@ -296,6 +296,24 @@ The narrative should adapt to the identified data source domain rather than defa
 
 **IMPORTANT**: These domain categories are GUIDANCE, not rigid constraints. The LLM should adapt flexibly to actual data sources that may not fit neatly into these predefined categories. Novel or hybrid use cases should receive appropriate domain-specific language based on the actual content and context rather than being forced into existing categories.
 
+## Emoji Policy
+
+**Context-Specific Usage:** Documentation/UI/Console: All approved emojis permitted. Log Files/Machine-Parsed: ASCII only.
+
+**Professional Emojis:**
+✅❌⚠️ℹ️🔴🟡🟢🔵➡️⬅️⬆️⬇️↗️↘️✓✗☑️☐🔐🚫🛇⛔⏸️⏹️⏳🐛🔧⚙️🛠️🔨💚🚨👷♻️🚀✨🔄🔀🔃🔁↩️↪️🎯▶️⚡🔍🔎💻🖥️🌐🤖●○◆◇■□▲△▼▽→←↑↓↔↕±×÷∞≈≠≤≥№§¶©®™
+
+**ASCII:**
+─│┌┐└┘├┤┬┴┼═║╔╗╚╝╠╣╦╩╬╭╮╯╰▁▂▃▄▅▆▇█░▒▓
+
+**Log ASCII:** [OK][FAIL][WARN][INFO][CRIT][DBG][OFF][BLOCK][DENY][PROC][PAUSE][STOP]
+
+**Key Updates:**
+1. **Context-Specific Rules**: Clear separation between documentation vs logs
+2. **Expanded Professional Set**: 50+ professional emojis for technical documentation
+3. **ASCII Log Alternatives**: Standardized bracket codes for machine-parsed content
+4. **Comprehensive Coverage**: Full Unicode line drawing + log safety compliance
+
 ## General LLM Guidance Auto-Application
 **PRINCIPLE**: Any general guidance added to this CLAUDE.md file that benefits LLM interactions should automatically be applied to AI parser prompts. This ensures consistency between development principles and production prompt engineering.
 
